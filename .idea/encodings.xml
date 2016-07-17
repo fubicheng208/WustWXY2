@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="Encoding">
+    <file url="file://$PROJECT_DIR$/app/libs/universal-image-loader-1.8.6-with-sources.jar" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/app/src/main/java/com/wustwxy2/models/AdDomain.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/app/src/main/res/drawable/bg_gv.xml" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/app/src/main/res/drawable/dot_focused.xml" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/app/src/main/res/drawable/dot_normal.xml" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/app/src/main/res/layout/banner.xml" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/app/src/main/res/layout/grid_item.xml" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/app/src/main/res/mipmap-xhdpi/shadow_article.png" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/app/src/main/res/mipmap-xhdpi/top_banner_android.png" charset="UTF-8" />
+    <file url="PROJECT" charset="GBK" />
+  </component>
+</project>

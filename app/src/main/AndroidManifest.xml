@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.wustwxy2">
+
+    <uses-permission android:name="android.permission.INTERNET" />
+
+    <application
+        android:name=".utils.Application"
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:supportsRtl="true"
+        android:theme="@style/AppBaseTheme">
+        <activity android:name=".utils.MainActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".utils.SearchEngActivity" />
+        <activity android:name=".utils.SearchTableActivity" />
+        <activity android:name=".utils.SearchGradeActivity" />
+        <activity android:name=".utils.SearchCardActivity" />
+        <activity android:name=".utils.SearchComputerActivity" />
+        <activity android:name=".utils.SearchBusActivity" />
+        <activity android:name=".utils.SearchMapActivity" />
+        <activity android:name=".utils.SearchLosingActivity" />
+        <activity android:name=".utils.SearchLibActivity"></activity>
+    </application>
+
+</manifest>
