@@ -28,14 +28,9 @@ public class MesFragment extends Fragment {
 
         View view = inflater.inflate(R.layout.fragment_mes, container, false);
         initToolbar();
-        //initTableLayout();
         return view;
     }
 
-    /*public void initTableLayout() {
-        tabLayout = (TabLayout)getActivity().findViewById(R.id.sliding_tabs);
-        tabLayout.setBackgroundColor(getResources().getColor(R.color.yellow));
-    }*/
 
     public void initToolbar() {
         toolbar = (Toolbar)getActivity().findViewById(R.id.toolbar);
@@ -50,8 +45,6 @@ public class MesFragment extends Fragment {
         Log.d(TAG, "onCreateOptionsMenu()");
         menu.clear();
         toolbar.setTitle("个人信息");
-        /*toolbar.setBackgroundColor(getResources().getColor(R.color.yellow));
-        tabLayout.setBackgroundColor(getResources().getColor(R.color.yellow));*/
         inflater.inflate(R.menu.mainmenu, menu);
     }
 
