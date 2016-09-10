@@ -1,10 +1,9 @@
-package com.wustwxy2.utils;
+package com.wustwxy2.activity;
 
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -14,7 +13,7 @@ import android.view.WindowManager;
 import com.readystatesoftware.systembartint.SystemBarTintManager;
 import com.wustwxy2.R;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends BaseActivity {
 
     private Toolbar toolbar;                             //定义toolbar
     private MainFragment mf;
@@ -22,10 +21,32 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView();
         initFragment(savedInstanceState);
+        initViews();
+    }
+
+    @Override
+    public void setContentView() {
+        setContentView(R.layout.activity_main);
+    }
+
+    @Override
+    public void initViews() {
         initToolbar();
         initWindow();
+    }
+
+    //从父类继承的方法
+    @Override
+    public void initListeners() {
+
+    }
+
+    //从父类继承的方法
+    @Override
+    public void initData() {
+
     }
 
     public void initToolbar()

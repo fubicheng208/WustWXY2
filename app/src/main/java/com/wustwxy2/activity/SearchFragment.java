@@ -1,4 +1,4 @@
-package com.wustwxy2.utils;
+package com.wustwxy2.activity;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -92,9 +92,9 @@ public class SearchFragment extends Fragment{
         // 获取图片加载实例
         mImageLoader = ImageLoader.getInstance();
         options = new DisplayImageOptions.Builder()
-                .showStubImage(R.mipmap.top_banner_android)
-                .showImageForEmptyUri(R.mipmap.top_banner_android)
-                .showImageOnFail(R.mipmap.top_banner_android)
+                .showStubImage(R.mipmap.loading)
+                .showImageForEmptyUri(R.mipmap.loading)
+                .showImageOnFail(R.mipmap.loading)
                 .cacheInMemory(true).cacheOnDisc(true)
                 .bitmapConfig(Bitmap.Config.RGB_565)
                 .imageScaleType(ImageScaleType.EXACTLY).build();
@@ -237,31 +237,31 @@ public class SearchFragment extends Fragment{
 
         AdDomain adDomain = new AdDomain();
         adDomain.setId("108078");
-        adDomain.setImgUrl("http://g.hiphotos.baidu.com/image/w%3D310/sign=bb99d6add2c8a786be2a4c0f5708c9c7/d50735fae6cd7b8900d74cd40c2442a7d9330e29.jpg");
+        adDomain.setImgUrl("http://bmob-cdn-5254.b0.upaiyun.com/2016/09/08/94d8ab279e3843afa5ea38da2480628a.jpg");
         adDomain.setAd(false);
         adList.add(adDomain);
 
         AdDomain adDomain2 = new AdDomain();
         adDomain2.setId("108078");
-        adDomain2.setImgUrl("http://g.hiphotos.baidu.com/image/w%3D310/sign=7cbcd7da78f40ad115e4c1e2672e1151/eaf81a4c510fd9f9a1edb58b262dd42a2934a45e.jpg");
+        adDomain2.setImgUrl("http://bmob-cdn-5254.b0.upaiyun.com/2016/09/08/dedb6516808041bdb6eb780305b446b3.jpg");
         adDomain2.setAd(false);
         adList.add(adDomain2);
 
         AdDomain adDomain3 = new AdDomain();
         adDomain3.setId("108078");
-        adDomain3.setImgUrl("http://e.hiphotos.baidu.com/image/w%3D310/sign=392ce7f779899e51788e3c1572a6d990/8718367adab44aed22a58aeeb11c8701a08bfbd4.jpg");
+        adDomain3.setImgUrl("http://bmob-cdn-5254.b0.upaiyun.com/2016/09/08/4507575d5dc6413c805786bb02e1d0a1.jpg");
         adDomain3.setAd(false);
         adList.add(adDomain3);
 
         AdDomain adDomain4 = new AdDomain();
         adDomain4.setId("108078");
-        adDomain4.setImgUrl("http://d.hiphotos.baidu.com/image/w%3D310/sign=54884c82b78f8c54e3d3c32e0a282dee/a686c9177f3e670932e4cf9338c79f3df9dc55f2.jpg");
+        adDomain4.setImgUrl("http://bmob-cdn-5254.b0.upaiyun.com/2016/09/08/14381f681b69433d997b66fe49fdb3f6.jpg");
         adDomain4.setAd(false);
         adList.add(adDomain4);
 
         AdDomain adDomain5 = new AdDomain();
         adDomain5.setId("108078");
-        adDomain5.setImgUrl("http://e.hiphotos.baidu.com/image/w%3D310/sign=66270b4fe8c4b7453494b117fffd1e78/0bd162d9f2d3572c7dad11ba8913632762d0c30d.jpg");
+        adDomain5.setImgUrl("http://bmob-cdn-5254.b0.upaiyun.com/2016/09/08/b24d9981cf134689a86b434153ff2663.jpg");
         adDomain5.setAd(true); // 代表是广告
         adList.add(adDomain5);
 

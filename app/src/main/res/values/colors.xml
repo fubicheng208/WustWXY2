@@ -1,15 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-<color name="colorPrimary">#009688</color>
-<color name="colorPrimaryDark">#00796B</color>
-<color name="colorAccent">#FF4081</color>
-<color name="white">#FFFFFF</color>
-<color name="gray">#9E9E9E</color>
-<color name="black">#212121</color>
-<color name="titleLightBlue">#03A9F4</color>
-<color name="primaryLightBlue">#B2EBF2</color>
-<color name="lightGrey">#B6B6B6</color>
-<color name="yellow">#FFEB3B</color>
-<color name="colorText">#3e464c</color>
-
+    <color name="colorPrimary">#009688</color>
+    <color name="colorPrimaryDark">#00796B</color>
+    <color name="colorAccent">#FF4081</color>
+    <color name="white">#FFFFFF</color>
+    <color name="darkWhite">#fefefe</color>
+    <color name="gray">#9E9E9E</color>
+    <color name="black">#212121</color>
+    <color name="titleLightBlue">#03A9F4</color>
+    <color name="primaryLightBlue">#B2EBF2</color>
+    <color name="lightGrey">#B6B6B6</color>
+    <color name="yellow">#FFEB3B</color>
+    <color name="colorText">#3e464c</color>
+    <color name="text_gray">#969696</color>
+    <color name="green">#5cbe6c</color>
+    <color name="base_bg">#f4f6f6</color>
+    <color name="base_color_text_gray">#898989</color>
+    <color name="base_color_text_black">#3e3e36</color>
+    <color name="transparent">#00000000</color>
 </resources>

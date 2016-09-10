@@ -1,4 +1,4 @@
-package com.wustwxy2.utils;
+package com.wustwxy2.activity;
 
 import android.os.Build;
 import android.support.v7.app.AppCompatActivity;
@@ -9,7 +9,7 @@ import android.view.WindowManager;
 import com.readystatesoftware.systembartint.SystemBarTintManager;
 import com.wustwxy2.R;
 
-public class SearchCardActivity extends AppCompatActivity {
+public class SearchBusActivity extends AppCompatActivity {
 
     Toolbar toolbar;
     private SystemBarTintManager tintManager;
@@ -17,16 +17,17 @@ public class SearchCardActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_search_card);
+        setContentView(R.layout.activity_search_bus);
         initToolbar();
         initWindow();
     }
 
     public void initToolbar() {
         toolbar = (Toolbar)findViewById(R.id.toolbar);
-        toolbar.setTitle("一卡通");
+        toolbar.setTitle("校车");
         this.setSupportActionBar(toolbar);
     }
+
 
     //设置沉浸式状态栏和导航栏
     private void initWindow(){
@@ -38,5 +39,4 @@ public class SearchCardActivity extends AppCompatActivity {
             tintManager.setStatusBarTintEnabled(true);
         }
     }
-
 }

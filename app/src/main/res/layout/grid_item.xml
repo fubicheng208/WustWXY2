@@ -3,7 +3,7 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:layout_margin="0.0dip"
-    android:background="@color/white" >
+    android:background="@color/base_bg" >
 
     <RelativeLayout
         android:layout_width="fill_parent"
