@@ -1,4 +1,4 @@
-package com.wustwxy2.utils;
+package com.wustwxy2.activity;
 
 import android.os.Build;
 import android.support.v7.app.AppCompatActivity;

@@ -1,4 +1,4 @@
-package com.wustwxy2.utils;
+package com.wustwxy2.activity;
 
 import android.os.Build;
 import android.support.v7.app.AppCompatActivity;
@@ -9,7 +9,7 @@ import android.view.WindowManager;
 import com.readystatesoftware.systembartint.SystemBarTintManager;
 import com.wustwxy2.R;
 
-public class SearchGradeActivity extends AppCompatActivity {
+public class SearchCardActivity extends AppCompatActivity {
 
     Toolbar toolbar;
     private SystemBarTintManager tintManager;
@@ -17,14 +17,14 @@ public class SearchGradeActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_search_grade);
+        setContentView(R.layout.activity_search_card);
         initToolbar();
         initWindow();
     }
 
     public void initToolbar() {
         toolbar = (Toolbar)findViewById(R.id.toolbar);
-        toolbar.setTitle("³É¼¨");
+        toolbar.setTitle("Ò»¿¨Í¨");
         this.setSupportActionBar(toolbar);
     }
 
@@ -38,4 +38,5 @@ public class SearchGradeActivity extends AppCompatActivity {
             tintManager.setStatusBarTintEnabled(true);
         }
     }
+
 }

@@ -1,4 +1,4 @@
-package com.wustwxy2.utils;
+package com.wustwxy2.activity;
 
 import android.os.Build;
 import android.support.v7.app.AppCompatActivity;
@@ -9,7 +9,7 @@ import android.view.WindowManager;
 import com.readystatesoftware.systembartint.SystemBarTintManager;
 import com.wustwxy2.R;
 
-public class SearchLosingActivity extends AppCompatActivity {
+public class SearchEngActivity extends AppCompatActivity {
 
     Toolbar toolbar;
     private SystemBarTintManager tintManager;
@@ -17,17 +17,16 @@ public class SearchLosingActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_search_losing);
+        setContentView(R.layout.activity_search_eng);
         initToolbar();
         initWindow();
     }
 
     public void initToolbar() {
         toolbar = (Toolbar)findViewById(R.id.toolbar);
-        toolbar.setTitle("失物寻物");
+        toolbar.setTitle("英语四六级");
         this.setSupportActionBar(toolbar);
     }
-
 
     //设置沉浸式状态栏和导航栏
     private void initWindow(){
@@ -39,5 +38,4 @@ public class SearchLosingActivity extends AppCompatActivity {
             tintManager.setStatusBarTintEnabled(true);
         }
     }
-
 }

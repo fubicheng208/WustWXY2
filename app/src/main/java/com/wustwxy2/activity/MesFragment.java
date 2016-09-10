@@ -1,5 +1,9 @@
-package com.wustwxy2.utils;
+package com.wustwxy2.activity;
 
+import android.content.Context;
+import android.content.SharedPreferences;
+import android.support.annotation.Nullable;
+import android.support.design.widget.TextInputEditText;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -11,8 +15,16 @@ import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.support.design.widget.TabLayout;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.Toast;
 
 import com.wustwxy2.R;
+import com.wustwxy2.bean.User;
+
+import cn.bmob.v3.BmobUser;
+import cn.bmob.v3.exception.BmobException;
+import cn.bmob.v3.listener.SaveListener;
 
 /**
  * Created by fubicheng on 2016/7/12.
@@ -21,6 +33,7 @@ public class MesFragment extends Fragment {
 
     private static final String TAG = "MesFragment";
     Toolbar toolbar;
+
     //TabLayout tabLayout;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -31,6 +44,10 @@ public class MesFragment extends Fragment {
         return view;
     }
 
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+    }
 
     public void initToolbar() {
         toolbar = (Toolbar)getActivity().findViewById(R.id.toolbar);

@@ -1,4 +1,26 @@
 <resources>
     <string name="app_name">武科大微校园</string>
     <string name="lib">图书馆</string>
+    <string name="list_no_data_lost">暂时还未有失物信息</string>
+    <string name="list_no_data_lost_mine">您还未发布失物信息</string>
+    <string name="progress_loading">正在获取数据..</string>
+    <string name="lost">失物</string>
+    <string name="found">寻物</string>
+    <string name="list_no_data_found">暂时还未有寻物信息</string>
+    <string name="list_no_data_found_mine">您还未发布寻物信息</string>
+    <string name="title_activity_main2">Main2Activity</string>
+    <string name="menu_losing_add">添加</string>
+    <string name="menu_losing_mine">我的</string>
+    <string name="losing_title_hint">标题</string>
+    <string name="losing_phone_hint">手机</string>
+    <string name="losing_describe_hint">描述</string>
+    <string name="losing_error">出错啦~请检查网络</string>
+    <string name="default_name">我还没有名字</string>
+    <string name="losing_title_default">红色钱包</string>
+    <string name="losing_describe_default">周三早上丢失了红色钱包，在食堂二楼</string>
+    <string name="losing_edit">编辑</string>
+    <string name="delete_edit">删除</string>
+    <string name="losing_detail_default_nickname">详情</string>
+    <string name="default_time">2016年9月9日</string>
+    <string name="default_phone">138024249542</string>
 </resources>

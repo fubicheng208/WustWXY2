@@ -1,4 +1,4 @@
-package com.wustwxy2.utils;
+package com.wustwxy2.activity;
 
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;

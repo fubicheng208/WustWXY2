@@ -1,4 +1,4 @@
-package com.wustwxy2.utils;
+package com.wustwxy2.activity;
 
 import android.os.Build;
 import android.support.v7.app.AppCompatActivity;
@@ -9,7 +9,7 @@ import android.view.WindowManager;
 import com.readystatesoftware.systembartint.SystemBarTintManager;
 import com.wustwxy2.R;
 
-public class SearchLibActivity extends AppCompatActivity {
+public class SearchGradeActivity extends AppCompatActivity {
 
     Toolbar toolbar;
     private SystemBarTintManager tintManager;
@@ -17,14 +17,14 @@ public class SearchLibActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_search_lib);
+        setContentView(R.layout.activity_search_grade);
         initToolbar();
         initWindow();
     }
 
     public void initToolbar() {
         toolbar = (Toolbar)findViewById(R.id.toolbar);
-        toolbar.setTitle("Õº Èπ›");
+        toolbar.setTitle("≥…º®");
         this.setSupportActionBar(toolbar);
     }
 

@@ -10,5 +10,9 @@
     <dimen name="menu">14sp</dimen>         <!--  Medium-->
     <dimen name="button">14sp</dimen>       <!--  Medium-->
     <dimen name="toolbar_padding_top">25dp</dimen>
+    <dimen name="fab_margin">16dp</dimen>
+    <dimen name="base_action_bar_height">48.0dip</dimen>
+    <dimen name="base_edit_height">40.0dip</dimen>
+    <dimen name="list_item_height">120dip</dimen>
 
 </resources>

@@ -3,6 +3,8 @@ apply plugin: 'com.android.application'
 android {
     compileSdkVersion 24
     buildToolsVersion "23.0.1"
+    //兼容Android6.0
+    useLibrary 'org.apache.http.legacy'
     android {compileOptions.encoding = "GBK"}
 
     defaultConfig {
@@ -23,8 +25,11 @@ android {
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
     testCompile 'junit:junit:4.12'
+    //bmob-sdk：Bmob的android sdk包，包含了Bmob的数据存储、文件等服务
+    compile 'cn.bmob.android:bmob-sdk:3.5.0'
     compile 'com.android.support:appcompat-v7:24.0.0'
     compile 'com.android.support:design:24.0.0'
+    compile 'com.squareup.picasso:picasso:2.5.2'
     compile files('libs/universal-image-loader-1.8.6-with-sources.jar')
     compile files('libs/systembartint-1.0.4.jar')
 }

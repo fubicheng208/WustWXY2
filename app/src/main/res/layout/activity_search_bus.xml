@@ -3,8 +3,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/base_bg"
     android:fitsSystemWindows="true"
-    tools:context="com.wustwxy2.utils.SearchBusActivity">
+    tools:context=".activity.SearchBusActivity">
 
     <include
         layout="@layout/toolbar" />
