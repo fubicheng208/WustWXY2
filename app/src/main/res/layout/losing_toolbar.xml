@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.Toolbar xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/losing_toolbar"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/base_action_bar_height"
+    android:background="@color/colorPrimary"
+    android:fitsSystemWindows="true"
+    app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+    app:theme="@style/AppBaseTheme">
+
+        <LinearLayout
+            android:id="@+id/layout_all"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:gravity="center_horizontal"
+            android:orientation="horizontal" >
+
+            <TextView
+                android:id="@+id/tv_lost"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Lost"
+                android:textColor="@color/white"
+                android:textSize="22sp" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom"
+                android:src="@drawable/btn_arrow_selector" />
+        </LinearLayout>
+
+        <!-- <Button
+             android:id="@+id/btn_add"
+             android:layout_width="30dp"
+             android:layout_height="30dp"
+             android:layout_alignParentRight="true"
+             android:layout_centerVertical="true"
+             android:layout_marginRight="10dp"
+             android:background="@drawable/btn_add_selector" />-->
+</android.support.v7.widget.Toolbar>
