@@ -8,7 +8,7 @@ import android.widget.GridView;
  * Created by fubicheng on 2016/7/15.
  */
 
-//九宫格实体类，继承GridView
+//涔濆鏍煎疄浣撶被锛岀户鎵縂ridView
 public class MyGridView extends GridView {
     public MyGridView(Context context, AttributeSet attrs) {
         super(context, attrs);

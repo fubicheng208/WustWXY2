@@ -53,9 +53,9 @@ public class SearchLosingActivity extends BaseActivity implements View.OnClickLi
     TextView tv_lost;
     ListView listview;
 
-    protected QuickAdapter<Lost> LostAdapter;// Ê§Îï
+    protected QuickAdapter<Lost> LostAdapter;// Ê§ï¿½ï¿½
 
-    protected QuickAdapter<Found> FoundAdapter;// ÕÐÁì
+    protected QuickAdapter<Found> FoundAdapter;// ï¿½ï¿½ï¿½ï¿½
 
     private Button layout_found;
     private Button layout_lost;
@@ -80,7 +80,7 @@ public class SearchLosingActivity extends BaseActivity implements View.OnClickLi
         tv_no = (TextView) findViewById(R.id.tv_no);
 
         layout_all = (LinearLayout) findViewById(R.id.layout_all);
-        // Ä¬ÈÏÊÇÊ§Îï½çÃæ
+        // Ä¬ï¿½ï¿½ï¿½ï¿½Ê§ï¿½ï¿½ï¿½ï¿½ï¿½
         tv_lost = (TextView) findViewById(R.id.tv_lost);
         tv_lost.setTag("Lost");
         listview = (ListView) findViewById(R.id.list_lost);
@@ -99,7 +99,7 @@ public class SearchLosingActivity extends BaseActivity implements View.OnClickLi
     }
 
 
-    //ÉèÖÃ³Á½þÊ½×´Ì¬À¸ºÍµ¼º½À¸
+    //ï¿½ï¿½ï¿½Ã³ï¿½ï¿½ï¿½Ê½×´Ì¬ï¿½ï¿½ï¿½Íµï¿½ï¿½ï¿½ï¿½ï¿½
     private void initWindow(){
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT){
             getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
@@ -151,7 +151,7 @@ public class SearchLosingActivity extends BaseActivity implements View.OnClickLi
             };
         }
         listview.setAdapter(LostAdapter);
-        // Ä¬ÈÏ¼ÓÔØÊ§Îï½çÃæ
+        // Ä¬ï¿½Ï¼ï¿½ï¿½ï¿½Ê§ï¿½ï¿½ï¿½ï¿½ï¿½
         queryLosts();
     }
 
@@ -167,7 +167,7 @@ public class SearchLosingActivity extends BaseActivity implements View.OnClickLi
 
     private void showListPop() {
         View view = LayoutInflater.from(this).inflate(R.layout.pop_lost, null);
-        // ×¢Èë
+        // ×¢ï¿½ï¿½
         layout_found = (Button) view.findViewById(R.id.layout_found);
         layout_lost = (Button) view.findViewById(R.id.layout_lost);
         layout_found.setOnClickListener(this);
@@ -191,7 +191,7 @@ public class SearchLosingActivity extends BaseActivity implements View.OnClickLi
         morePop.setFocusable(true);
         morePop.setOutsideTouchable(true);
         morePop.setBackgroundDrawable(new BitmapDrawable());
-        // ¶¯»­Ð§¹û ´Ó¶¥²¿µ¯ÏÂ
+        // ï¿½ï¿½ï¿½ï¿½Ð§ï¿½ï¿½ ï¿½Ó¶ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
         morePop.setAnimationStyle(R.style.MenuPop);
         morePop.showAsDropDown(layout_all, 0, -dip2px(this, 2.0F));
     }
@@ -238,7 +238,7 @@ public class SearchLosingActivity extends BaseActivity implements View.OnClickLi
             return;
         }
         switch (requestCode) {
-            case Constants.REQUESTCODE_ADD:// Ìí¼Ó³É¹¦Ö®ºóµÄ»Øµ÷
+            case Constants.REQUESTCODE_ADD:// ï¿½ï¿½Ó³É¹ï¿½Ö®ï¿½ï¿½Ä»Øµï¿½
                 String tag = tv_lost.getTag().toString();
                 if (tag.equals("Lost")) {
                     queryLosts();
@@ -250,7 +250,7 @@ public class SearchLosingActivity extends BaseActivity implements View.OnClickLi
     }
 
     /**
-     * ²éÑ¯È«²¿Ê§ÎïÐÅÏ¢ queryLosts
+     * ï¿½ï¿½Ñ¯È«ï¿½ï¿½Ê§ï¿½ï¿½ï¿½ï¿½Ï¢ queryLosts
      *
      * @return void
      * @throws
@@ -258,7 +258,7 @@ public class SearchLosingActivity extends BaseActivity implements View.OnClickLi
     private void queryLosts() {
         showView();
         BmobQuery<Lost> query = new BmobQuery<Lost>();
-        query.order("-createdAt");// °´ÕÕÊ±¼ä½µÐò
+        query.order("-createdAt");// ï¿½ï¿½ï¿½ï¿½Ê±ï¿½ä½µï¿½ï¿½
         query.findObjects(new FindListener<Lost>() {
             @Override
             public void done(List<Lost> losts, BmobException e) {
@@ -284,7 +284,7 @@ public class SearchLosingActivity extends BaseActivity implements View.OnClickLi
     public void queryFounds() {
         showView();
         BmobQuery<Found> query = new BmobQuery<Found>();
-        query.order("-createdAt");// °´ÕÕÊ±¼ä½µÐò
+        query.order("-createdAt");// ï¿½ï¿½ï¿½ï¿½Ê±ï¿½ä½µï¿½ï¿½
         query.findObjects(new FindListener<Found>() {
 
             @Override
@@ -309,7 +309,7 @@ public class SearchLosingActivity extends BaseActivity implements View.OnClickLi
     }
 
     /**
-     * ÇëÇó³ö´í»òÕßÎÞÊý¾ÝÊ±ºòÏÔÊ¾µÄ½çÃæ showErrorView
+     * ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê±ï¿½ï¿½ï¿½ï¿½Ê¾ï¿½Ä½ï¿½ï¿½ï¿½ showErrorView
      *
      * @return void
      * @throws
@@ -348,12 +348,12 @@ public class SearchLosingActivity extends BaseActivity implements View.OnClickLi
             case R.id.menu_losing_add:
                 BmobUser bmobUser = BmobUser.getCurrentUser(User.class);
                 if(bmobUser != null){
-                    // ÔÊÐíÓÃ»§Ê¹ÓÃÓ¦ÓÃ
+                    // ï¿½ï¿½ï¿½ï¿½ï¿½Ã»ï¿½Ê¹ï¿½ï¿½Ó¦ï¿½ï¿½
                     Intent intent = new Intent(this, AddActivity.class);
                     intent.putExtra("from", tv_lost.getTag().toString());
                     startActivityForResult(intent, Constants.REQUESTCODE_ADD);
                 }else{
-                    ShowToast("ÇëÏÈµÇÂ¼");
+                    ShowToast(getResources().getText(R.string.hint_login).toString());
                     Intent intent = new Intent(this, LoginActivity.class);
                     startActivity(intent);
                 }
@@ -361,13 +361,13 @@ public class SearchLosingActivity extends BaseActivity implements View.OnClickLi
             case R.id.menu_losing_mine:
                 BmobUser bmobUser2 = BmobUser.getCurrentUser(User.class);
                 if(bmobUser2 != null){
-                    // ÔÊÐíÓÃ»§Ê¹ÓÃÓ¦ÓÃ
+                    // ï¿½ï¿½ï¿½ï¿½ï¿½Ã»ï¿½Ê¹ï¿½ï¿½Ó¦ï¿½ï¿½
                     Intent intent1 = new Intent(this, MyLosingActivity.class);
                     intent1.putExtra("from", tv_lost.getTag().toString());
                     startActivityForResult(intent1, Constants.REQUESTCODE_MY);
                 }else{
-                    //»º´æÓÃ»§¶ÔÏóÎª¿ÕÊ±£¬ ¿É´ò¿ªÓÃ»§×¢²á½çÃæ¡­
-                    ShowToast("ÇëÏÈµÇÂ¼");
+                    //ï¿½ï¿½ï¿½ï¿½ï¿½Ã»ï¿½ï¿½ï¿½ï¿½ï¿½Îªï¿½ï¿½Ê±ï¿½ï¿½ ï¿½É´ï¿½ï¿½Ã»ï¿½×¢ï¿½ï¿½ï¿½ï¿½æ¡­
+                    ShowToast(getResources().getText(R.string.hint_login).toString());
                     Intent intent = new Intent(this, LoginActivity.class);
                     startActivity(intent);
                 }

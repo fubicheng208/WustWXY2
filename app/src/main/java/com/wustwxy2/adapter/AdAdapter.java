@@ -33,12 +33,12 @@ public class AdAdapter extends PagerAdapter {
         ImageView iv = imageViews.get(position);
         ((ViewPager) container).addView(iv);
         final AdDomain adDomain = adList.get(position);
-        // 在这个方法里面设置图片的点击事件
+        // 鍦ㄨ繖涓柟娉曢噷闈㈣缃浘鐗囩殑鐐瑰嚮浜嬩欢
         iv.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
-                // 处理跳转逻辑
+                // 澶勭悊璺宠浆閫昏緫
             }
         });
         return iv;

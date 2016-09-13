@@ -36,7 +36,7 @@ public class NewsFragment extends Fragment {
     public void initToolbar()
     {
         toolbar = (Toolbar)getActivity().findViewById(R.id.toolbar);
-        toolbar.setTitle("新闻资讯");
+        toolbar.setTitle("鏂伴椈璧勮");
         setHasOptionsMenu(true);
         ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
     }
@@ -50,7 +50,7 @@ public class NewsFragment extends Fragment {
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         Log.d(TAG, "onCreateOptionsMenu()");
         menu.clear();
-        toolbar.setTitle("新闻资讯");
+        toolbar.setTitle("鏂伴椈璧勮");
         /*toolbar.setBackgroundColor(getResources().getColor(R.color.titleTeal));
         tabLayout.setBackgroundColor(getResources().getColor(R.color.titleTeal));*/
         inflater.inflate(R.menu.mainmenu, menu);

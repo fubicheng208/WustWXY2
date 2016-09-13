@@ -17,8 +17,8 @@ import com.wustwxy2.models.BaseViewHolder;
 public class MyGridAdapter extends BaseAdapter {
     private Context mContext;
 
-    public String[] img_text = { "Í¼Êé¹İ", "¿Î±í", "³É¼¨", "Ò»¿¨Í¨", "Ê§ÎïÑ°Îï", "Ğ£³µ",
-            "µØÍ¼", "¼ÆËã»ú", "ËÄÁù¼¶", };
+    public String[] img_text = { "å›¾ä¹¦é¦†", "è¯¾è¡¨", "æˆç»©", "ä¸€å¡é€š", "å¤±ç‰©å¯»ç‰©", "æ ¡è½¦",
+            "åœ°å›¾", "è®¡ç®—æœº", "å››å…­çº§", };
     public int[] imgs = {R.mipmap.flower, R.mipmap.flower,
             R.mipmap.flower, R.mipmap.flower,
             R.mipmap.flower, R.mipmap.flower,
@@ -53,7 +53,7 @@ public class MyGridAdapter extends BaseAdapter {
             convertView = LayoutInflater.from(mContext).inflate(
                     R.layout.grid_item, parent, false);
         }
-        //Ê¹ÓÃBaseViewHolderÀ´»ñÈ¡¹¹ÔìµÄView(Button)
+        //ä½¿ç”¨BaseViewHolderæ¥è·å–æ„é€ çš„View(Button)
         TextView tv = BaseViewHolder.get(convertView, R.id.tv_item);
         ImageView iv = BaseViewHolder.get(convertView, R.id.iv_item);
         iv.setBackgroundResource(imgs[position]);

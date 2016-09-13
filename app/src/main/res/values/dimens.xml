@@ -14,5 +14,8 @@
     <dimen name="base_action_bar_height">48.0dip</dimen>
     <dimen name="base_edit_height">40.0dip</dimen>
     <dimen name="list_item_height">120dip</dimen>
+    <dimen name="weekItemHeight">60dp</dimen>
+    <dimen name="weekItemMarTop">2dp</dimen>
+    <dimen name="weekItemMarLeft">2dp</dimen>
 
 </resources>

@@ -23,4 +23,44 @@
     <string name="losing_detail_default_nickname">详情</string>
     <string name="default_time">2016年9月9日</string>
     <string name="default_phone">138024249542</string>
+    <string name="hint_login">请先登录</string>
+    <string name="my_lost">我的失物</string>
+    <string name="my_found">我的寻物</string>
+    <string name="add_losing">添加失物信息</string>
+    <string name="add_found">添加招领信息</string>
+    <string-array name="score_array">
+        <item>所有成绩</item>
+        <item>本学期成绩</item>
+        <item>单科成绩</item>
+    </string-array>
+    <string-array name="zc_array">
+        <item>第1周</item>
+        <item>第2周</item>
+        <item>第3周</item>
+        <item>第4周</item>
+        <item>第5周</item>
+        <item>第6周</item>
+        <item>第7周</item>
+        <item>第8周</item>
+        <item>第9周</item>
+        <item>第10周</item>
+        <item>第11周</item>
+        <item>第12周</item>
+        <item>第13周</item>
+        <item>第14周</item>
+        <item>第15周</item>
+        <item>第16周</item>
+        <item>第17周</item>
+        <item>第18周</item>
+        <item>第19周</item>
+        <item>第20周</item>
+        <item>第21周</item>
+        <item>第22周</item>
+        <item>第23周</item>
+        <item>第24周</item>
+        <item>第25周</item>
+    </string-array>
+    <string name="title_activity_course">CourseActivity</string>
+    <string name="no_data_toast">暂时查不到数据，一定是教务处崩了...</string>
+    <string name="no_course_data_toast">查询不到课程数据，或教务处又崩了...</string>
 </resources>

@@ -1,10 +1,13 @@
 package com.wustwxy2.activity;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
-import android.os.Handler;
-import android.support.v4.app.Fragment;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
+import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -16,6 +19,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.nostra13.universalimageloader.cache.disc.impl.UnlimitedDiscCache;
 import com.nostra13.universalimageloader.cache.memory.impl.LruMemoryCache;
@@ -28,7 +32,10 @@ import com.wustwxy2.R;
 import com.wustwxy2.adapter.AdAdapter;
 import com.wustwxy2.adapter.MyGridAdapter;
 import com.wustwxy2.models.AdDomain;
+import com.wustwxy2.models.JwInfoDB;
 import com.wustwxy2.models.MyGridView;
+import com.wustwxy2.util.Ksoap2;
+import com.wustwxy2.util.Utility;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -46,16 +53,16 @@ public class SearchFragment extends Fragment{
     Toolbar toolbar;
     //TabLayout tabLayout;
 
-    public static String IMAGE_CACHE_PATH = "imageloader/Cache"; // Í¼Æ¬»º´æÂ·¾¶
+    public static String IMAGE_CACHE_PATH = "imageloader/Cache"; // å›¾ç‰‡ç¼“å­˜è·¯å¾„
 
     private ViewPager adViewPager;
-    private List<ImageView> imageViews;// »¬¶¯µÄÍ¼Æ¬¼¯ºÏ
+    private List<ImageView> imageViews;// æ»‘åŠ¨çš„å›¾ç‰‡é›†åˆ
 
-    private List<View> dots; // Í¼Æ¬±êÌâÕıÎÄµÄÄÇĞ©µã
+    private List<View> dots; // å›¾ç‰‡æ ‡é¢˜æ­£æ–‡çš„é‚£äº›ç‚¹
     private List<View> dotList;
 
-    private int currentItem = 0; // µ±Ç°Í¼Æ¬µÄË÷ÒıºÅ
-    // ¶¨ÒåµÄÎå¸öÖ¸Ê¾µã
+    private int currentItem = 0; // å½“å‰å›¾ç‰‡çš„ç´¢å¼•å·
+    // å®šä¹‰çš„äº”ä¸ªæŒ‡ç¤ºç‚¹
     private View dot0;
     private View dot1;
     private View dot2;
@@ -64,11 +71,11 @@ public class SearchFragment extends Fragment{
 
     private ScheduledExecutorService scheduledExecutorService;
 
-    // Òì²½¼ÓÔØÍ¼Æ¬
+    // å¼‚æ­¥åŠ è½½å›¾ç‰‡
     private ImageLoader mImageLoader;
     private DisplayImageOptions options;
 
-    // ÂÖ²¥bannerµÄÊı¾İ
+    // è½®æ’­bannerçš„æ•°æ®
     private List<AdDomain> adList;
 
     private Handler handler = new Handler() {
@@ -77,8 +84,52 @@ public class SearchFragment extends Fragment{
         }
     };
 
-    //9¸ö°´Å¥½çÃæ
+    //9ä¸ªæŒ‰é’®ç•Œé¢
     private MyGridView gridview;
+    //æˆç»©è¯¾è¡¨ç›¸å…³
+    private static final int QUERY_SCORE=0;
+    private static final int QUERY_COURSE=1;
+    private SharedPreferences mPreferences;
+    private SharedPreferences.Editor mEditor;
+    private JwInfoDB mJwInfoDB;
+    private String xq;
+    private Handler handler1=new Handler(){
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            if (!msg.obj.toString().equals("anyType{}")) {
+                switch (msg.arg1) {
+                    case QUERY_SCORE:
+                        String cj = msg.obj.toString();
+                        if(!cj.equals(mPreferences.getString("cjData",""))) {
+                            Utility.handleScores(mJwInfoDB, cj);
+                            mEditor.putString("cjData",cj);
+                            mEditor.putString("currentTeam",Utility.currentTeam);
+                            mEditor.putString("xh",Utility.xh);
+                            mEditor.putString("xm",Utility.xm);
+                            mEditor.commit();
+                        }
+                        startActivity(new Intent(getActivity(),SearchGradeActivity.class));
+                        break;
+                    case QUERY_COURSE:
+                        String kb = msg.obj.toString();
+                        if(!kb.equals(mPreferences.getString("kbData",""))){
+                            Utility.handleCourses(mJwInfoDB,kb);
+                            mEditor.putInt("currentZc",1);
+                            mEditor.putString("startDate",Utility.getDate());
+                            mEditor.putInt("startWeek",Utility.getWeekOfDate());
+                            mEditor.putString("xq",xq);
+                            mEditor.putString("kbData",kb);
+                            mEditor.commit();
+                        }
+                        startActivity(new Intent(getActivity(),SearchTableActivity.class));
+                        break;
+                }
+            }else {
+                Toast.makeText(getActivity(), R.string.no_data_toast ,Toast.LENGTH_SHORT).show();
+            }
+        }
+    };
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -86,15 +137,17 @@ public class SearchFragment extends Fragment{
         View view = inflater.inflate(R.layout.fragment_search, container, false);
         initToolbar();
         initGridView(view);
+        //åˆå§‹åŒ–æˆç»©è¯¾è¡¨æ‰€éœ€å˜é‡
+        initScoreAndCourse();
         //initTableLayout();
-        // Ê¹ÓÃImageLoaderÖ®Ç°³õÊ¼»¯
+        // ä½¿ç”¨ImageLoaderä¹‹å‰åˆå§‹åŒ–
         initImageLoader();
-        // »ñÈ¡Í¼Æ¬¼ÓÔØÊµÀı
+        // è·å–å›¾ç‰‡åŠ è½½å®ä¾‹
         mImageLoader = ImageLoader.getInstance();
         options = new DisplayImageOptions.Builder()
                 .showStubImage(R.mipmap.loading)
-                .showImageForEmptyUri(R.mipmap.loading)
-                .showImageOnFail(R.mipmap.loading)
+                .showImageForEmptyUri(R.mipmap.cry)
+                .showImageOnFail(R.mipmap.cry)
                 .cacheInMemory(true).cacheOnDisc(true)
                 .bitmapConfig(Bitmap.Config.RGB_565)
                 .imageScaleType(ImageScaleType.EXACTLY).build();
@@ -107,11 +160,16 @@ public class SearchFragment extends Fragment{
     public void initToolbar()
     {
         toolbar = (Toolbar)getActivity().findViewById(R.id.toolbar);
-        toolbar.setTitle("ĞÅÏ¢²éÑ¯");
+        toolbar.setTitle("ä¿¡æ¯æŸ¥è¯¢");
         setHasOptionsMenu(true);
         ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
     }
 
+    private void initScoreAndCourse(){
+        mPreferences=getActivity().getSharedPreferences("data", Context.MODE_PRIVATE);
+        mEditor=mPreferences.edit();
+        mJwInfoDB=JwInfoDB.getJwInfoDB(getActivity());
+    }
     /*public void initTableLayout() {
         tabLayout = (TabLayout)getActivity().findViewById(R.id.sliding_tabs);
         tabLayout.setBackgroundColor(getResources().getColor(R.color.titleLightBlue));
@@ -120,7 +178,7 @@ public class SearchFragment extends Fragment{
     private void initGridView(View view) {
         gridview=(MyGridView) view.findViewById(R.id.gridview);
         gridview.setAdapter(new MyGridAdapter(getActivity()));
-        //¿ØÖÆµã»÷ºóµÄÌø×ª
+        //æ§åˆ¶ç‚¹å‡»åçš„è·³è½¬
         gridview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
@@ -129,10 +187,57 @@ public class SearchFragment extends Fragment{
                         startActivity(new Intent(getActivity(),SearchLibActivity.class));
                     }break;
                     case 1:{
-                        startActivity(new Intent(getActivity(),SearchTableActivity.class));
+                        final String xh1=mPreferences.getString("Account",null);
+                        if (xh1 != null) {
+                            if(mPreferences.getString("kbData","").isEmpty()) {
+                                int year= Utility.getYear();
+                                if (Utility.getDate().compareTo(year+"-"+"07-01")>=0) {
+                                    xq=year+"-"+(year+1)+"-"+"1";
+                                }else {
+                                    xq=(year-1)+"-"+year+"-"+"2";
+                                }
+                                new Thread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        Message message = new Message();
+                                        message.arg1 = QUERY_COURSE;
+                                        message.obj = Ksoap2.getCourseInfo("201513137125",xq);
+                                        handler1.sendMessage(message);
+
+                                    }
+                                }).start();
+                            }else {
+                                startActivity(new Intent(getActivity(), SearchTableActivity.class));
+                            }
+                        }else {
+                            Toast.makeText(getActivity(), "éœ€è¦å…ˆç™»å½•çš„å“¦", Toast.LENGTH_SHORT).show();
+                            startActivity(new Intent(getActivity(), LoginActivity.class));
+                            getActivity().finish();
+                        }
                     }break;
                     case 2:{
-                        startActivity(new Intent(getActivity(),SearchGradeActivity.class));
+                        final String xh=mPreferences.getString("Account",null);
+                        if (xh != null) {
+                            new Thread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    new Thread(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            Message message=new Message();
+                                            message.arg1=QUERY_SCORE;
+                                            message.obj=Ksoap2.getScoreInfo(xh);
+                                            handler1.sendMessage(message);
+                                        }
+                                    }).start();
+                                }
+                            }).start();
+                        }else {
+                            Toast.makeText(getActivity(), "éœ€è¦å…ˆç™»å½•çš„å“¦", Toast.LENGTH_SHORT).show();
+                            startActivity(new Intent(getActivity(), LoginActivity.class));
+                            getActivity().finish();
+
+                        }
                     }break;
                     case 3:{
                         startActivity(new Intent(getActivity(),SearchCardActivity.class));
@@ -157,7 +262,7 @@ public class SearchFragment extends Fragment{
         });
     }
 
-    //³õÊ¼»¯Í¼Æ¬¼ÓÔØÆ÷£¬µ÷ÓÃµÄ¿ªÔ´µÄÍ¼Æ¬¼ÓÔØ¿ò¼Ü
+    //åˆå§‹åŒ–å›¾ç‰‡åŠ è½½å™¨ï¼Œè°ƒç”¨çš„å¼€æºçš„å›¾ç‰‡åŠ è½½æ¡†æ¶
     private void initImageLoader() {
         File cacheDir = com.nostra13.universalimageloader.utils.StorageUtils
                 .getOwnCacheDirectory(getActivity().getApplicationContext(),
@@ -179,12 +284,12 @@ public class SearchFragment extends Fragment{
     }
 
     private void initAdData(View view) {
-        // ¹ã¸æÊı¾İ
+        // å¹¿å‘Šæ•°æ®
         adList = getBannerAd();
 
         imageViews = new ArrayList<ImageView>();
 
-        // µã
+        // ç‚¹
         dots = new ArrayList<View>();
         dotList = new ArrayList<View>();
         dot0 = view.findViewById(R.id.v_dot0);
@@ -199,18 +304,18 @@ public class SearchFragment extends Fragment{
         dots.add(dot4);
 
         adViewPager = (ViewPager) view.findViewById(R.id.vp);
-        adViewPager.setAdapter(new AdAdapter(adList,imageViews));// ÉèÖÃÌî³äViewPagerÒ³ÃæµÄÊÊÅäÆ÷
-        // ÉèÖÃÒ»¸ö¼àÌıÆ÷£¬µ±ViewPagerÖĞµÄÒ³Ãæ¸Ä±äÊ±µ÷ÓÃ
+        adViewPager.setAdapter(new AdAdapter(adList,imageViews));// è®¾ç½®å¡«å……ViewPageré¡µé¢çš„é€‚é…å™¨
+        // è®¾ç½®ä¸€ä¸ªç›‘å¬å™¨ï¼Œå½“ViewPagerä¸­çš„é¡µé¢æ”¹å˜æ—¶è°ƒç”¨
         adViewPager.setOnPageChangeListener(new MyPageChangeListener());
         addDynamicView();
     }
 
     private void addDynamicView() {
-        // ¶¯Ì¬Ìí¼ÓÍ¼Æ¬ºÍÏÂÃæÖ¸Ê¾µÄÔ²µã
-        // ³õÊ¼»¯Í¼Æ¬×ÊÔ´
+        // åŠ¨æ€æ·»åŠ å›¾ç‰‡å’Œä¸‹é¢æŒ‡ç¤ºçš„åœ†ç‚¹
+        // åˆå§‹åŒ–å›¾ç‰‡èµ„æº
         for (int i = 0; i < adList.size(); i++) {
             ImageView imageView = new ImageView(getActivity());
-            // Òì²½¼ÓÔØÍ¼Æ¬
+            // å¼‚æ­¥åŠ è½½å›¾ç‰‡
             mImageLoader.displayImage(adList.get(i).getImgUrl(), imageView,
                     options);
             imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
@@ -222,13 +327,13 @@ public class SearchFragment extends Fragment{
 
     private void startAd() {
         scheduledExecutorService = Executors.newSingleThreadScheduledExecutor();
-        // µ±ActivityÏÔÊ¾³öÀ´ºó£¬Ã¿ÎåÃëÇĞ»»Ò»´ÎÍ¼Æ¬ÏÔÊ¾
+        // å½“Activityæ˜¾ç¤ºå‡ºæ¥åï¼Œæ¯äº”ç§’åˆ‡æ¢ä¸€æ¬¡å›¾ç‰‡æ˜¾ç¤º
         scheduledExecutorService.scheduleAtFixedRate(new ScrollTask(), 1, 5,
                 TimeUnit.SECONDS);
     }
 
     /**
-     * ÂÖ²¥¹ã²¥Ä£ÄâÊı¾İ
+     * è½®æ’­å¹¿æ’­æ¨¡æ‹Ÿæ•°æ®
      *
      * @return
      */
@@ -262,7 +367,7 @@ public class SearchFragment extends Fragment{
         AdDomain adDomain5 = new AdDomain();
         adDomain5.setId("108078");
         adDomain5.setImgUrl("http://bmob-cdn-5254.b0.upaiyun.com/2016/09/08/b24d9981cf134689a86b434153ff2663.jpg");
-        adDomain5.setAd(true); // ´ú±íÊÇ¹ã¸æ
+        adDomain5.setAd(true); // ä»£è¡¨æ˜¯å¹¿å‘Š
         adList.add(adDomain5);
 
         return adList;
@@ -279,7 +384,7 @@ public class SearchFragment extends Fragment{
         }
     }
 
-    //¼àÌıÍ¼Æ¬µÄÇĞ»»
+    //ç›‘å¬å›¾ç‰‡çš„åˆ‡æ¢
     private class MyPageChangeListener implements ViewPager.OnPageChangeListener {
 
         private int oldPosition = 0;
@@ -304,12 +409,12 @@ public class SearchFragment extends Fragment{
         }
     }
 
-    //ÖØĞÂ´´½¨²Ëµ¥Ê±¸Ä±äTableLayoutºÍToolBar
+    //é‡æ–°åˆ›å»ºèœå•æ—¶æ”¹å˜TableLayoutå’ŒToolBar
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         Log.d(TAG, "onCreateOptionsMenu()");
         menu.clear();
-        toolbar.setTitle("ĞÅÏ¢²éÑ¯");
+        toolbar.setTitle("ä¿¡æ¯æŸ¥è¯¢");
         /*toolbar.setBackgroundColor(getResources().getColor(R.color.titleLightBlue));
         tabLayout.setBackgroundColor(getResources().getColor(R.color.titleLightBlue));*/
         inflater.inflate(R.menu.mainmenu, menu);
@@ -318,7 +423,7 @@ public class SearchFragment extends Fragment{
     @Override
     public void onStop() {
         super.onStop();
-        // µ±Activity²»¿É¼ûµÄÊ±ºòÍ£Ö¹ÇĞ»»
+        // å½“Activityä¸å¯è§çš„æ—¶å€™åœæ­¢åˆ‡æ¢
         scheduledExecutorService.shutdown();
     }
 }
