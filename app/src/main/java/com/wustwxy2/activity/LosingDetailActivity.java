@@ -3,7 +3,9 @@ package com.wustwxy2.activity;
 
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Build;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -11,7 +13,6 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
@@ -25,47 +26,38 @@ import com.nostra13.universalimageloader.core.assist.ImageScaleType;
 import com.nostra13.universalimageloader.core.assist.QueueProcessingType;
 import com.readystatesoftware.systembartint.SystemBarTintManager;
 import com.wustwxy2.R;
-import com.wustwxy2.adapter.BaseAdapterHelper;
-import com.wustwxy2.adapter.QuickAdapter;
 import com.wustwxy2.bean.Found;
 import com.wustwxy2.bean.Lost;
 import com.wustwxy2.bean.User;
 
-import org.w3c.dom.Text;
-
 import java.io.File;
-import java.util.List;
 
 import cn.bmob.v3.BmobQuery;
 import cn.bmob.v3.exception.BmobException;
-import cn.bmob.v3.listener.FindListener;
 import cn.bmob.v3.listener.QueryListener;
 
-import static com.wustwxy2.R.id.tv_describe;
-import static com.wustwxy2.R.id.tv_describe_detail;
-import static com.wustwxy2.R.id.tv_photo;
-import static com.wustwxy2.R.id.tv_time;
-import static com.wustwxy2.R.id.tv_title;
 
-public class LosingDetailActivity extends BaseActivity {
+public class LosingDetailActivity extends BaseActivity implements View.OnClickListener{
 
     private static final String TAG = "LosingDetail";
 
-    // Òì²½¼ÓÔØÍ¼Æ¬
+
+    // å¼‚æ­¥åŠ è½½å›¾ç‰‡
     private ImageLoader mImageLoader;
     private DisplayImageOptions options;
+    String url;
 
-    public static String IMAGE_CACHE_PATH = "imageloader/Cache"; // Í¼Æ¬»º´æÂ·¾¶
+    public static String IMAGE_CACHE_PATH = "imageloader/Cache"; // å›¾ç‰‡ç¼“å­˜è·¯å¾„
 
     private ProgressDialog dialog;
 
     Toolbar toolbar;
     private SystemBarTintManager tintManager;
-    //ÕıÔÚ»ñÈ¡Êı¾İÊ±ÏÔÊ¾µÄ½çÃæ
+    //æ­£åœ¨è·å–æ•°æ®æ—¶æ˜¾ç¤ºçš„ç•Œé¢
     RelativeLayout layout_progress;
-    //»ñÈ¡µ½Êı¾İºóÏÔÊ¾µÄ½çÃæ
+    //è·å–åˆ°æ•°æ®åæ˜¾ç¤ºçš„ç•Œé¢
     ScrollView layout_scrollView;
-    //³ö´íÏÔÊ¾½çÃæ
+    //å‡ºé”™æ˜¾ç¤ºç•Œé¢
     LinearLayout layout_no;
     TextView tv_no;
 
@@ -74,6 +66,7 @@ public class LosingDetailActivity extends BaseActivity {
     TextView tv_phone;
     TextView tv_title;
     TextView tv_describe;
+    //æä¾›çš„ç¼©ç•¥å›¾
     ImageView photo_detail;
 
     @Override
@@ -83,6 +76,7 @@ public class LosingDetailActivity extends BaseActivity {
 
     @Override
     public void initViews() {
+
         layout_progress = (RelativeLayout) findViewById(R.id.progress);
         layout_scrollView = (ScrollView)findViewById(R.id.scrollView_detail);
         layout_no = (LinearLayout) findViewById(R.id.layout_no);
@@ -93,37 +87,40 @@ public class LosingDetailActivity extends BaseActivity {
         tv_phone = (TextView)findViewById(R.id.tv_phone_detail);
         tv_title = (TextView)findViewById(R.id.tv_title_detail);
         tv_describe = (TextView)findViewById(R.id.tv_describe_detail);
+        photo_detail = (ImageView)findViewById(R.id.losing_photo_detail);
         //initToolbar();
         initWindow();
     }
 
     @Override
     public void initListeners() {
-
+        tv_phone.setOnClickListener(this);
+        photo_detail.setOnClickListener(this);
     }
+
 
     @Override
     public void initData() {
-        // Ê¹ÓÃImageLoaderÖ®Ç°³õÊ¼»¯
+        // ä½¿ç”¨ImageLoaderä¹‹å‰åˆå§‹åŒ–
         initImageLoader();
-        // »ñÈ¡Í¼Æ¬¼ÓÔØÊµÀı
+        // è·å–å›¾ç‰‡åŠ è½½å®ä¾‹
         mImageLoader = ImageLoader.getInstance();
         options = new DisplayImageOptions.Builder()
                 .showStubImage(R.mipmap.loading)
-                .showImageForEmptyUri(R.mipmap.loading)
-                .showImageOnFail(R.mipmap.loading)
+                .showImageForEmptyUri(R.mipmap.cry)
+                .showImageOnFail(R.mipmap.cry)
                 .cacheInMemory(true).cacheOnDisc(true)
                 .bitmapConfig(Bitmap.Config.RGB_565)
                 .imageScaleType(ImageScaleType.EXACTLY).build();
 
-        //³õÊ¼»¯¶Ô»°¿ò
+        //åˆå§‹åŒ–å¯¹è¯æ¡†
         dialog = new ProgressDialog(this);
-        //ÉèÖÃ½ø¶ÈÌõÑùÊ½
+        //è®¾ç½®è¿›åº¦æ¡æ ·å¼
         dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
         dialog.setIndeterminate(true);
-        //Ê§È¥½¹µãµÄÊ±ºò£¬²»ÊÇÈ¥¶Ô»°¿ò
+        //å¤±å»ç„¦ç‚¹çš„æ—¶å€™ï¼Œä¸æ˜¯å»å¯¹è¯æ¡†
         dialog.setCancelable(false);
-        dialog.setTitle("ÕıÔÚ¼ÓÔØ");
+        dialog.setTitle("æ­£åœ¨åŠ è½½");
         showDetail();
     }
 
@@ -136,12 +133,14 @@ public class LosingDetailActivity extends BaseActivity {
         final String title = getIntent().getStringExtra("title");
         final String describe = getIntent().getStringExtra("describe");
         String from = getIntent().getStringExtra("from");
+        Log.i(TAG,"objectId:" + objectId);
         Log.i(TAG, "time:"+ time );
         Log.i(TAG, "phone:"+ phone );
-        Log.i(TAG, "title£º"+ title);
+        Log.i(TAG, "title:"+ title);
         Log.i(TAG, "describe:" + describe);
         if(from.equals("Lost")){
             BmobQuery<Lost> query = new BmobQuery<Lost>();
+            query.include("author");
             query.getObject(objectId, new QueryListener<Lost>() {
                 @Override
                 public void done(Lost lost, BmobException e) {
@@ -158,31 +157,34 @@ public class LosingDetailActivity extends BaseActivity {
                         tv_phone.setText(phone);
                         tv_title.setText(title);
                         tv_describe.setText(describe);
-                        String url = lost.getPhotoUrl();
-                        Log.i(TAG,"photoUrl" + url);
+                        url = lost.getPhotoUrl();
+                        Log.i(TAG,"photoUrl:" + url);
                         if(url!=null){
-                            ImageView imageView = new ImageView(LosingDetailActivity.this);
-                            // Òì²½¼ÓÔØÍ¼Æ¬
-                            mImageLoader.displayImage( url, imageView, options);
-                            imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
+                            // å¼‚æ­¥åŠ è½½å›¾ç‰‡
+                            mImageLoader.displayImage( url, photo_detail, options);
+                            photo_detail.setScaleType(ImageView.ScaleType.CENTER_CROP);
                         }
                         dialog.dismiss();
                     }else{
                         dialog.dismiss();
                         Log.d(TAG, e.getMessage());
-                        ShowToast("ÏÔÊ¾ÏêÇéÊ§°Ü£¬Çë¼ì²éÄúµÄÍøÂç");
+                        ShowToast("æ˜¾ç¤ºè¯¦æƒ…å¤±è´¥ï¼Œè¯·æ£€æŸ¥æ‚¨çš„ç½‘ç»œ");
                         showErrorView();
                     }
                 }
             });
         }else{
             BmobQuery<Found> query = new BmobQuery<Found>();
+            query.include("author");
             query.getObject(objectId, new QueryListener<Found>() {
                 @Override
                 public void done(Found found, BmobException e) {
                     if(e==null){
                         User user = found.getAuthor();
+                        String userId = user.getObjectId();
+                        Log.i(TAG, "userId" + userId);
                         String nickname = user.getNickname();
+                        Log.i(TAG, "nickname:" + nickname);
                         if(nickname==null){
                             tv_nickname.setText(getResources().getText(R.string.default_name));
                         }else {
@@ -193,17 +195,17 @@ public class LosingDetailActivity extends BaseActivity {
                         tv_title.setText(title);
                         tv_describe.setText(describe);
                         String url = found.getPhotoUrl();
+                        Log.i(TAG,"photoUrl:" + url);
                         if(url!=null){
-                            ImageView imageView = new ImageView(LosingDetailActivity.this);
-                            // Òì²½¼ÓÔØÍ¼Æ¬
-                            mImageLoader.displayImage( url, imageView, options);
-                            imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
+                            // å¼‚æ­¥åŠ è½½å›¾ç‰‡
+                            mImageLoader.displayImage( url, photo_detail, options);
+                            photo_detail.setScaleType(ImageView.ScaleType.CENTER_CROP);
                         }
                         dialog.dismiss();
                     }else{
                         dialog.dismiss();
                         Log.d(TAG, e.getMessage());
-                        ShowToast("ÏÔÊ¾ÏêÇéÊ§°Ü£¬Çë¼ì²éÄúµÄÍøÂç");
+                        ShowToast("æ˜¾ç¤ºè¯¦æƒ…å¤±è´¥ï¼Œè¯·æ£€æŸ¥æ‚¨çš„ç½‘ç»œ");
                         showErrorView();
                     }
                 }
@@ -230,7 +232,7 @@ public class LosingDetailActivity extends BaseActivity {
         this.setSupportActionBar(toolbar);
     }*/
 
-    //³õÊ¼»¯Í¼Æ¬¼ÓÔØÆ÷£¬µ÷ÓÃµÄ¿ªÔ´µÄÍ¼Æ¬¼ÓÔØ¿ò¼Ü
+    //åˆå§‹åŒ–å›¾ç‰‡åŠ è½½å™¨ï¼Œè°ƒç”¨çš„å¼€æºçš„å›¾ç‰‡åŠ è½½æ¡†æ¶
     private void initImageLoader() {
         File cacheDir = com.nostra13.universalimageloader.utils.StorageUtils
                 .getOwnCacheDirectory(getApplicationContext(),
@@ -252,7 +254,7 @@ public class LosingDetailActivity extends BaseActivity {
     }
 
 
-    //ÉèÖÃ³Á½şÊ½×´Ì¬À¸ºÍµ¼º½À¸
+    //è®¾ç½®æ²‰æµ¸å¼çŠ¶æ€æ å’Œå¯¼èˆªæ 
     private void initWindow(){
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT){
             getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
@@ -262,4 +264,34 @@ public class LosingDetailActivity extends BaseActivity {
             tintManager.setStatusBarTintEnabled(true);
         }
     }
+
+    @Override
+    public void onClick(View view) {
+        if(view == tv_phone){
+            //æ ¹æ®å·ç æ‹¨æ‰“ç”µè¯
+            Intent intent = new Intent();
+            intent.setAction(Intent.ACTION_DIAL);
+            intent.setData(Uri.parse("tel:"+tv_phone.getText().toString()));
+            Log.i(TAG, "tel:" + tv_phone.getText().toString());
+            startActivity(intent);
+        }else if(view == photo_detail){
+            Intent intent = new Intent(this,ImageShower.class);
+            intent.putExtra("url", url);
+            startActivity(intent);
+        }
+    }
+
+   /* public static Bitmap drawableToBitmap(Drawable drawable) {
+
+        Bitmap bitmap = Bitmap.createBitmap(
+                drawable.getIntrinsicWidth(),
+                drawable.getIntrinsicHeight(),
+                drawable.getOpacity() != PixelFormat.OPAQUE ? Bitmap.Config.ARGB_8888
+                        : Bitmap.Config.RGB_565);
+        Canvas canvas = new Canvas(bitmap);
+        //canvas.setBitmap(bitmap);
+        drawable.setBounds(0, 0, drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight());
+        drawable.draw(canvas);
+        return bitmap;
+    }*/
 }

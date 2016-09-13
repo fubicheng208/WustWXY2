@@ -46,16 +46,16 @@ public class SearchFragment extends Fragment{
     Toolbar toolbar;
     //TabLayout tabLayout;
 
-    public static String IMAGE_CACHE_PATH = "imageloader/Cache"; // Í¼Æ¬»º´æÂ·¾¶
+    public static String IMAGE_CACHE_PATH = "imageloader/Cache"; // å›¾ç‰‡ç¼“å­˜è·¯å¾„
 
     private ViewPager adViewPager;
-    private List<ImageView> imageViews;// »¬¶¯µÄÍ¼Æ¬¼¯ºÏ
+    private List<ImageView> imageViews;// æ»‘åŠ¨çš„å›¾ç‰‡é›†åˆ
 
-    private List<View> dots; // Í¼Æ¬±êÌâÕıÎÄµÄÄÇĞ©µã
+    private List<View> dots; // å›¾ç‰‡æ ‡é¢˜æ­£æ–‡çš„é‚£äº›ç‚¹
     private List<View> dotList;
 
-    private int currentItem = 0; // µ±Ç°Í¼Æ¬µÄË÷ÒıºÅ
-    // ¶¨ÒåµÄÎå¸öÖ¸Ê¾µã
+    private int currentItem = 0; // å½“å‰å›¾ç‰‡çš„ç´¢å¼•å·
+    // å®šä¹‰çš„äº”ä¸ªæŒ‡ç¤ºç‚¹
     private View dot0;
     private View dot1;
     private View dot2;
@@ -64,11 +64,11 @@ public class SearchFragment extends Fragment{
 
     private ScheduledExecutorService scheduledExecutorService;
 
-    // Òì²½¼ÓÔØÍ¼Æ¬
+    // å¼‚æ­¥åŠ è½½å›¾ç‰‡
     private ImageLoader mImageLoader;
     private DisplayImageOptions options;
 
-    // ÂÖ²¥bannerµÄÊı¾İ
+    // è½®æ’­bannerçš„æ•°æ®
     private List<AdDomain> adList;
 
     private Handler handler = new Handler() {
@@ -77,7 +77,7 @@ public class SearchFragment extends Fragment{
         }
     };
 
-    //9¸ö°´Å¥½çÃæ
+    //9ä¸ªæŒ‰é’®ç•Œé¢
     private MyGridView gridview;
 
     @Override
@@ -87,14 +87,14 @@ public class SearchFragment extends Fragment{
         initToolbar();
         initGridView(view);
         //initTableLayout();
-        // Ê¹ÓÃImageLoaderÖ®Ç°³õÊ¼»¯
+        // ä½¿ç”¨ImageLoaderä¹‹å‰åˆå§‹åŒ–
         initImageLoader();
-        // »ñÈ¡Í¼Æ¬¼ÓÔØÊµÀı
+        // è·å–å›¾ç‰‡åŠ è½½å®ä¾‹
         mImageLoader = ImageLoader.getInstance();
         options = new DisplayImageOptions.Builder()
                 .showStubImage(R.mipmap.loading)
-                .showImageForEmptyUri(R.mipmap.loading)
-                .showImageOnFail(R.mipmap.loading)
+                .showImageForEmptyUri(R.mipmap.cry)
+                .showImageOnFail(R.mipmap.cry)
                 .cacheInMemory(true).cacheOnDisc(true)
                 .bitmapConfig(Bitmap.Config.RGB_565)
                 .imageScaleType(ImageScaleType.EXACTLY).build();
@@ -107,7 +107,7 @@ public class SearchFragment extends Fragment{
     public void initToolbar()
     {
         toolbar = (Toolbar)getActivity().findViewById(R.id.toolbar);
-        toolbar.setTitle("ĞÅÏ¢²éÑ¯");
+        toolbar.setTitle("ä¿¡æ¯æŸ¥è¯¢");
         setHasOptionsMenu(true);
         ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
     }
@@ -120,7 +120,7 @@ public class SearchFragment extends Fragment{
     private void initGridView(View view) {
         gridview=(MyGridView) view.findViewById(R.id.gridview);
         gridview.setAdapter(new MyGridAdapter(getActivity()));
-        //¿ØÖÆµã»÷ºóµÄÌø×ª
+        //æ§åˆ¶ç‚¹å‡»åçš„è·³è½¬
         gridview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
@@ -157,7 +157,7 @@ public class SearchFragment extends Fragment{
         });
     }
 
-    //³õÊ¼»¯Í¼Æ¬¼ÓÔØÆ÷£¬µ÷ÓÃµÄ¿ªÔ´µÄÍ¼Æ¬¼ÓÔØ¿ò¼Ü
+    //åˆå§‹åŒ–å›¾ç‰‡åŠ è½½å™¨ï¼Œè°ƒç”¨çš„å¼€æºçš„å›¾ç‰‡åŠ è½½æ¡†æ¶
     private void initImageLoader() {
         File cacheDir = com.nostra13.universalimageloader.utils.StorageUtils
                 .getOwnCacheDirectory(getActivity().getApplicationContext(),
@@ -179,12 +179,12 @@ public class SearchFragment extends Fragment{
     }
 
     private void initAdData(View view) {
-        // ¹ã¸æÊı¾İ
+        // å¹¿å‘Šæ•°æ®
         adList = getBannerAd();
 
         imageViews = new ArrayList<ImageView>();
 
-        // µã
+        // ç‚¹
         dots = new ArrayList<View>();
         dotList = new ArrayList<View>();
         dot0 = view.findViewById(R.id.v_dot0);
@@ -199,18 +199,18 @@ public class SearchFragment extends Fragment{
         dots.add(dot4);
 
         adViewPager = (ViewPager) view.findViewById(R.id.vp);
-        adViewPager.setAdapter(new AdAdapter(adList,imageViews));// ÉèÖÃÌî³äViewPagerÒ³ÃæµÄÊÊÅäÆ÷
-        // ÉèÖÃÒ»¸ö¼àÌıÆ÷£¬µ±ViewPagerÖĞµÄÒ³Ãæ¸Ä±äÊ±µ÷ÓÃ
+        adViewPager.setAdapter(new AdAdapter(adList,imageViews));// è®¾ç½®å¡«å……ViewPageré¡µé¢çš„é€‚é…å™¨
+        // è®¾ç½®ä¸€ä¸ªç›‘å¬å™¨ï¼Œå½“ViewPagerä¸­çš„é¡µé¢æ”¹å˜æ—¶è°ƒç”¨
         adViewPager.setOnPageChangeListener(new MyPageChangeListener());
         addDynamicView();
     }
 
     private void addDynamicView() {
-        // ¶¯Ì¬Ìí¼ÓÍ¼Æ¬ºÍÏÂÃæÖ¸Ê¾µÄÔ²µã
-        // ³õÊ¼»¯Í¼Æ¬×ÊÔ´
+        // åŠ¨æ€æ·»åŠ å›¾ç‰‡å’Œä¸‹é¢æŒ‡ç¤ºçš„åœ†ç‚¹
+        // åˆå§‹åŒ–å›¾ç‰‡èµ„æº
         for (int i = 0; i < adList.size(); i++) {
             ImageView imageView = new ImageView(getActivity());
-            // Òì²½¼ÓÔØÍ¼Æ¬
+            // å¼‚æ­¥åŠ è½½å›¾ç‰‡
             mImageLoader.displayImage(adList.get(i).getImgUrl(), imageView,
                     options);
             imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
@@ -222,13 +222,13 @@ public class SearchFragment extends Fragment{
 
     private void startAd() {
         scheduledExecutorService = Executors.newSingleThreadScheduledExecutor();
-        // µ±ActivityÏÔÊ¾³öÀ´ºó£¬Ã¿ÎåÃëÇĞ»»Ò»´ÎÍ¼Æ¬ÏÔÊ¾
+        // å½“Activityæ˜¾ç¤ºå‡ºæ¥åï¼Œæ¯äº”ç§’åˆ‡æ¢ä¸€æ¬¡å›¾ç‰‡æ˜¾ç¤º
         scheduledExecutorService.scheduleAtFixedRate(new ScrollTask(), 1, 5,
                 TimeUnit.SECONDS);
     }
 
     /**
-     * ÂÖ²¥¹ã²¥Ä£ÄâÊı¾İ
+     * è½®æ’­å¹¿æ’­æ¨¡æ‹Ÿæ•°æ®
      *
      * @return
      */
@@ -262,7 +262,7 @@ public class SearchFragment extends Fragment{
         AdDomain adDomain5 = new AdDomain();
         adDomain5.setId("108078");
         adDomain5.setImgUrl("http://bmob-cdn-5254.b0.upaiyun.com/2016/09/08/b24d9981cf134689a86b434153ff2663.jpg");
-        adDomain5.setAd(true); // ´ú±íÊÇ¹ã¸æ
+        adDomain5.setAd(true); // ä»£è¡¨æ˜¯å¹¿å‘Š
         adList.add(adDomain5);
 
         return adList;
@@ -279,7 +279,7 @@ public class SearchFragment extends Fragment{
         }
     }
 
-    //¼àÌıÍ¼Æ¬µÄÇĞ»»
+    //ç›‘å¬å›¾ç‰‡çš„åˆ‡æ¢
     private class MyPageChangeListener implements ViewPager.OnPageChangeListener {
 
         private int oldPosition = 0;
@@ -304,12 +304,12 @@ public class SearchFragment extends Fragment{
         }
     }
 
-    //ÖØĞÂ´´½¨²Ëµ¥Ê±¸Ä±äTableLayoutºÍToolBar
+    //é‡æ–°åˆ›å»ºèœå•æ—¶æ”¹å˜TableLayoutå’ŒToolBar
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         Log.d(TAG, "onCreateOptionsMenu()");
         menu.clear();
-        toolbar.setTitle("ĞÅÏ¢²éÑ¯");
+        toolbar.setTitle("ä¿¡æ¯æŸ¥è¯¢");
         /*toolbar.setBackgroundColor(getResources().getColor(R.color.titleLightBlue));
         tabLayout.setBackgroundColor(getResources().getColor(R.color.titleLightBlue));*/
         inflater.inflate(R.menu.mainmenu, menu);
@@ -318,7 +318,7 @@ public class SearchFragment extends Fragment{
     @Override
     public void onStop() {
         super.onStop();
-        // µ±Activity²»¿É¼ûµÄÊ±ºòÍ£Ö¹ÇĞ»»
+        // å½“Activityä¸å¯è§çš„æ—¶å€™åœæ­¢åˆ‡æ¢
         scheduledExecutorService.shutdown();
     }
 }

@@ -15,7 +15,7 @@ import com.wustwxy2.R;
 
 public class MainActivity extends BaseActivity {
 
-    private Toolbar toolbar;                             //¶¨Òåtoolbar
+    private Toolbar toolbar;                             //å®šä¹‰toolbar
     private MainFragment mf;
 
     @Override
@@ -37,13 +37,13 @@ public class MainActivity extends BaseActivity {
         initWindow();
     }
 
-    //´Ó¸¸Àà¼Ì³ÐµÄ·½·¨
+    //ä»Žçˆ¶ç±»ç»§æ‰¿çš„æ–¹æ³•
     @Override
     public void initListeners() {
 
     }
 
-    //´Ó¸¸Àà¼Ì³ÐµÄ·½·¨
+    //ä»Žçˆ¶ç±»ç»§æ‰¿çš„æ–¹æ³•
     @Override
     public void initData() {
 
@@ -52,16 +52,16 @@ public class MainActivity extends BaseActivity {
     public void initToolbar()
     {
         toolbar = (Toolbar)this.findViewById(R.id.toolbar);
-        toolbar.setTitle("ÐÂÎÅ×ÊÑ¶");                     // ±êÌâµÄÎÄ×ÖÐèÔÚsetSupportActionBarÖ®Ç°£¬²»È»»áÎÞÐ§
+        toolbar.setTitle("æ–°é—»èµ„è®¯");                     // æ ‡é¢˜çš„æ–‡å­—éœ€åœ¨setSupportActionBarä¹‹å‰ï¼Œä¸ç„¶ä¼šæ— æ•ˆ
         setSupportActionBar(toolbar);
     }
 
     /**
-     * ÎªÒ³Ãæ¼ÓÔØ³õÊ¼×´Ì¬µÄfragment
+     * ä¸ºé¡µé¢åŠ è½½åˆå§‹çŠ¶æ€çš„fragment
      */
     public void initFragment(Bundle savedInstanceState)
     {
-        //ÅÐ¶ÏactivityÊÇ·ñÖØ½¨£¬Èç¹û²»ÊÇ£¬Ôò²»ÐèÒªÖØÐÂ½¨Á¢fragment.
+        //åˆ¤æ–­activityæ˜¯å¦é‡å»ºï¼Œå¦‚æžœä¸æ˜¯ï¼Œåˆ™ä¸éœ€è¦é‡æ–°å»ºç«‹fragment.
         if(savedInstanceState==null) {
             FragmentManager fm = getSupportFragmentManager();
             FragmentTransaction ft = fm.beginTransaction();
@@ -70,7 +70,7 @@ public class MainActivity extends BaseActivity {
         }
     }
 
-    //ÉèÖÃ³Á½þÊ½×´Ì¬À¸µ«ÊÇÍ¨ÖªÀ¸ÈÔÎªºÚÉ«
+    //è®¾ç½®æ²‰æµ¸å¼çŠ¶æ€æ ä½†æ˜¯é€šçŸ¥æ ä»ä¸ºé»‘è‰²
     private void initWindow(){
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             setTranslucentStatus(true);

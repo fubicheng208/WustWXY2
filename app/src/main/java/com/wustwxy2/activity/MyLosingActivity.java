@@ -45,16 +45,16 @@ public class MyLosingActivity extends BaseActivity implements IPopupItemClick, A
 
     Toolbar toolbar;
     private SystemBarTintManager tintManager;
-    //ÉùÃ÷½ø¶ÈÌõ¶Ô»°¿ò¶ÔÏó
+    //å£°æ˜è¿›åº¦æ¡å¯¹è¯æ¡†å¯¹è±¡
     private ProgressDialog dialog;
-    //½ø¶ÈÌõ×î´óÖµ
+    //è¿›åº¦æ¡æœ€å¤§å€¼
     private static final int PROGRESS_MAX=100;
 
     ListView listview;
 
-    protected QuickAdapter<Lost> LostAdapter;// Ê§Îï
+    protected QuickAdapter<Lost> LostAdapter;// å¤±ç‰©
 
-    protected QuickAdapter<Found> FoundAdapter;// ÕĞÁì
+    protected QuickAdapter<Found> FoundAdapter;// æ‹›é¢†
 
     RelativeLayout progress;
     LinearLayout layout_no;
@@ -93,9 +93,9 @@ public class MyLosingActivity extends BaseActivity implements IPopupItemClick, A
     public void initData() {
         from = getIntent().getStringExtra("from");
         if (from.equals("Lost")) {
-            toolbar.setTitle("ÎÒµÄÊ§Îï");
+            toolbar.setTitle(getResources().getText(R.string.my_lost));
         } else {
-            toolbar.setTitle("ÎÒµÄÑ°Îï");
+            toolbar.setTitle(getResources().getText(R.string.my_found));
         }
 
         if (LostAdapter == null) {
@@ -131,12 +131,12 @@ public class MyLosingActivity extends BaseActivity implements IPopupItemClick, A
             queryFounds();
         }
         dialog = new ProgressDialog(this);
-        //ÉèÖÃ½ø¶ÈÌõÑùÊ½
+        //è®¾ç½®è¿›åº¦æ¡æ ·å¼
         dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
         dialog.setIndeterminate(true);
-        //Ê§È¥½¹µãµÄÊ±ºò£¬²»ÊÇÈ¥¶Ô»°¿ò
+        //å¤±å»ç„¦ç‚¹çš„æ—¶å€™ï¼Œä¸æ˜¯å»å¯¹è¯æ¡†
         dialog.setCancelable(false);
-        dialog.setTitle("ÕıÔÚÉ¾³ı");
+        dialog.setTitle("æ­£åœ¨åˆ é™¤");
         dialog.setMax(PROGRESS_MAX);
     }
 
@@ -147,7 +147,7 @@ public class MyLosingActivity extends BaseActivity implements IPopupItemClick, A
     }
 
     /**
-     * ²éÑ¯È«²¿Ê§ÎïĞÅÏ¢ queryLosts
+     * æŸ¥è¯¢å…¨éƒ¨å¤±ç‰©ä¿¡æ¯ queryLosts
      *
      * @return void
      * @throws
@@ -157,7 +157,7 @@ public class MyLosingActivity extends BaseActivity implements IPopupItemClick, A
         BmobQuery<Lost> query = new BmobQuery<Lost>();
         BmobUser user = BmobUser.getCurrentUser(User.class);
         query.addWhereEqualTo("author", user);
-        query.order("-updatedAt");// °´ÕÕĞŞ¸ÄÊ±¼äÅÅĞò
+        query.order("-updatedAt");// æŒ‰ç…§ä¿®æ”¹æ—¶é—´æ’åº
         query.findObjects(new FindListener<Lost>() {
             @Override
             public void done(List<Lost> losts, BmobException e) {
@@ -175,7 +175,7 @@ public class MyLosingActivity extends BaseActivity implements IPopupItemClick, A
                     Log.i(TAG, losts.size()+"");
                 }
                 else{
-                    Log.i(TAG, "queryLostÊ§°Ü");
+                    Log.i(TAG, "queryLostå¤±è´¥");
                     showErrorView(2);
                 }
             }
@@ -187,7 +187,7 @@ public class MyLosingActivity extends BaseActivity implements IPopupItemClick, A
         BmobQuery<Found> query = new BmobQuery<Found>();
         BmobUser user = BmobUser.getCurrentUser(User.class);
         query.addWhereEqualTo("author", user);
-        query.order("-updatedAt");// °´ÕÕĞŞ¸ÄÊ±¼äÅÅĞò
+        query.order("-updatedAt");// æŒ‰ç…§ä¿®æ”¹æ—¶é—´æ’åº
         query.findObjects(new FindListener<Found>() {
 
             @Override
@@ -213,7 +213,7 @@ public class MyLosingActivity extends BaseActivity implements IPopupItemClick, A
     }
 
     /**
-     * ÇëÇó³ö´í»òÕßÎŞÊı¾İÊ±ºòÏÔÊ¾µÄ½çÃæ showErrorView
+     * è¯·æ±‚å‡ºé”™æˆ–è€…æ— æ•°æ®æ—¶å€™æ˜¾ç¤ºçš„ç•Œé¢ showErrorView
      *
      * @return void
      * @throws
@@ -277,9 +277,9 @@ public class MyLosingActivity extends BaseActivity implements IPopupItemClick, A
     private void deleteLost() {
         String objectId = LostAdapter.getItem(position).getObjectId();
         BmobQuery<Lost> query = new BmobQuery<Lost>();
-        //ÏÔÊ¾¶Ô»°¿ò
+        //æ˜¾ç¤ºå¯¹è¯æ¡†
         dialog.show();
-        //¸ù¾İobjectId²éÕÒ³öÕâÌõ¼ÇÂ¼£¬´Ó¶ø»ñÈ¡photoUrl
+        //æ ¹æ®objectIdæŸ¥æ‰¾å‡ºè¿™æ¡è®°å½•ï¼Œä»è€Œè·å–photoUrl
         query.getObject(objectId, new QueryListener<Lost>() {
 
             @Override
@@ -288,33 +288,33 @@ public class MyLosingActivity extends BaseActivity implements IPopupItemClick, A
                     BmobFile file = new BmobFile();
                     Log.i(TAG, object.getTitle() + ":"+ object.getPhotoUrl());
                     file.setUrl(object.getPhotoUrl());
-                    //¸ù¾İurlÉ¾³ıÎÄ¼ş
+                    //æ ¹æ®urlåˆ é™¤æ–‡ä»¶
                     file.delete(new UpdateListener() {
                         @Override
                         public void done(BmobException e) {
                             if(e==null){
                                 Lost lost = new Lost();
                                 lost.setObjectId(LostAdapter.getItem(position).getObjectId());
-                                //É¾³ıÏàÓ¦µÄ¼ÇÂ¼
+                                //åˆ é™¤ç›¸åº”çš„è®°å½•
                                 lost.delete(new UpdateListener() {
                                     @Override
                                     public void done(BmobException e) {
                                         if(e == null){
                                             LostAdapter.remove(position);
-                                            ShowToast("É¾³ı³É¹¦");
+                                            ShowToast("åˆ é™¤æˆåŠŸ");
                                             dialog.dismiss();
                                         }
                                         else
-                                            ShowToast("É¾³ıÊ§°Ü");
+                                            ShowToast("åˆ é™¤å¤±è´¥");
                                     }
                                 });
                             }
                             else
-                                ShowToast("É¾³ıÊ§°Ü");
+                                ShowToast("åˆ é™¤å¤±è´¥");
                         }
                     });
                 }else{
-                    ShowToast("É¾³ıÊ§°Ü");
+                    ShowToast("åˆ é™¤å¤±è´¥");
                 }
             }
 
@@ -324,9 +324,9 @@ public class MyLosingActivity extends BaseActivity implements IPopupItemClick, A
     private void deleteFound() {
         String objectId = FoundAdapter.getItem(position).getObjectId();
         BmobQuery<Found> query = new BmobQuery<Found>();
-        //ÏÔÊ¾¶Ô»°¿ò
+        //æ˜¾ç¤ºå¯¹è¯æ¡†
         dialog.show();
-        //¸ù¾İobjectId²éÕÒ³öÕâÌõ¼ÇÂ¼£¬´Ó¶ø»ñÈ¡photoUrl
+        //æ ¹æ®objectIdæŸ¥æ‰¾å‡ºè¿™æ¡è®°å½•ï¼Œä»è€Œè·å–photoUrl
         query.getObject(objectId, new QueryListener<Found>() {
 
             @Override
@@ -335,33 +335,33 @@ public class MyLosingActivity extends BaseActivity implements IPopupItemClick, A
                     BmobFile file = new BmobFile();
                     Log.i(TAG, object.getTitle() + ":"+ object.getPhotoUrl());
                     file.setUrl(object.getPhotoUrl());
-                    //¸ù¾İurlÉ¾³ıÎÄ¼ş
+                    //æ ¹æ®urlåˆ é™¤æ–‡ä»¶
                     file.delete(new UpdateListener() {
                         @Override
                         public void done(BmobException e) {
                             if(e==null){
                                 Found found = new Found();
                                 found.setObjectId(FoundAdapter.getItem(position).getObjectId());
-                                //É¾³ıÏàÓ¦µÄ¼ÇÂ¼
+                                //åˆ é™¤ç›¸åº”çš„è®°å½•
                                 found.delete(new UpdateListener() {
                                     @Override
                                     public void done(BmobException e) {
                                         if(e == null){
                                             FoundAdapter.remove(position);
-                                            ShowToast("É¾³ı³É¹¦");
+                                            ShowToast("åˆ é™¤æˆåŠŸ");
                                             dialog.dismiss();
                                         }
                                         else
-                                            ShowToast("É¾³ıÊ§°Ü");
+                                            ShowToast("åˆ é™¤å¤±è´¥");
                                     }
                                 });
                             }
                             else
-                                ShowToast("É¾³ıÊ§°Ü");
+                                ShowToast("åˆ é™¤å¤±è´¥");
                         }
                     });
                 }else{
-                    ShowToast("É¾³ıÊ§°Ü");
+                    ShowToast("åˆ é™¤å¤±è´¥");
                 }
             }
 
@@ -397,7 +397,7 @@ public class MyLosingActivity extends BaseActivity implements IPopupItemClick, A
             return;
         }
         switch (requestCode) {
-            case Constants.REQUESTCODE_ADD:// Ìí¼Ó³É¹¦Ö®ºóµÄ»Øµ÷
+            case Constants.REQUESTCODE_ADD:// æ·»åŠ æˆåŠŸä¹‹åçš„å›è°ƒ
                 String tag = from;
                 if (tag.equals("Lost")) {
                     queryLosts();
@@ -408,7 +408,7 @@ public class MyLosingActivity extends BaseActivity implements IPopupItemClick, A
         }
     }
 
-    //ÉèÖÃ³Á½şÊ½×´Ì¬À¸ºÍµ¼º½À¸
+    //è®¾ç½®æ²‰æµ¸å¼çŠ¶æ€æ å’Œå¯¼èˆªæ 
     private void initWindow(){
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT){
             getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);

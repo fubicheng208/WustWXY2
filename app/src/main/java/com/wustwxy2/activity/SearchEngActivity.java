@@ -24,11 +24,11 @@ public class SearchEngActivity extends AppCompatActivity {
 
     public void initToolbar() {
         toolbar = (Toolbar)findViewById(R.id.toolbar);
-        toolbar.setTitle("Ó¢ÓïËÄÁù¼¶");
+        toolbar.setTitle("è‹±è¯­å››å…­çº§");
         this.setSupportActionBar(toolbar);
     }
 
-    //ÉèÖÃ³Á½þÊ½×´Ì¬À¸ºÍµ¼º½À¸
+    //ï¿½ï¿½ï¿½Ã³ï¿½ï¿½ï¿½Ê½×´Ì¬ï¿½ï¿½ï¿½Íµï¿½ï¿½ï¿½ï¿½ï¿½
     private void initWindow(){
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT){
             getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);

@@ -18,16 +18,16 @@ import java.util.List;
  * Created by fubicheng on 2016/7/13.
  */
 public class MainFragment extends Fragment {
-    private TabLayout tab_FindFragment_title;           //¶¨ÒåTabLayout
-    private ViewPager vp_FindFragment_pager;            //¶¨ÒåviewPager
-    private FindTabAdapter fAdapter;                    //¶¨Òåadapter
+    private TabLayout tab_FindFragment_title;           //å®šä¹‰TabLayout
+    private ViewPager vp_FindFragment_pager;            //å®šä¹‰viewPager
+    private FindTabAdapter fAdapter;                    //å®šä¹‰adapter
 
-    private List<Fragment> list_fragment;                //¶¨ÒåÒª×°fragmentµÄÁĞ±í
-    private List<String> list_title;                     //tabÃû³ÆÁĞ±í
+    private List<Fragment> list_fragment;                //å®šä¹‰è¦è£…fragmentçš„åˆ—è¡¨
+    private List<String> list_title;                     //tabåç§°åˆ—è¡¨
 
-    private NewsFragment newsFragment;                   //ĞÂÎÅfragment
-    private SearchFragment searchFragment;               //ĞÅÏ¢²éÑ¯fragment
-    private MesFragment mesFragment;                     //¸öÈËĞÅÏ¢fragment
+    private NewsFragment newsFragment;                   //æ–°é—»fragment
+    private SearchFragment searchFragment;               //ä¿¡æ¯æŸ¥è¯¢fragment
+    private MesFragment mesFragment;                     //ä¸ªäººä¿¡æ¯fragment
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -40,33 +40,33 @@ public class MainFragment extends Fragment {
     }
 
     /**
-     * ³õÊ¼»¯¸÷¿Ø¼ş
+     * åˆå§‹åŒ–å„æ§ä»¶
      */
     private void initControls(View view) {
 
         tab_FindFragment_title = (TabLayout)view.findViewById(R.id.sliding_tabs);
         vp_FindFragment_pager = (ViewPager)view.findViewById(R.id.viewpager);
 
-        //³õÊ¼»¯¸÷fragment
+        //åˆå§‹åŒ–å„fragment
         newsFragment = new NewsFragment();
         searchFragment = new SearchFragment();
         mesFragment = new MesFragment();
 
-        //½«fragment×°½øÁĞ±íÖĞ
+        //å°†fragmentè£…è¿›åˆ—è¡¨ä¸­
         list_fragment = new ArrayList<>();
         list_fragment.add(newsFragment);
         list_fragment.add(searchFragment);
         list_fragment.add(mesFragment);
 
-        //½«Ãû³Æ¼ÓÔØtabÃû×ÖÁĞ±í£¬Õı³£Çé¿öÏÂ£¬ÎÒÃÇÓ¦¸ÃÔÚvalues/arrays.xmlÖĞ½øĞĞ¶¨ÒåÈ»ºóµ÷ÓÃ
+        //å°†åç§°åŠ è½½tabåå­—åˆ—è¡¨ï¼Œæ­£å¸¸æƒ…å†µä¸‹ï¼Œæˆ‘ä»¬åº”è¯¥åœ¨values/arrays.xmlä¸­è¿›è¡Œå®šä¹‰ç„¶åè°ƒç”¨
         list_title = new ArrayList<>();
-        list_title.add("ĞÂÎÅ×ÊÑ¶");
-        list_title.add("ĞÅÏ¢²éÑ¯");
-        list_title.add("¸öÈËĞÅÏ¢");
+        list_title.add("æ–°é—»èµ„è®¯");
+        list_title.add("ä¿¡æ¯æŸ¥è¯¢");
+        list_title.add("ä¸ªäººä¿¡æ¯");
 
-        //ÉèÖÃTabLayoutµÄÄ£Ê½
+        //è®¾ç½®TabLayoutçš„æ¨¡å¼
         tab_FindFragment_title.setTabMode(TabLayout.MODE_FIXED);
-        //ÎªTabLayoutÌí¼ÓtabÃû³Æ
+        //ä¸ºTabLayoutæ·»åŠ tabåç§°
         tab_FindFragment_title.addTab(tab_FindFragment_title.newTab().setText(list_title.get(0)));
         tab_FindFragment_title.addTab(tab_FindFragment_title.newTab().setText(list_title.get(1)));
         tab_FindFragment_title.addTab(tab_FindFragment_title.newTab().setText(list_title.get(2)));
@@ -74,10 +74,10 @@ public class MainFragment extends Fragment {
 
         fAdapter = new FindTabAdapter(getActivity().getSupportFragmentManager(),list_fragment,list_title);
 
-        //viewpager¼ÓÔØadapter
+        //viewpageråŠ è½½adapter
         vp_FindFragment_pager.setAdapter(fAdapter);
         //tab_FindFragment_title.setViewPager(vp_FindFragment_pager);
-        //TabLayout¼ÓÔØviewpager
+        //TabLayoutåŠ è½½viewpager
         tab_FindFragment_title.setupWithViewPager(vp_FindFragment_pager);
         //tab_FindFragment_title.set
     }

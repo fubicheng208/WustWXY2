@@ -70,7 +70,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
         android:paddingLeft="10dp"
-        android:src="@mipmap/photo_bg"
+        android:src="@mipmap/add_photo"
         android:scaleType="centerInside"/>
 
 </LinearLayout>

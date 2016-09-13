@@ -23,4 +23,9 @@
     <string name="losing_detail_default_nickname">详情</string>
     <string name="default_time">2016年9月9日</string>
     <string name="default_phone">138024249542</string>
+    <string name="hint_login">请先登录</string>
+    <string name="my_lost">我的失物</string>
+    <string name="my_found">我的寻物</string>
+    <string name="add_losing">添加失物信息</string>
+    <string name="add_found">添加招领信息</string>
 </resources>
