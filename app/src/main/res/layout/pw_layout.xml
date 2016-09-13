@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="200dp"
+              android:layout_height="wrap_content">
+    <LinearLayout
+        android:background="@drawable/pp"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_centerInParent="true">
+    <TextView
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:id="@+id/tv"
+        android:text="选择当前周"
+        android:layout_alignTop="@+id/lv_zc"
+        android:layout_alignStart="@+id/lv_zc"
+        android:gravity="center"
+        android:textSize="20sp"/>
+    <ListView
+        android:id="@+id/lv_zc"
+        android:layout_width="200dp"
+        android:layout_height="250dp"
+        android:scrollbars="none"
+        android:divider="@android:color/transparent">
+    </ListView>
+    </LinearLayout>
+
+</RelativeLayout>

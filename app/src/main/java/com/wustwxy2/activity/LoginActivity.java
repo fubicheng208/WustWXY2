@@ -57,7 +57,7 @@ public class LoginActivity extends AppCompatActivity {
                     @Override
                     public void done(User user, BmobException e) {
                         if(e==null){
-                            Log.i(TAG,"×¢²áÓÃ»§³É¹¦");
+                            Log.i(TAG,"æ³¨å†Œç”¨æˆ·æˆåŠŸ");
                         }
                         else
                             Log.e(TAG,e.getMessage());
@@ -68,11 +68,11 @@ public class LoginActivity extends AppCompatActivity {
                     @Override
                     public void done(BmobUser bmobUser, BmobException e) {
                         if(e==null){
-                            Log.i(TAG, "ÓÃ»§µÇÂ½³É¹¦");
-                            Toast.makeText(LoginActivity.this,"µÇÂ½³É¹¦",Toast.LENGTH_LONG).show();
+                            Log.i(TAG, "ç”¨æˆ·ç™»é™†æˆåŠŸ");
+                            Toast.makeText(LoginActivity.this,"ç™»é™†æˆåŠŸ",Toast.LENGTH_LONG).show();
                         }
                         else{
-                            Toast.makeText(LoginActivity.this,"µÇÂ½Ê§°Ü",Toast.LENGTH_LONG).show();
+                            Toast.makeText(LoginActivity.this,"ç™»é™†å¤±è´¥",Toast.LENGTH_LONG).show();
                         }
                     }
                 });
@@ -83,12 +83,12 @@ public class LoginActivity extends AppCompatActivity {
 
     public void initToolbar() {
         toolbar = (Toolbar)findViewById(R.id.toolbar);
-        toolbar.setTitle("µÇÂ¼");
+        toolbar.setTitle("ç™»å½•");
         this.setSupportActionBar(toolbar);
     }
 
 
-    //ÉèÖÃ³Á½þÊ½×´Ì¬À¸ºÍµ¼º½À¸
+    //è®¾ç½®æ²‰æµ¸å¼çŠ¶æ€æ å’Œå¯¼èˆªæ 
     private void initWindow(){
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT){
             getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);

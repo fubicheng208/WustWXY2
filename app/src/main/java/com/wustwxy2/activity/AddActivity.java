@@ -2,18 +2,14 @@ package com.wustwxy2.activity;
 
 import android.annotation.TargetApi;
 import android.app.Activity;
-import android.app.FragmentManager;
 import android.app.ProgressDialog;
 import android.content.ContentResolver;
 import android.content.ContentUris;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
@@ -27,7 +23,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.readystatesoftware.systembartint.SystemBarTintManager;
 import com.wustwxy2.R;
@@ -36,10 +31,15 @@ import com.wustwxy2.bean.Lost;
 import com.wustwxy2.bean.User;
 import com.wustwxy2.i.IMainPresenter;
 import com.wustwxy2.i.IMainView;
+import com.wustwxy2.util.Compressor;
 import com.wustwxy2.util.MainPresenter;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.text.DecimalFormat;
 
 import cn.bmob.v3.BmobObject;
 import cn.bmob.v3.BmobUser;
@@ -55,15 +55,19 @@ public class AddActivity extends BaseActivity implements View.OnClickListener, I
     private SystemBarTintManager tintManager;
     private IMainPresenter mMainPresenter;
 
-    //ĞèÌîĞ´µÄ¸÷Ïî
+    //å‹ç¼©åçš„å›¾ç‰‡ä¿å­˜çš„åœ°å€
+    private static String IMG_PATH = getSDPath() + java.io.File.separator
+            + "wustwxy2";
+
+    //éœ€å¡«å†™çš„å„é¡¹
     EditText edit_title, edit_phone, edit_describe;
-    //·µ»Ø°´Å¥ºÍÈ·¶¨°´Å¥
+    //è¿”å›æŒ‰é’®å’Œç¡®å®šæŒ‰é’®
     Button btn_back, btn_true;
-    //ĞèÒªÉÏ´«µÄÍ¼Æ¬
+    //éœ€è¦ä¸Šä¼ çš„å›¾ç‰‡
     ImageView iv_photo;
     private static Bitmap bitmapSelected;
     TextView tv_add;
-    //ÉùÃ÷½ø¶ÈÌõ¶Ô»°¿ò¶ÔÏó
+    //å£°æ˜è¿›åº¦æ¡å¯¹è¯æ¡†å¯¹è±¡
     private ProgressDialog dialog;
 
     String from = "";
@@ -103,6 +107,12 @@ public class AddActivity extends BaseActivity implements View.OnClickListener, I
 
     @Override
     public void initData() {
+
+        File path = new File(IMG_PATH);
+        if (!path.exists()) {
+            path.mkdirs();
+        }
+
         // TODO Auto-generated method stub
         from = getIntent().getStringExtra("from");
         old_title = getIntent().getStringExtra("title");
@@ -115,21 +125,21 @@ public class AddActivity extends BaseActivity implements View.OnClickListener, I
 
 
         if (from.equals("Lost")) {
-            tv_add.setText("Ìí¼ÓÊ§ÎïĞÅÏ¢");
+            tv_add.setText(getResources().getText(R.string.add_losing));
         } else {
-            tv_add.setText("Ìí¼ÓÕĞÁìĞÅÏ¢");
+            tv_add.setText(getResources().getText(R.string.add_found));
         }
 
         mMainPresenter = new MainPresenter(this, this);
 
-        //ÉèÖÃ½ø¶ÈÌõ
+        //è®¾ç½®è¿›åº¦æ¡
         dialog = new ProgressDialog(this);
-        //ÉèÖÃ½ø¶ÈÌõÑùÊ½
+        //è®¾ç½®è¿›åº¦æ¡æ ·å¼
         dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
         dialog.setIndeterminate(true);
-        //Ê§È¥½¹µãµÄÊ±ºò£¬²»ÊÇÈ¥¶Ô»°¿ò
+        //å¤±å»ç„¦ç‚¹çš„æ—¶å€™ï¼Œä¸æ˜¯å»å¯¹è¯æ¡†
         dialog.setCancelable(false);
-        dialog.setTitle("ÕıÔÚÉÏ´«");
+        dialog.setTitle("æ­£åœ¨ä¸Šä¼ ");
     }
 
     @Override
@@ -141,7 +151,7 @@ public class AddActivity extends BaseActivity implements View.OnClickListener, I
             /*Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
             intent.addCategory(Intent.CATEGORY_OPENABLE);
             intent.setType("image*//*");
-            startActivityForResult(Intent.createChooser(intent,"Ñ¡ÔñÍ¼Æ¬"),SELECT_PICTURE);*/
+            startActivityForResult(Intent.createChooser(intent,"é€‰æ‹©å›¾ç‰‡"),SELECT_PICTURE);*/
             Intent intent=new Intent(Intent.ACTION_GET_CONTENT);//ACTION_OPEN_DOCUMENT
             intent.addCategory(Intent.CATEGORY_OPENABLE);
             intent.setType("image/jpeg");
@@ -170,7 +180,7 @@ public class AddActivity extends BaseActivity implements View.OnClickListener, I
             Uri uri = data.getData();
             ContentResolver cr = this.getContentResolver();
             try{
-                if(bitmapSelected!=null)//Èç¹û²»Ê©·ÅµÄ»°£¬²»¶Ï¶ÁÈ¡Í¼Æ¬£¬½«»áÄÚ´æ²»¹»
+                if(bitmapSelected!=null)//å¦‚æœä¸æ–½æ”¾çš„è¯ï¼Œä¸æ–­è¯»å–å›¾ç‰‡ï¼Œå°†ä¼šå†…å­˜ä¸å¤Ÿ
                     bitmapSelected.recycle();
                 bitmapSelected = BitmapFactory.decodeStream(cr.openInputStream(uri));
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
@@ -184,13 +194,13 @@ public class AddActivity extends BaseActivity implements View.OnClickListener, I
                 }
 
                 /*String[] proj = {MediaStore.Images.Media.DATA};
-                //ºÃÏñÊÇandroid¶àÃ½ÌåÊı¾İ¿âµÄ·â×°½Ó¿Ú£¬¾ßÌåµÄ¿´AndroidÎÄµµ
+                //å¥½åƒæ˜¯androidå¤šåª’ä½“æ•°æ®åº“çš„å°è£…æ¥å£ï¼Œå…·ä½“çš„çœ‹Androidæ–‡æ¡£
                 Cursor cursor = getContentResolver().query(uri,proj, null, null, null);
-                //°´ÎÒ¸öÈËÀí½â Õâ¸öÊÇ»ñµÃÓÃ»§Ñ¡ÔñµÄÍ¼Æ¬µÄË÷ÒıÖµ
+                //æŒ‰æˆ‘ä¸ªäººç†è§£ è¿™ä¸ªæ˜¯è·å¾—ç”¨æˆ·é€‰æ‹©çš„å›¾ç‰‡çš„ç´¢å¼•å€¼
                 int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
-                //½«¹â±êÒÆÖÁ¿ªÍ· £¬Õâ¸öºÜÖØÒª£¬²»Ğ¡ĞÄºÜÈİÒ×ÒıÆğÔ½½ç
+                //å°†å…‰æ ‡ç§»è‡³å¼€å¤´ ï¼Œè¿™ä¸ªå¾ˆé‡è¦ï¼Œä¸å°å¿ƒå¾ˆå®¹æ˜“å¼•èµ·è¶Šç•Œ
                 cursor.moveToFirst();
-                //×îºó¸ù¾İË÷ÒıÖµ»ñÈ¡Í¼Æ¬Â·¾¶
+                //æœ€åæ ¹æ®ç´¢å¼•å€¼è·å–å›¾ç‰‡è·¯å¾„
                 path = cursor.getString(column_index);
                 Log.i(TAG,""+path);*/
             } catch (FileNotFoundException e) {
@@ -207,26 +217,26 @@ public class AddActivity extends BaseActivity implements View.OnClickListener, I
     String describe = "";
     String phone="";
 
-    /**¸ù¾İÀàĞÍÌí¼ÓÊ§Îï/ÕĞÁì
+    /**æ ¹æ®ç±»å‹æ·»åŠ å¤±ç‰©/æ‹›é¢†
      * addByType
      * @Title: addByType
      * @throws
      */
-    private void addByType(){
+    private void addByType()  {
         title = edit_title.getText().toString();
         describe = edit_describe.getText().toString();
         phone = edit_phone.getText().toString();
 
         if(TextUtils.isEmpty(title)){
-            ShowToast("ÇëÌîĞ´±êÌâ");
+            ShowToast("è¯·å¡«å†™æ ‡é¢˜");
             return;
         }
         if(TextUtils.isEmpty(describe)){
-            ShowToast("ÇëÌîĞ´ÃèÊö");
+            ShowToast("è¯·å¡«å†™æè¿°");
             return;
         }
         if(TextUtils.isEmpty(phone)){
-            ShowToast("ÇëÌîĞ´ÊÖ»ú");
+            ShowToast("è¯·å¡«å†™æ‰‹æœº");
             return;
         }
         if(from.equals("Lost")){
@@ -236,15 +246,20 @@ public class AddActivity extends BaseActivity implements View.OnClickListener, I
         }
     }
 
-    private void addLost(){
+    private void addLost()  {
         if(!path.equals("")){
-            final BmobFile bmobFile = new BmobFile(new File(path));
+            //Bitmap bitmap = ImageUtils.getInstant().getCompressedBitmap(path);
+            File before_compressed = new File(path);
+            File file = Compressor.getDefault(this).compressToFile(before_compressed);
+            Log.i(TAG, "å‹ç¼©å‰" + String.format("Size : %s", getReadableFileSize(before_compressed.length())));
+            Log.i(TAG, "å‹ç¼©å" + String.format("Size : %s", getReadableFileSize(file.length())));
+            final BmobFile bmobFile = new BmobFile(file);
             dialog.show();
             bmobFile.uploadblock(new UploadFileListener() {
                 @Override
                 public void done(BmobException e) {
                     if(e==null){
-                        Log.i(TAG, "Í¼Æ¬ÉÏ´«³É¹¦:"+bmobFile.getFileUrl());
+                        Log.i(TAG, "å›¾ç‰‡ä¸Šä¼ æˆåŠŸ:"+bmobFile.getFileUrl());
                         User user = BmobUser.getCurrentUser(User.class);
                         String username = user.getUsername();
                         Log.i(TAG, username);
@@ -254,15 +269,15 @@ public class AddActivity extends BaseActivity implements View.OnClickListener, I
                         insertObject(lost);
                     }
                     else{
-                        Log.i(TAG,"ÉÏ´«Ê§°Ü"+e.getMessage()+","+e.getErrorCode());
-                        ShowToast("ÍøÂçÒì³££¬ÉÏ´«Ê§°Ü");
+                        Log.i(TAG,"ä¸Šä¼ å¤±è´¥"+e.getMessage()+","+e.getErrorCode());
+                        ShowToast("ç½‘ç»œå¼‚å¸¸ï¼Œä¸Šä¼ å¤±è´¥");
                     }
                 }
             });
         }
         else
         {
-            dialog.setTitle("ÕıÔÚÌá½»");
+            dialog.setTitle("æ­£åœ¨æäº¤");
             dialog.show();
             Lost lost = new Lost(title, phone,  describe);
             User user = BmobUser.getCurrentUser(User.class);
@@ -271,46 +286,20 @@ public class AddActivity extends BaseActivity implements View.OnClickListener, I
         }
     }
 
-    private void insertObject(final BmobObject obj){
-        obj.save(new SaveListener<String>() {
-            @Override
-            public void done(String s, BmobException e) {
-                if(e==null){
-                    if(from.equals("Lost")) {
-                        ShowToast("Ê§ÎïĞÅÏ¢Ìí¼Ó³É¹¦!" );
-                        Log.i(TAG, "Ê§ÎïĞÅÏ¢Ìí¼Ó³É¹¦:" + obj.getObjectId());
-                    }else{
-                        ShowToast("Ñ°ÎïĞÅÏ¢Ìí¼Ó³É¹¦!");
-                        Log.i(TAG, "Ñ°ÎïĞÅÏ¢Ìí¼Ó³É¹¦:" + obj.getObjectId());
-                    }
-                    dialog.dismiss();
-                    setResult(RESULT_OK);
-                    finish();
-                }
-                else{
-                    dialog.dismiss();
-                    if(from.equals("Lost")){
-                        Log.i(TAG,"Ê§ÎïĞÅÏ¢Ìí¼ÓÊ§°Ü");
-                        ShowToast("Ê§ÎïĞÅÏ¢Ìí¼ÓÊ§°Ü");
-                    }else{
-                        Log.i(TAG,"Ñ°ÎïĞÅÏ¢Ìí¼ÓÊ§°Ü");
-                        ShowToast("Ñ°ÎïĞÅÏ¢Ìí¼ÓÊ§°Ü");
-                    }
-                }
-            }
-        });
-    }
-
-
     private void addFound(){
         if(!path.equals("")){
-            final BmobFile bmobFile = new BmobFile(new File(path));
+            File before_compressed = new File(path);
+            //æ–‡ä»¶å‹ç¼©
+            File file = Compressor.getDefault(this).compressToFile(before_compressed);
+            Log.i(TAG, "å‹ç¼©å‰" + String.format("Size : %s", getReadableFileSize(before_compressed.length())));
+            Log.i(TAG, "å‹ç¼©å" + String.format("Size : %s", getReadableFileSize(file.length())));
+            final BmobFile bmobFile = new BmobFile(file);
             dialog.show();
             bmobFile.uploadblock(new UploadFileListener() {
                 @Override
                 public void done(BmobException e) {
                     if(e==null){
-                        Log.i(TAG, "Í¼Æ¬ÉÏ´«³É¹¦:"+bmobFile.getFileUrl());
+                        Log.i(TAG, "å›¾ç‰‡ä¸Šä¼ æˆåŠŸ:"+bmobFile.getFileUrl());
                         User user = BmobUser.getCurrentUser(User.class);
                         String username = user.getUsername();
                         Log.i(TAG, username);
@@ -320,15 +309,15 @@ public class AddActivity extends BaseActivity implements View.OnClickListener, I
                         insertObject(found);
                     }
                     else{
-                        Log.i(TAG,"ÉÏ´«Ê§°Ü"+e.getMessage()+","+e.getErrorCode());
-                        ShowToast("ÍøÂçÒì³££¬ÉÏ´«Ê§°Ü");
+                        Log.i(TAG,"ä¸Šä¼ å¤±è´¥"+e.getMessage()+","+e.getErrorCode());
+                        ShowToast("ç½‘ç»œå¼‚å¸¸ï¼Œä¸Šä¼ å¤±è´¥");
                     }
                 }
             });
         }
         else
         {
-            dialog.setTitle("ÕıÔÚÌá½»");
+            dialog.setTitle("æ­£åœ¨æäº¤");
             dialog.show();
             Found found = new Found(title,phone,describe);
             User user = BmobUser.getCurrentUser(User.class);
@@ -337,7 +326,38 @@ public class AddActivity extends BaseActivity implements View.OnClickListener, I
         }
     }
 
-    //ÉèÖÃ³Á½şÊ½×´Ì¬À¸ºÍµ¼º½À¸
+
+    private void insertObject(final BmobObject obj){
+        obj.save(new SaveListener<String>() {
+            @Override
+            public void done(String s, BmobException e) {
+                if(e==null){
+                    if(from.equals("Lost")) {
+                        ShowToast("å¤±ç‰©ä¿¡æ¯æ·»åŠ æˆåŠŸ!" );
+                        Log.i(TAG, "å¤±ç‰©ä¿¡æ¯æ·»åŠ æˆåŠŸ:" + obj.getObjectId());
+                    }else{
+                        ShowToast("å¯»ç‰©ä¿¡æ¯æ·»åŠ æˆåŠŸ!");
+                        Log.i(TAG, "å¯»ç‰©ä¿¡æ¯æ·»åŠ æˆåŠŸ:" + obj.getObjectId());
+                    }
+                    dialog.dismiss();
+                    setResult(RESULT_OK);
+                    finish();
+                }
+                else{
+                    dialog.dismiss();
+                    if(from.equals("Lost")){
+                        Log.i(TAG,"å¤±ç‰©ä¿¡æ¯æ·»åŠ å¤±è´¥");
+                        ShowToast("å¤±ç‰©ä¿¡æ¯æ·»åŠ å¤±è´¥");
+                    }else{
+                        Log.i(TAG,"å¯»ç‰©ä¿¡æ¯æ·»åŠ å¤±è´¥");
+                        ShowToast("å¯»ç‰©ä¿¡æ¯æ·»åŠ å¤±è´¥");
+                    }
+                }
+            }
+        });
+    }
+
+    //è®¾ç½®æ²‰æµ¸å¼çŠ¶æ€æ å’Œå¯¼èˆªæ 
     private void initWindow(){
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT){
             getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
@@ -350,16 +370,16 @@ public class AddActivity extends BaseActivity implements View.OnClickListener, I
 
 
     /**
-     * »ñÈ¡sd¿¨µÄÂ·¾¶
+     * è·å–sdå¡çš„è·¯å¾„
      *
-     * @return Â·¾¶µÄ×Ö·û´®
+     * @return è·¯å¾„çš„å­—ç¬¦ä¸²
      */
     public static String getSDPath() {
         File sdDir = null;
         boolean sdCardExist = Environment.getExternalStorageState().equals(
-                android.os.Environment.MEDIA_MOUNTED); // ÅĞ¶Ïsd¿¨ÊÇ·ñ´æÔÚ
+                android.os.Environment.MEDIA_MOUNTED); // åˆ¤æ–­sdå¡æ˜¯å¦å­˜åœ¨
         if (sdCardExist) {
-            sdDir = Environment.getExternalStorageDirectory();// »ñÈ¡Íâ´æÄ¿Â¼
+            sdDir = Environment.getExternalStorageDirectory();// è·å–å¤–å­˜ç›®å½•
         }
         return sdDir.toString();
     }
@@ -521,5 +541,15 @@ public class AddActivity extends BaseActivity implements View.OnClickListener, I
     @Override
     public void showImageView(Bitmap bitmap, String fileName) {
 
+    }
+
+    //æ–‡ä»¶å¤§å°è½¬æ¢
+    public String getReadableFileSize(long size) {
+        if (size <= 0) {
+            return "0";
+        }
+        final String[] units = new String[]{"B", "KB", "MB", "GB", "TB"};
+        int digitGroups = (int) (Math.log10(size) / Math.log10(1024));
+        return new DecimalFormat("#,##0.#").format(size / Math.pow(1024, digitGroups)) + " " + units[digitGroups];
     }
 }

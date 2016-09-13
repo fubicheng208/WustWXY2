@@ -51,8 +51,8 @@ public class MesFragment extends Fragment {
 
     public void initToolbar() {
         toolbar = (Toolbar)getActivity().findViewById(R.id.toolbar);
-        toolbar.setTitle("¸öÈËĞÅÏ¢");
-        //fragment±ØĞëÊ¹ÓÃÕâ¾ä»°²Å¿ÉÒÔÓĞToolbar,Activity²»ĞèÒª
+        toolbar.setTitle("ä¸ªäººä¿¡æ¯");
+        //fragmentå¿…é¡»ä½¿ç”¨è¿™å¥è¯æ‰å¯ä»¥æœ‰Toolbar,Activityä¸éœ€è¦
         setHasOptionsMenu(true);
         ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
     }
@@ -61,7 +61,7 @@ public class MesFragment extends Fragment {
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         Log.d(TAG, "onCreateOptionsMenu()");
         menu.clear();
-        toolbar.setTitle("¸öÈËĞÅÏ¢");
+        toolbar.setTitle("ä¸ªäººä¿¡æ¯");
         inflater.inflate(R.menu.mainmenu, menu);
     }
 

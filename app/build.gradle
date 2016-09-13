@@ -2,10 +2,9 @@ apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion 24
-    buildToolsVersion "23.0.1"
-    //¼æÈİAndroid6.0
+    buildToolsVersion "24.0.0"
+    //é€‚é…Android6.0
     useLibrary 'org.apache.http.legacy'
-    android {compileOptions.encoding = "GBK"}
 
     defaultConfig {
         applicationId "com.wustwxy2"
@@ -25,11 +24,12 @@ android {
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
     testCompile 'junit:junit:4.12'
-    //bmob-sdk£ºBmobµÄandroid sdk°ü£¬°üº¬ÁËBmobµÄÊı¾İ´æ´¢¡¢ÎÄ¼şµÈ·şÎñ
+    //bmob-sdkï¿½ï¿½Bmobï¿½ï¿½android sdkï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Bmobï¿½ï¿½ï¿½ï¿½ï¿½İ´æ´¢ï¿½ï¿½ï¿½Ä¼ï¿½ï¿½È·ï¿½ï¿½ï¿½
     compile 'cn.bmob.android:bmob-sdk:3.5.0'
     compile 'com.android.support:appcompat-v7:24.0.0'
     compile 'com.android.support:design:24.0.0'
     compile 'com.squareup.picasso:picasso:2.5.2'
     compile files('libs/universal-image-loader-1.8.6-with-sources.jar')
     compile files('libs/systembartint-1.0.4.jar')
+    compile files('libs/ksoap2-android-assembly-3.0.0-jar-with-dependencies.jar')
 }

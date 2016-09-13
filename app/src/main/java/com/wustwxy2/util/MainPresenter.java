@@ -60,7 +60,7 @@ public class MainPresenter implements IMainPresenter {
 
     @Override
     public void uploadImage(List<String> files) {
-        //retrofit 2.0上传多张图片
+        //retrofit 2.0涓婁紶澶氬紶鍥剧墖
 //        Map<String, RequestBody> map = new HashMap<>();
 //        for(String fileName:files) {
 //            final File imageBytes = new File(fileName);

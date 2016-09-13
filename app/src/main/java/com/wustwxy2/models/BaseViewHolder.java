@@ -7,9 +7,9 @@ import android.view.View;
  * Created by fubicheng on 2016/7/15.
  */
 
-//Ê¹ÓÃSparseArrayÀ´Ìæ´úHashMapÒÔÌá¸ßĞÔÄÜ£¬½ÚÊ¡ÄÚ´æ
-//µ«SparseArrayÔÚÊı¾İÀëÉ¢ºÍÄæĞò²éÕÒµÄÊ±ºòĞÔÄÜ»áµÍÓÚHashMap
-//¾ßÌå¼ûÁ´½Ó  http://www.open-open.com/lib/view/open1402906434918.html
+//ä½¿ç”¨SparseArrayæ¥æ›¿ä»£HashMapä»¥æé«˜æ€§èƒ½ï¼ŒèŠ‚çœå†…å­˜
+//ä½†SparseArrayåœ¨æ•°æ®ç¦»æ•£å’Œé€†åºæŸ¥æ‰¾çš„æ—¶å€™æ€§èƒ½ä¼šä½äºHashMap
+//å…·ä½“è§é“¾æ¥  http://www.open-open.com/lib/view/open1402906434918.html
 public class BaseViewHolder {
     @SuppressWarnings("unchecked")
     public static <T extends View> T get(View view, int id) {

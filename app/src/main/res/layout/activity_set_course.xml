@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.wustwxy2.activity.SetCourseActivity">
+    <RelativeLayout
+        android:id="@+id/title_rl"
+        android:background="@color/colorPrimary"
+        android:layout_width="match_parent"
+        android:layout_height="55dp">
+        <Button
+            android:layout_margin="14dp"
+            android:layout_width="27dp"
+            android:layout_height="27dp"
+            android:id="@+id/bt_back"
+            android:background="@drawable/back"/>
+        <TextView
+            android:id="@+id/tv_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="选择当前周数"
+            android:textColor="#ffff"
+            android:textSize="20sp" />
+    </RelativeLayout>
+    <LinearLayout
+        android:padding="16dp"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/ll_zc">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="设置周数"
+            android:textSize="18sp"
+            android:textColor="@color/text"/>
+        <Button
+            android:layout_marginTop="10dp"
+            android:id="@+id/bt_set_zc"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="18sp"
+            android:gravity="start|center"
+            android:text="当前周次  第1周"/>
+        <Button
+            android:id="@+id/bt_save"
+            android:text="保存"
+            android:textColor="#ffff"
+            android:background="@color/bar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+    </LinearLayout>
+    <LinearLayout
+        android:padding="16dp"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/ll_xq">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="设置学期"
+            android:textSize="18sp"
+            android:textColor="@color/text"/>
+        <Button
+            android:layout_marginTop="10dp"
+            android:id="@+id/bt_set_xq"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="18sp"
+            android:gravity="start|center"
+            android:text="当前学期  "/>
+    </LinearLayout>
+</LinearLayout>

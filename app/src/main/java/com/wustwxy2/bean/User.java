@@ -13,9 +13,9 @@ import cn.bmob.v3.datatype.BmobFile;
 public class User extends BmobUser {
 
 
-    private String libpassword;//Í¼Êé¹İÃÜÂë
-    private String nickname;//êÇ³Æ
-    private BmobFile head;//Í·Ïñ£¨Ôİ²»Ö§³Ö£©
+    private String libpassword;//å›¾ä¹¦é¦†å¯†ç 
+    private String nickname;//æ˜µç§°
+    private BmobFile head;//å¤´åƒï¼ˆæš‚ä¸æ”¯æŒï¼‰
 
     public User(String username, String password){
         this.setUsername(username);

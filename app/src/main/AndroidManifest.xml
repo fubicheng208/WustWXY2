@@ -2,6 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.wustwxy2">
 
+    <!-- 拨打电话权限 -->
+    <uses-permission android:name="android.permission.CALL_PHONE" />
     <!-- 允许联网 -->
     <uses-permission android:name="android.permission.INTERNET" />
     <!-- 获取GSM（2g）、WCDMA（联通3g）等网络状态的信息 -->
@@ -17,6 +19,7 @@
     <!-- 允许读取手机状态 用于创建BmobInstallation -->
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS" />
+    <uses-permission android:name="android.permission.VIBRATE"/>
 
     <application
         android:name=".Application"
@@ -45,7 +48,9 @@
         <activity android:name=".activity.MyLosingActivity" />
         <activity android:name=".activity.LoginActivity" />
         <activity android:name=".activity.LosingDetailActivity" />
-        <activity android:name=".activity.EditLosingActivity"></activity>
+        <activity android:name=".activity.EditLosingActivity"/>
+        <activity android:name=".activity.ImageShower"/>
+        <activity android:name=".activity.SetCourseActivity"/>
     </application>
 
 </manifest>

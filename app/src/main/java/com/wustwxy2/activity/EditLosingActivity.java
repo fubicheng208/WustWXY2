@@ -31,13 +31,13 @@ public class EditLosingActivity extends BaseActivity implements View.OnClickList
     Toolbar toolbar;
     private SystemBarTintManager tintManager;
     private IMainPresenter mMainPresenter;
-    //ÐèÌîÐ´µÄ¸÷Ïî
+    //éœ€å¡«å†™çš„å„é¡¹
     EditText edit_title, edit_phone, edit_describe;
-    //·µ»Ø°´Å¥ºÍÈ·¶¨°´Å¥
+    //è¿”å›žæŒ‰é’®å’Œç¡®å®šæŒ‰é’®
     Button btn_back, btn_true;
-    //ÉùÃ÷½ø¶ÈÌõ¶Ô»°¿ò¶ÔÏó
+    //å£°æ˜Žè¿›åº¦æ¡å¯¹è¯æ¡†å¯¹è±¡
     private ProgressDialog dialog;
-    //ToolBarÉÏµÄ±êÌâ
+    //ToolBarä¸Šçš„æ ‡é¢˜
     TextView tv_add;
 
     String objectId = "";
@@ -83,21 +83,21 @@ public class EditLosingActivity extends BaseActivity implements View.OnClickList
 
 
         if (from.equals("Lost")) {
-            tv_add.setText("ÐÞ¸ÄÊ§ÎïÐÅÏ¢");
+            tv_add.setText("ä¿®æ”¹å¤±ç‰©ä¿¡æ¯");
         } else {
-            tv_add.setText("ÐÞ¸ÄÕÐÁìÐÅÏ¢");
+            tv_add.setText("ä¿®æ”¹æ‹›é¢†ä¿¡æ¯");
         }
 
         mMainPresenter = new MainPresenter(this, this);
 
-        //ÉèÖÃ½ø¶ÈÌõ
+        //è®¾ç½®è¿›åº¦æ¡
         dialog = new ProgressDialog(this);
-        //ÉèÖÃ½ø¶ÈÌõÑùÊ½
+        //è®¾ç½®è¿›åº¦æ¡æ ·å¼
         dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
         dialog.setIndeterminate(true);
-        //Ê§È¥½¹µãµÄÊ±ºò£¬²»ÊÇÈ¥¶Ô»°¿ò
+        //å¤±åŽ»ç„¦ç‚¹çš„æ—¶å€™ï¼Œä¸æ˜¯åŽ»å¯¹è¯æ¡†
         dialog.setCancelable(false);
-        dialog.setTitle("ÕýÔÚÌá½»ÐÞ¸Ä");
+        dialog.setTitle("æ­£åœ¨æäº¤ä¿®æ”¹");
     }
 
     @Override
@@ -128,13 +128,13 @@ public class EditLosingActivity extends BaseActivity implements View.OnClickList
                 @Override
                 public void done(BmobException e) {
                     if(e==null){
-                        ShowToast("ÐÞ¸Ä³É¹¦");
+                        ShowToast("ä¿®æ”¹æˆåŠŸ");
                         dialog.dismiss();
                         setResult(RESULT_OK);
                         finish();
                     }
                     else{
-                        ShowToast("ÐÞ¸ÄÊ§°Ü");
+                        ShowToast("ä¿®æ”¹å¤±è´¥");
                         dialog.dismiss();
                     }
                 }
@@ -148,13 +148,13 @@ public class EditLosingActivity extends BaseActivity implements View.OnClickList
                 @Override
                 public void done(BmobException e) {
                     if(e==null){
-                        ShowToast("ÐÞ¸Ä³É¹¦");
+                        ShowToast("ä¿®æ”¹æˆåŠŸ");
                         dialog.dismiss();
                         setResult(RESULT_OK);
                         finish();
                     }
                     else{
-                        ShowToast("ÐÞ¸ÄÊ§°Ü");
+                        ShowToast("ä¿®æ”¹å¤±è´¥");
                         dialog.dismiss();
                     }
                 }
@@ -163,7 +163,7 @@ public class EditLosingActivity extends BaseActivity implements View.OnClickList
     }
 
 
-    //ÉèÖÃ³Á½þÊ½×´Ì¬À¸ºÍµ¼º½À¸
+    //è®¾ç½®æ²‰æµ¸å¼çŠ¶æ€æ å’Œå¯¼èˆªæ 
     private void initWindow(){
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT){
             getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
