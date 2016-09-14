@@ -23,4 +23,6 @@
     <color name="text">#3299cc</color>
     <color name="bar">#64a8b9</color>
     <color name="actionBarText">#EDEDED</color>
+    <color name="colorPrimaryNews">#6ac9bd</color>
+    <color name="colorPrimaryDarkNews">#00bfa5</color>
 </resources>

@@ -1,7 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="Encoding">
+    <file url="file://$PROJECT_DIR$/app/libs/jsoup-1.8.1.jar" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/app/src/main/java/com/wustwxy2/adapter/NewsAdapter.java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/app/src/main/java/com/wustwxy2/adapter/ScoreAdapter.java" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/app/src/main/java/com/wustwxy2/models/AllNews.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/app/src/main/java/com/wustwxy2/models/AllNews.java" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/app/src/main/java/com/wustwxy2/models/College.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/app/src/main/java/com/wustwxy2/models/College.java" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/app/src/main/java/com/wustwxy2/models/JWCActivity.java" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/app/src/main/java/com/wustwxy2/models/JWCActivity.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/app/src/main/java/com/wustwxy2/models/News.java" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/app/src/main/java/com/wustwxy2/models/XFZXActivity.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/app/src/main/java/com/wustwxy2/models/XFZXActivity.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/app/src/main/java/com/wustwxy2/util/BrowseNewsAvtivity.java" charset="GBK" />
     <file url="file://$PROJECT_DIR$/app/src/main/res/drawable/back.png" charset="GBK" />
     <file url="file://$PROJECT_DIR$/app/src/main/res/drawable/bk.xml" charset="GBK" />
     <file url="file://$PROJECT_DIR$/app/src/main/res/drawable/bk1.xml" charset="GBK" />
@@ -16,6 +28,9 @@
     <file url="file://$PROJECT_DIR$/app/src/main/res/drawable/bk9.xml" charset="GBK" />
     <file url="file://$PROJECT_DIR$/app/src/main/res/drawable/menu.png" charset="GBK" />
     <file url="file://$PROJECT_DIR$/app/src/main/res/drawable/pp.xml" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/app/src/main/res/layout/activity_browse_news_avtivity.xml" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/app/src/main/res/layout/activity_get_news.xml" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/app/src/main/res/layout/news_item.xml" charset="GBK" />
     <file url="PROJECT" charset="UTF-8" />
   </component>
 </project>
