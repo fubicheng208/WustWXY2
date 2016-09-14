@@ -50,7 +50,10 @@
         <activity android:name=".activity.LosingDetailActivity" />
         <activity android:name=".activity.EditLosingActivity"/>
         <activity android:name=".activity.ImageShower"/>
+<<<<<<< HEAD
         <activity android:name=".activity.SetCourseActivity"/>
+=======
+>>>>>>> 94c6d0066bb26f407ceea932a19893d83e90b373
     </application>
 
 </manifest>

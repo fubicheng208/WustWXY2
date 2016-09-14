@@ -82,6 +82,7 @@ public class SearchGradeActivity extends Activity implements View.OnClickListene
         dataList=new ArrayList<Score>();
     }
 
+<<<<<<< HEAD
 
     @Override
     public void onClick(View v) {
@@ -126,6 +127,22 @@ public class SearchGradeActivity extends Activity implements View.OnClickListene
             llShow.setVisibility(View.GONE);
         }else {
             finish();
+=======
+    public void initToolbar() {
+        toolbar = (Toolbar)findViewById(R.id.toolbar);
+        toolbar.setTitle("成绩");
+        this.setSupportActionBar(toolbar);
+    }
+
+    //设置沉浸式状态栏和导航栏
+    private void initWindow(){
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT){
+            getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+            getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
+            tintManager = new SystemBarTintManager(this);
+            tintManager.setStatusBarTintColor(getResources().getColor(R.color.colorPrimary));
+            tintManager.setStatusBarTintEnabled(true);
+>>>>>>> 94c6d0066bb26f407ceea932a19893d83e90b373
         }
     }
 }

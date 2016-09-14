@@ -293,6 +293,7 @@ public class SearchTableActivity extends Activity implements AdapterView.OnItemC
                 findViewById(R.id.bj_ll).getWidth());
     }
 
+<<<<<<< HEAD
     //获取路径
     private String getImagePath(Uri uri, String selection){
         String path=null;
@@ -338,6 +339,22 @@ public class SearchTableActivity extends Activity implements AdapterView.OnItemC
             startActivityForResult(intent, CROP_PHOTO);
         }else {
             Toast.makeText(this,"获取图片失败", Toast.LENGTH_SHORT).show();
+=======
+    public void initToolbar() {
+        toolbar = (Toolbar)findViewById(R.id.toolbar);
+        toolbar.setTitle("课表");
+        this.setSupportActionBar(toolbar);
+    }
+
+    //设置沉浸式状态栏和导航栏
+    private void initWindow(){
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT){
+            getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+            getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
+            tintManager = new SystemBarTintManager(this);
+            tintManager.setStatusBarTintColor(getResources().getColor(R.color.colorPrimary));
+            tintManager.setStatusBarTintEnabled(true);
+>>>>>>> 94c6d0066bb26f407ceea932a19893d83e90b373
         }
     }
 }

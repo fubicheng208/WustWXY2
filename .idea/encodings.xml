@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="Encoding">
+<<<<<<< HEAD
     <file url="file://$PROJECT_DIR$/app/src/main/java/com/wustwxy2/adapter/ScoreAdapter.java" charset="GBK" />
     <file url="file://$PROJECT_DIR$/app/src/main/res/drawable/back.png" charset="GBK" />
     <file url="file://$PROJECT_DIR$/app/src/main/res/drawable/bk.xml" charset="GBK" />
@@ -16,6 +17,90 @@
     <file url="file://$PROJECT_DIR$/app/src/main/res/drawable/bk9.xml" charset="GBK" />
     <file url="file://$PROJECT_DIR$/app/src/main/res/drawable/menu.png" charset="GBK" />
     <file url="file://$PROJECT_DIR$/app/src/main/res/drawable/pp.xml" charset="GBK" />
+=======
+    <file url="file://$PROJECT_DIR$/app/libs/universal-image-loader-1.8.6-with-sources.jar" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/app/src/main/java/com/wustwxy2/activity/AddActivity.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/app/src/main/java/com/wustwxy2/activity/BaseActivity.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/app/src/main/java/com/wustwxy2/activity/EditLosingActivity.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/app/src/main/java/com/wustwxy2/activity/LoginActivity.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/app/src/main/java/com/wustwxy2/activity/LosingDetailActivity.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/app/src/main/java/com/wustwxy2/activity/MainActivity.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/app/src/main/java/com/wustwxy2/activity/MainFragment.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/app/src/main/java/com/wustwxy2/activity/MesFragment.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/app/src/main/java/com/wustwxy2/activity/MyLosingActivity.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/app/src/main/java/com/wustwxy2/activity/NewsFragment.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/app/src/main/java/com/wustwxy2/activity/SearchBusActivity.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/app/src/main/java/com/wustwxy2/activity/SearchCardActivity.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/app/src/main/java/com/wustwxy2/activity/SearchComputerActivity.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/app/src/main/java/com/wustwxy2/activity/SearchFragment.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/app/src/main/java/com/wustwxy2/activity/SearchGradeActivity.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/app/src/main/java/com/wustwxy2/activity/SearchLibActivity.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/app/src/main/java/com/wustwxy2/activity/SearchLosingActivity.java" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/app/src/main/java/com/wustwxy2/activity/SearchMapActivity.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/app/src/main/java/com/wustwxy2/activity/SearchTableActivity.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/app/src/main/java/com/wustwxy2/adapter/AdAdapter.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/app/src/main/java/com/wustwxy2/adapter/BaseAdapterHelper.java" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/app/src/main/java/com/wustwxy2/adapter/BaseQuickAdapter.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/app/src/main/java/com/wustwxy2/adapter/MyGridAdapter.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/app/src/main/java/com/wustwxy2/bean/Found.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/app/src/main/java/com/wustwxy2/bean/Lost.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/app/src/main/java/com/wustwxy2/bean/User.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/app/src/main/java/com/wustwxy2/config/Constants.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/app/src/main/java/com/wustwxy2/i/IPopupItemClick.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/app/src/main/java/com/wustwxy2/models/AdDomain.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/app/src/main/java/com/wustwxy2/models/BasePopupWindow.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/app/src/main/java/com/wustwxy2/models/BaseViewHolder.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/app/src/main/java/com/wustwxy2/models/EditPopupWindow.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/app/src/main/java/com/wustwxy2/models/FontsOverride.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/app/src/main/java/com/wustwxy2/models/MyGridView.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/app/src/main/java/com/wustwxy2/util/DensityUtils.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/app/src/main/java/com/wustwxy2/util/DragImageView.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/app/src/main/java/com/wustwxy2/util/FileSizeUtil.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/app/src/main/java/com/wustwxy2/util/MainPresenter.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/app/src/main/res/anim/scale_top_in.xml" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/app/src/main/res/anim/scale_top_out.xml" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/app/src/main/res/anim/zoomin_right.xml" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/app/src/main/res/anim/zoomout_right.xml" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/app/src/main/res/drawable/base_horizontal_line.9.png" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/app/src/main/res/drawable/base_pop_bg_selector.xml" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/app/src/main/res/drawable/bg_gv.xml" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/app/src/main/res/drawable/btn_add_selector.xml" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/app/src/main/res/drawable/btn_arrow_selector.xml" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/app/src/main/res/drawable/btn_back_selector.xml" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/app/src/main/res/drawable/btn_true_selector.xml" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/app/src/main/res/drawable/device_pop_bg.9.png" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/app/src/main/res/drawable/dot_focused.xml" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/app/src/main/res/drawable/dot_normal.xml" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/app/src/main/res/drawable/input.9.png" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/app/src/main/res/layout/banner.xml" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/app/src/main/res/layout/grid_item.xml" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/app/src/main/res/layout/include_no_data.xml" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/app/src/main/res/layout/include_progress.xml" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/app/src/main/res/layout/item_list.xml" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/app/src/main/res/layout/losing_add_toolbar.xml" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/app/src/main/res/layout/losing_toolbar.xml" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/app/src/main/res/layout/pop_device.xml" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/app/src/main/res/layout/pop_lost.xml" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/app/src/main/res/mipmap-xhdpi/base_pop_bg_n.png" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/app/src/main/res/mipmap-xhdpi/base_pop_bg_p.png" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/app/src/main/res/mipmap-xhdpi/btn_add_n.png" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/app/src/main/res/mipmap-xhdpi/btn_add_p.png" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/app/src/main/res/mipmap-xhdpi/btn_arrow_n.png" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/app/src/main/res/mipmap-xhdpi/btn_arrow_p.png" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/app/src/main/res/mipmap-xhdpi/btn_back_n.png" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/app/src/main/res/mipmap-xhdpi/btn_back_p.png" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/app/src/main/res/mipmap-xhdpi/btn_true_n.png" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/app/src/main/res/mipmap-xhdpi/btn_true_p.png" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/app/src/main/res/mipmap-xhdpi/d_operate_delete.png" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/app/src/main/res/mipmap-xhdpi/d_operate_edit.png" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/app/src/main/res/mipmap-xhdpi/d_operate_line.png" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/app/src/main/res/mipmap-xhdpi/delete.png" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/app/src/main/res/mipmap-xhdpi/icon_phone.png" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/app/src/main/res/mipmap-xhdpi/photo_bg.png" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/app/src/main/res/mipmap-xhdpi/shadow_article.png" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/app/src/main/res/mipmap-xhdpi/top_banner_android.png" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/build.gradle" charset="UTF-8" />
+>>>>>>> 94c6d0066bb26f407ceea932a19893d83e90b373
     <file url="PROJECT" charset="UTF-8" />
   </component>
 </project>

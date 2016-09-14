@@ -28,6 +28,7 @@
     <string name="my_found">我的寻物</string>
     <string name="add_losing">添加失物信息</string>
     <string name="add_found">添加招领信息</string>
+<<<<<<< HEAD
     <string-array name="score_array">
         <item>所有成绩</item>
         <item>本学期成绩</item>
@@ -63,4 +64,6 @@
     <string name="title_activity_course">CourseActivity</string>
     <string name="no_data_toast">暂时查不到数据，一定是教务处崩了...</string>
     <string name="no_course_data_toast">查询不到课程数据，或教务处又崩了...</string>
+=======
+>>>>>>> 94c6d0066bb26f407ceea932a19893d83e90b373
 </resources>
