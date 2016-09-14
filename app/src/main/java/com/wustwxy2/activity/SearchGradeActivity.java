@@ -1,10 +1,13 @@
 package com.wustwxy2.activity;
 
-import android.app.Activity;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.Window;
+import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
@@ -13,6 +16,7 @@ import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.readystatesoftware.systembartint.SystemBarTintManager;
 import com.wustwxy2.R;
 import com.wustwxy2.adapter.ScoreAdapter;
 import com.wustwxy2.models.JwInfoDB;
@@ -21,7 +25,7 @@ import com.wustwxy2.models.Score;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SearchGradeActivity extends Activity implements View.OnClickListener {
+public class SearchGradeActivity extends AppCompatActivity implements View.OnClickListener {
 
     private LinearLayout llClass;
     private LinearLayout llShow;
@@ -37,6 +41,8 @@ public class SearchGradeActivity extends Activity implements View.OnClickListene
     private SharedPreferences mPreferences;
     private ScoreAdapter mScoreAdapter;
     private List<Score> dataList;
+    Toolbar toolbar;
+    private SystemBarTintManager tintManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -82,8 +88,6 @@ public class SearchGradeActivity extends Activity implements View.OnClickListene
         dataList=new ArrayList<Score>();
     }
 
-<<<<<<< HEAD
-
     @Override
     public void onClick(View v) {
         switch (v.getId()){
@@ -122,12 +126,14 @@ public class SearchGradeActivity extends Activity implements View.OnClickListene
 
     @Override
     public void onBackPressed() {
-        if (llShow.getVisibility()== View.VISIBLE){
+        if (llShow.getVisibility() == View.VISIBLE) {
             llClass.setVisibility(View.VISIBLE);
             llShow.setVisibility(View.GONE);
-        }else {
+        } else {
             finish();
-=======
+        }
+    }
+
     public void initToolbar() {
         toolbar = (Toolbar)findViewById(R.id.toolbar);
         toolbar.setTitle("成绩");
@@ -142,7 +148,6 @@ public class SearchGradeActivity extends Activity implements View.OnClickListene
             tintManager = new SystemBarTintManager(this);
             tintManager.setStatusBarTintColor(getResources().getColor(R.color.colorPrimary));
             tintManager.setStatusBarTintEnabled(true);
->>>>>>> 94c6d0066bb26f407ceea932a19893d83e90b373
         }
     }
 }

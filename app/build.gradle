@@ -19,6 +19,8 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+
+
 }
 
 dependencies {
@@ -31,5 +33,6 @@ dependencies {
     compile 'com.squareup.picasso:picasso:2.5.2'
     compile files('libs/universal-image-loader-1.8.6-with-sources.jar')
     compile files('libs/systembartint-1.0.4.jar')
+    compile files('libs/BaiduLBS_Android.jar')
     compile files('libs/ksoap2-android-assembly-3.0.0-jar-with-dependencies.jar')
 }

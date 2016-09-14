@@ -19,7 +19,19 @@
     <!-- 允许读取手机状态 用于创建BmobInstallation -->
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS" />
-    <uses-permission android:name="android.permission.VIBRATE"/>
+
+    <!-- 这个权限用于进行网络定位-->
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+    <!-- 这个权限用于访问GPS定位-->
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+    <!-- 这个权限用于获取wifi的获取权限，wifi信息会用来进行网络定位-->
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE"/>
+    <!-- SD卡读取权限，用户写入离线定位数据-->
+    <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS"/>
+
+    <uses-permission android:name="com.android.launcher.permission.READ_SETTINGS" />
+    <uses-permission android:name="android.permission.GET_TASKS" />
+    <uses-permission android:name="android.permission.WRITE_SETTINGS" />
 
     <application
         android:name=".Application"
@@ -35,6 +47,16 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <meta-data
+            android:name="com.baidu.lbsapi.API_KEY"
+            android:value="uy7FffxtIAnGTC0a9BGG87BfShC6TqDy" />
+
+        <service android:name="com.baidu.location.f"
+            android:enabled="true"
+            android:process=":remote">
+        </service>
+
         <activity android:name=".activity.SearchEngActivity" />
         <activity android:name=".activity.SearchTableActivity" />
         <activity android:name=".activity.SearchGradeActivity" />
@@ -50,10 +72,6 @@
         <activity android:name=".activity.LosingDetailActivity" />
         <activity android:name=".activity.EditLosingActivity"/>
         <activity android:name=".activity.ImageShower"/>
-<<<<<<< HEAD
-        <activity android:name=".activity.SetCourseActivity"/>
-=======
->>>>>>> 94c6d0066bb26f407ceea932a19893d83e90b373
     </application>
 
 </manifest>

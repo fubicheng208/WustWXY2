@@ -15,7 +15,7 @@ import com.wustwxy2.R;
 
 public class MainActivity extends BaseActivity {
 
-    private Toolbar toolbar;                             //定义toolbar
+    private Toolbar toolbar;     //定义toolbar
     private MainFragment mf;
 
     @Override
@@ -100,6 +100,4 @@ public class MainActivity extends BaseActivity {
         inflater.inflate(R.menu.mainmenu, menu);
         return true;
     }
-
-
 }

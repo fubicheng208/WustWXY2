@@ -15,10 +15,13 @@ import android.os.Bundle;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
 import android.support.design.widget.AppBarLayout;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -29,6 +32,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.readystatesoftware.systembartint.SystemBarTintManager;
 import com.wustwxy2.R;
 import com.wustwxy2.models.Course;
 import com.wustwxy2.models.JwInfoDB;
@@ -38,7 +42,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SearchTableActivity extends Activity implements AdapterView.OnItemClickListener, View.OnClickListener {
+public class SearchTableActivity extends AppCompatActivity implements AdapterView.OnItemClickListener, View.OnClickListener {
 
     private RelativeLayout titleRl;
     private LinearLayout weekPanels[] = new LinearLayout[7];
@@ -59,6 +63,8 @@ public class SearchTableActivity extends Activity implements AdapterView.OnItemC
     public static final int CHOOSE_PHOTO=1;
     private Uri imageUri;
     private File tempFile;
+    Toolbar toolbar;
+    private SystemBarTintManager tintManager;
 
 
     @Override
@@ -293,7 +299,6 @@ public class SearchTableActivity extends Activity implements AdapterView.OnItemC
                 findViewById(R.id.bj_ll).getWidth());
     }
 
-<<<<<<< HEAD
     //获取路径
     private String getImagePath(Uri uri, String selection){
         String path=null;
@@ -309,8 +314,8 @@ public class SearchTableActivity extends Activity implements AdapterView.OnItemC
         return path;
     }
 
-    private void displayImage(String imagePath, String savePath, int height, int width){
-        if(imagePath!=null){
+    private void displayImage(String imagePath, String savePath, int height, int width) {
+        if (imagePath != null) {
             //DisplayMetrics dm = getResources().getDisplayMetrics();
             //Rect frame = new Rect();
             //getWindow().getDecorView().getWindowVisibleDisplayFrame(frame);
@@ -321,12 +326,12 @@ public class SearchTableActivity extends Activity implements AdapterView.OnItemC
             // dm.heightPixels   //获取除底部虚拟按钮的高度
 
 
-            imageUri= Uri.fromFile(new File(imagePath));
-            Intent intent=new Intent("com.android.camera.action.CROP");
-            intent.setDataAndType(imageUri,"image/*");
-            intent.putExtra("scale",true);
-            intent.putExtra("aspectX",width);// 裁剪框比例
-            intent.putExtra("aspectY",height);
+            imageUri = Uri.fromFile(new File(imagePath));
+            Intent intent = new Intent("com.android.camera.action.CROP");
+            intent.setDataAndType(imageUri, "image/*");
+            intent.putExtra("scale", true);
+            intent.putExtra("aspectX", width);// 裁剪框比例
+            intent.putExtra("aspectY", height);
             intent.putExtra("outputX", width);// 输出图片大小
             intent.putExtra("outputY", height);
 //            intent.putExtra("return-data", true);
@@ -337,9 +342,11 @@ public class SearchTableActivity extends Activity implements AdapterView.OnItemC
             intent.putExtra("outputFormat", "JPEG"); //输入文件格式
             intent.putExtra("output", Uri.fromFile(tempFile));  // 专入目标文件
             startActivityForResult(intent, CROP_PHOTO);
-        }else {
-            Toast.makeText(this,"获取图片失败", Toast.LENGTH_SHORT).show();
-=======
+        } else {
+            Toast.makeText(this, "获取图片失败", Toast.LENGTH_SHORT).show();
+        }
+    }
+
     public void initToolbar() {
         toolbar = (Toolbar)findViewById(R.id.toolbar);
         toolbar.setTitle("课表");
@@ -354,7 +361,6 @@ public class SearchTableActivity extends Activity implements AdapterView.OnItemC
             tintManager = new SystemBarTintManager(this);
             tintManager.setStatusBarTintColor(getResources().getColor(R.color.colorPrimary));
             tintManager.setStatusBarTintEnabled(true);
->>>>>>> 94c6d0066bb26f407ceea932a19893d83e90b373
         }
     }
 }
