@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/background_login" >
+
+    <LinearLayout
+        android:id="@+id/headLayout"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_centerHorizontal="true"
+        android:layout_margin="35dp">
+
+        <ImageView
+            android:id="@+id/imageview"
+            android:layout_width="108dp"
+            android:layout_height="145dp"
+            />
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:orientation="vertical" >
+
+            <TextView
+                android:id="@+id/username"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/background_login_div"
+                android:gravity="center"
+                android:textSize="20sp"
+                android:layout_margin="10dp"
+                android:text="张  三" />
+
+            <TextView
+                android:id="@+id/userid"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/background_login_div"
+                android:gravity="center"
+                android:textSize="20sp"
+                android:layout_margin="10dp"
+                android:text="201320000000" />
+
+            <TextView
+                android:id="@+id/userdept"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/background_login_div"
+                android:gravity="center"
+                android:textSize="20sp"
+                android:layout_margin="10dp"
+                android:text="蓝翔高级手扶拖拉机学院" />
+
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_below="@id/headLayout"
+        android:orientation="vertical">
+        <TextView android:id="@+id/userbalance"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/background_login_div"
+            android:gravity="center"
+            android:textSize="25sp"
+            android:layout_margin="10dp"
+            android:textColor="#ccff0000"
+            />
+
+        <Button android:id="@+id/btnquerytoday"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/background_login_btn"
+            android:textSize="27sp"
+            android:layout_margin="10dp"
+            android:text="今日消费明细"
+            android:textColor="#000"
+            />
+
+        <Button android:id="@+id/btnqueryhistory"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/background_login_btn"
+            android:textSize="27sp"
+            android:layout_margin="10dp"
+            android:text="历史消费查询"
+            android:textColor="#000"
+            />
+
+        <Button android:id="@+id/btnlossreport"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/background_login_btn"
+            android:textSize="25sp"
+            android:layout_margin="10dp"
+            android:textColor="#000"
+            android:text="卡片挂失"
+            />
+    </LinearLayout>
+
+</RelativeLayout>

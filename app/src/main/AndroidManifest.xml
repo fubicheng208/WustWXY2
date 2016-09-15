@@ -52,6 +52,8 @@
         <activity android:name=".activity.ImageShower"/>
         <activity android:name=".activity.SetCourseActivity"/>
         <activity android:name=".util.BrowseNewsAvtivity"/>
+        <activity android:name=".card.AccInfoActivity"></activity>
+        <activity android:name=".card.QueryListActivity"></activity>
     </application>
 
 </manifest>
