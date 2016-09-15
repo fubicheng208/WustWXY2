@@ -32,11 +32,11 @@
          android:textSize="18sp"
          />
      <Spinner
-         android:layout_marginEnd="16dp"
          android:id="@+id/sp_score"
          android:layout_width="match_parent"
          android:layout_height="wrap_content"
-         android:entries="@array/score_array">
+         android:entries="@array/score_array"
+         android:layout_marginRight="16dp">
      </Spinner>
  </LinearLayout>
     <LinearLayout

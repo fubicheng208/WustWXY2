@@ -34,8 +34,8 @@ public class JWCActivity extends Fragment {
         public void handleMessage(Message msg) {
 
             String news= (String) msg.obj;
-            if(news.length()<10)//Èç¹û×Ö·û´®³¤¶ÈĞ¡£¬¼´´«µİ¹ıÀ´µÄÊÇ¿Õ×Ö·û´®£¬ÔòÏÔÊ¾ÍøÕ¾¹Ø±ÕĞÅÏ¢
-                newsList.add(new News("½ÌÎñ´¦ÍøÕ¾ÒÑ¹Ø±Õ",null));
+            if(news.length()<10)//å¦‚æœå­—ç¬¦ä¸²é•¿åº¦å°ï¼Œå³ä¼ é€’è¿‡æ¥çš„æ˜¯ç©ºå­—ç¬¦ä¸²ï¼Œåˆ™æ˜¾ç¤ºç½‘ç«™å…³é—­ä¿¡æ¯
+                newsList.add(new News("æ•™åŠ¡å¤„ç½‘ç«™å·²å…³é—­",null));
             else {
                 String getnews[]=news.split(",");
                 for(int i=0;i<48;i+=2)
@@ -52,7 +52,7 @@ public class JWCActivity extends Fragment {
     }
     public View onCreateView(LayoutInflater inflater,
                              ViewGroup container,  Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.activity_get_news, container, false);//¹ØÁª²¼¾ÖÎÄ¼ş
+        View rootView = inflater.inflate(R.layout.activity_get_news, container, false);//å…³è”å¸ƒå±€æ–‡ä»¶
         ListView lv = (ListView) rootView.findViewById(R.id.lvNews);
         newsList = new ArrayList<News>();
         adapter = new NewsAdapter(getActivity(), newsList);
@@ -60,7 +60,7 @@ public class JWCActivity extends Fragment {
         lv.setAdapter(adapter);
         lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {//listviewµã»÷ÏìÓ¦ÊÂ¼ş
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {//listviewç‚¹å‡»å“åº”äº‹ä»¶
                 News news = newsList.get(position);
                 Intent intent = new Intent(getActivity(), BrowseNewsAvtivity.class);
                 intent.putExtra("href", news.getHref());
@@ -81,13 +81,13 @@ public class JWCActivity extends Fragment {
         final String url="http://202.114.242.231:8036/default.html";
         new Thread(new Runnable() {
             @Override
-            public void run() { //Ê¹ÓÃÏß³Ì£¬ÓÃJsoup½âÎöÍøÒ³htmlÎÄ¼ş£¬»ñÈ¡ĞÂÎÅ±êÌâºÍÁ´½Ó
+            public void run() { //ä½¿ç”¨çº¿ç¨‹ï¼Œç”¨Jsoupè§£æç½‘é¡µhtmlæ–‡ä»¶ï¼Œè·å–æ–°é—»æ ‡é¢˜å’Œé“¾æ¥
                 try {
                     String str="";
 
                     {
                         Document doc = Jsoup.connect(url).get();
-                        Elements elements = doc.select("div .mainframe_2").select("li");//»ñÈ¡HTMLÎÄ¼şÖĞÖ¸¶¨Î»ÖÃµÄĞÂÎÅ
+                        Elements elements = doc.select("div .mainframe_2").select("li");//è·å–HTMLæ–‡ä»¶ä¸­æŒ‡å®šä½ç½®çš„æ–°é—»
                         for (Element ele : elements) {
                             str = str+ele.getElementsByTag("li").text()+ ","+ele.getElementsByTag("a").first().attr("href")+",";
                         }
@@ -95,7 +95,7 @@ public class JWCActivity extends Fragment {
                         msg.obj=str;
                         handler.sendMessage(msg);}
                 }
-                catch (Exception e) {//Èç¹û»ñÈ¡²»µ½ÍøÒ³£¬Ôò´«µİ¿Õ×Ö·û´®£¬ÓÉÖ÷Ïß³Ì½øĞĞ´¦Àí
+                catch (Exception e) {//å¦‚æœè·å–ä¸åˆ°ç½‘é¡µï¼Œåˆ™ä¼ é€’ç©ºå­—ç¬¦ä¸²ï¼Œç”±ä¸»çº¿ç¨‹è¿›è¡Œå¤„ç†
                     Message msg=new Message();
                     msg.obj=" ";
                     handler.sendMessage(msg);
