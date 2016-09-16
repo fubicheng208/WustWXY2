@@ -70,11 +70,20 @@
         <activity android:name=".activity.MyLosingActivity" />
         <activity android:name=".activity.LoginActivity" />
         <activity android:name=".activity.LosingDetailActivity" />
+<<<<<<< HEAD
         <activity android:name=".activity.EditLosingActivity" />
         <activity android:name=".activity.ImageShower" />
         <activity android:name=".activity.FeedbackActivity" />
         <activity android:name=".activity.AboutActivity" />
         <activity android:name=".activity.BindActivity"></activity>
+=======
+        <activity android:name=".activity.EditLosingActivity"/>
+        <activity android:name=".activity.ImageShower"/>
+        <activity android:name=".activity.SetCourseActivity"/>
+        <activity android:name=".util.BrowseNewsAvtivity"/>
+        <activity android:name=".card.AccInfoActivity"></activity>
+        <activity android:name=".card.QueryListActivity"></activity>
+>>>>>>> biloba123-master
     </application>
 
 </manifest>

@@ -30,4 +30,6 @@
     <color name="lightSkyBlue">#98c5d8</color> <!-- 亮天蓝色 -->
     <color name="unSeeTop">#00000000</color>
     <color name="actionBarText">#EDEDED</color>
+    <color name="colorPrimaryNews">#6ac9bd</color>
+    <color name="colorPrimaryDarkNews">#00bfa5</color>
 </resources>

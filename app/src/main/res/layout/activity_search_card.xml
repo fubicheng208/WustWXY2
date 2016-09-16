@@ -1,20 +1,107 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/base_bg"
     android:fitsSystemWindows="true"
+    android:orientation="vertical"
     tools:context=".activity.SearchCardActivity">
 
     <include
         layout="@layout/toolbar" />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="This is Card\n 李华 Come on!"
-        android:textSize="@dimen/title"
-        android:layout_centerInParent="true" />
 
-</RelativeLayout>
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:background="@drawable/background_login"
+        android:orientation="vertical" >
+
+        <TextView
+            android:layout_marginTop="20dip"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="卡务中心"
+            android:gravity="center_horizontal"
+            android:textSize="20dip"/>
+
+
+        <RelativeLayout
+            android:id="@+id/login_div"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="15dip"
+            android:background="@drawable/background_login_div"
+            android:padding="15dip" >
+
+            <!-- 账号 -->
+
+            <TextView
+                android:id="@+id/login_user_input"
+                style="@style/normalText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_marginTop="5dp"
+                android:text="@string/login_label_username" />
+
+            <EditText
+                android:id="@+id/card_user"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/login_user_input"
+                android:hint="@string/login_username_hint"
+                android:inputType="numberDecimal"
+                android:singleLine="true" />
+            <!-- 密码 text -->
+
+            <TextView
+                android:id="@+id/login_password_input"
+                style="@style/normalText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/card_user"
+                android:layout_marginTop="3dp"
+                android:text="@string/login_label_password" />
+
+            <EditText
+                android:id="@+id/card_password"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/login_password_input"
+                android:hint="@string/login_password_hint"
+                android:inputType="numberPassword"
+                android:singleLine="true" />
+            <!-- 登录button -->
+
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="150dip"
+                >
+                <CheckBox
+                    android:id="@+id/cb"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="记住密码"/>
+
+                <Button
+                    android:id="@+id/card_login_button"
+                    android:layout_width="fill_parent"
+                    android:layout_height="40dip"
+                    android:layout_marginLeft="9dip"
+
+                    android:layout_below="@id/card_password"
+                    android:layout_marginTop="3dp"
+                    android:background="@drawable/background_login_btn"
+                    android:textColor="#000"
+                    android:text="@string/login_label_signin" />
+            </LinearLayout>
+        </RelativeLayout>
+
+    </LinearLayout>
+
+</LinearLayout>
