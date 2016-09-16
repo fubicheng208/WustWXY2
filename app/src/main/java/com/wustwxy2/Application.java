@@ -10,6 +10,6 @@ public final class Application extends android.app.Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        FontsOverride.setDefaultFont(this, "monospace", "HanSansCN-Normal.ttf");
+        //FontsOverride.setDefaultFont(this, "SERIF", "HanSansCN-Normal.ttf");
     }
 }

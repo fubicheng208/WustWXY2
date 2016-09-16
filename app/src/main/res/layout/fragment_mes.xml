@@ -1,14 +1,133 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
+    android:id="@+id/mesFragment"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/base_bg">
+    android:orientation="vertical"
+    android:background="@mipmap/bg2">
 
-    <TextView
-        android:layout_width="wrap_content"
+
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="MESSAGE"
-        android:layout_gravity="center"/>
+        android:orientation="vertical"
+        android:layout_marginTop="20dp"
+        >
 
+        <TextView
+            android:id="@+id/mes_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/mes_name_default"
+            style="@style/Fbc.TextView._Black"
+            android:textSize="@dimen/headline"
+            android:paddingLeft="20dp"
+            android:paddingTop="10dp"
+            android:paddingBottom="5dp"
+            />
+
+        <TextView
+            android:id="@+id/mes_no"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/mes_no_default"
+            android:textSize="14sp"
+            style="@style/Fbc.TextView._Gray"
+            android:paddingLeft="20dp"
+            android:paddingTop="5dp"
+            android:paddingBottom="10dp"
+            android:drawableLeft="@mipmap/mes_no"
+            android:drawablePadding="10dp"
+            />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:divider="@drawable/grey_divider"
+        android:showDividers="beginning|end|middle"
+        android:orientation="vertical"
+        android:layout_marginTop="20dp">
+
+        <Button
+            android:id="@+id/mes_bind"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/mes_button_selector"
+            android:text="@string/mes_bind"
+            android:gravity="center_vertical"
+            style="@style/Fbc.TextView._Black"
+            android:paddingLeft="20dp"
+            android:paddingTop="5dp"
+            android:paddingBottom="10dp"
+            android:drawableLeft="@mipmap/mes_bind"
+            android:drawablePadding="10dp"
+            />
+
+
+        <Button
+            android:id="@+id/mes_feedback"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/mes_button_selector"
+            android:text="@string/mes_feedback"
+            android:gravity="center_vertical"
+            style="@style/Fbc.TextView._Black"
+            android:paddingLeft="20dp"
+            android:paddingTop="5dp"
+            android:paddingBottom="10dp"
+            android:drawableLeft="@mipmap/feedback"
+            android:drawablePadding="10dp"
+            />
+        <Button
+            android:id="@+id/mes_about"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/mes_button_selector"
+            android:text="@string/mes_about"
+            android:gravity="center_vertical"
+            style="@style/Fbc.TextView._Black"
+            android:paddingLeft="20dp"
+            android:paddingTop="5dp"
+            android:paddingBottom="10dp"
+            android:drawableLeft="@mipmap/about"
+            android:drawablePadding="10dp"
+            />
+
+        <Button
+            android:id="@+id/exit"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:text="@string/exit"
+            style="@style/Fbc.TextView._White"
+            android:textColor="@color/black"
+            android:background="@drawable/mes_button_selector"
+            android:layout_marginTop="30dp"
+            android:paddingLeft="20dp"
+            android:paddingTop="5dp"
+            android:paddingBottom="10dp"
+            android:drawableLeft="@mipmap/exit"
+            android:drawablePadding="10dp"/>
+
+    </LinearLayout>
+    <Button
+        android:id="@+id/mes_login"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/Login"
+        style="@style/Fbc.TextView._White"
+        android:textColor="@color/black"
+        android:background="@drawable/mes_button_selector"
+        android:gravity="center_vertical"
+        android:paddingLeft="20dp"
+        android:paddingTop="5dp"
+        android:paddingBottom="10dp"
+        android:drawableLeft="@mipmap/login"
+        android:drawablePadding="10dp"
+        android:layout_gravity="center"
+        android:visibility="invisible"
+        android:layout_marginTop="200dp"
+        />
 
 </LinearLayout>

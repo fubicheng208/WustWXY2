@@ -14,6 +14,7 @@ public class User extends BmobUser {
 
 
     private String libpassword;//图书馆密码
+    private String cardpassword;//卡务密码
     private String nickname;//昵称
     private BmobFile head;//头像（暂不支持）
 

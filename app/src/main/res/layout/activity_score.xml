@@ -33,6 +33,7 @@
          />
      <Spinner
          android:layout_marginEnd="16dp"
+         android:layout_marginRight="16dp"
          android:id="@+id/sp_score"
          android:layout_width="match_parent"
          android:layout_height="wrap_content"
@@ -55,7 +56,9 @@
             />
         <EditText
             android:layout_marginEnd="16dp"
+            android:layout_marginRight="16dp"
             android:id="@+id/et_kmmc"
+            android:textColor="@color/colorText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
     </LinearLayout>
@@ -67,7 +70,7 @@
             android:layout_marginTop="18dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/bar"
+            android:background="@color/buttonBlue"
             android:textColor="#ffff"
             android:text="查询"/>
     </LinearLayout>
@@ -97,7 +100,6 @@
                 android:layout_height="match_parent"
                 android:text="成绩"
                 android:textSize="20dp"
-                android:textColor="#ffff"
                 android:gravity="center"/>
         </LinearLayout>
         <LinearLayout
@@ -114,7 +116,7 @@
                 android:gravity="center"
                 android:text="姓名：吕晴阳\n学号：201513137125\n平均绩点：3.67674418604651"/>
             <LinearLayout
-                android:background="@color/bar"
+                android:background="@color/buttonBlue"
                 android:paddingTop="10dp"
                 android:paddingBottom="10dp"
                 android:layout_width="match_parent"

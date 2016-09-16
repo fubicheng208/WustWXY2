@@ -1,5 +1,6 @@
 package com.wustwxy2.activity;
 
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
@@ -12,6 +13,9 @@ import android.view.WindowManager;
 
 import com.readystatesoftware.systembartint.SystemBarTintManager;
 import com.wustwxy2.R;
+import com.wustwxy2.bean.User;
+
+import cn.bmob.v3.BmobUser;
 
 public class MainActivity extends BaseActivity {
 
@@ -21,6 +25,13 @@ public class MainActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        //如果得不到则为0,1为登录过，2为游客登录
+        int from = getIntent().getIntExtra("from",0);
+        BmobUser user = BmobUser.getCurrentUser(User.class);
+        if(from!=2&&user==null){
+            Intent intent = new Intent(this, LoginActivity.class);
+            startActivity(intent);
+        }
         setContentView();
         initFragment(savedInstanceState);
         initViews();

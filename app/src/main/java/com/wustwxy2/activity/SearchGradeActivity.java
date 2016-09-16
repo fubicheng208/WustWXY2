@@ -53,6 +53,8 @@ public class SearchGradeActivity extends AppCompatActivity implements View.OnCli
         spSelect.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                TextView tv = (TextView)view;
+                tv.setTextColor(getResources().getColor(R.color.colorText));
                 if(position==2){
                     llKcmc.setVisibility(View.VISIBLE);
                 }else {
