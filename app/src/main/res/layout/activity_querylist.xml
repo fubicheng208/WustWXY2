@@ -3,53 +3,59 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical" 
-    android:background="@drawable/background_login">
-    
-    <RelativeLayout
+    android:background="@color/white">
+
+    <include layout="@layout/toolbar"/>
+
+    <LinearLayout
             android:layout_width="fill_parent"
             android:layout_height="22dp" 
-            android:gravity="center_vertical"
-            android:layout_marginLeft="12dp"
-            android:layout_marginRight="12dp">
+            android:orientation="horizontal"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp">
 
             <TextView
-                style="@style/normalText"
+                android:textColor="@color/base_color_text_black"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentLeft="true"
+                android:textSize="14sp"
+                android:layout_marginLeft="10dp"
                 android:text="时间"/>
 
             <TextView
                 android:id="@+id/transtype"
-                style="@style/normalText"
+                android:textColor="@color/base_color_text_black"
+                android:textSize="14sp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"
+                android:layout_marginLeft="35dp"
                 android:text="类型"/>
             
              <TextView
-                style="@style/normalText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_toRightOf="@id/transtype"
-                android:layout_marginLeft="12dp"
-                android:text="交易额"/>
+                 android:textColor="@color/base_color_text_black"
+                 android:textSize="14sp"
+                 android:layout_marginLeft="60dp"
+                android:text="交易"/>
             
             <TextView
                 style="@style/normalText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_marginRight="20dp"
-                android:text="余额"/>
-    </RelativeLayout>
+                android:textColor="@color/base_color_text_black"
+                android:textSize="14sp"
+                android:layout_marginLeft="120dp"
+                android:text="余额"
+                />
+    </LinearLayout>
     
     <ListView 
         android:id="@+id/listview"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:background="@drawable/background_login_div"
-        android:layout_margin="10dp"
         android:padding="5dp">
         
     </ListView>

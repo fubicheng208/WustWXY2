@@ -1,32 +1,41 @@
-package com.wustwxy2.card;
+package com.wustwxy2.activity;
 
 /**
  * Created by ASUS on 2016/9/13.
  */
 
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.readystatesoftware.systembartint.SystemBarTintManager;
 import com.wustwxy2.R;
+import com.wustwxy2.util.WustCardCenterLogin;
 
 
-public class AccInfoActivity extends Activity
+public class AccInfoActivity extends AppCompatActivity
 {
+
+    Toolbar toolbar;
+    private SystemBarTintManager tintManager;
+
     public static WustCardCenterLogin login;
     private  Bitmap  bitmap3=null;
 
@@ -94,6 +103,9 @@ public class AccInfoActivity extends Activity
         btnquerytoday = (Button) this.findViewById(R.id.btnquerytoday);
         btnqueryhistory = (Button) this.findViewById(R.id.btnqueryhistory);
         btnlossreport = (Button) this.findViewById(R.id.btnlossreport);
+
+        initToolbar();
+        initWindow();
 
         new Thread(new Runnable()
         {
@@ -203,5 +215,22 @@ public class AccInfoActivity extends Activity
                 Toast.makeText(AccInfoActivity.this, "请到相关工作地点或者拨打电话挂失^_^", Toast.LENGTH_LONG).show();
             }
         });
+    }
+
+    public void initToolbar() {
+        toolbar = (Toolbar)findViewById(R.id.toolbar);
+        toolbar.setTitle("一卡通");
+        this.setSupportActionBar(toolbar);
+    }
+
+    //设置沉浸式状态栏和导航栏
+    private void initWindow(){
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT){
+            getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+            getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
+            tintManager = new SystemBarTintManager(this);
+            tintManager.setStatusBarTintColor(getResources().getColor(R.color.colorPrimary));
+            tintManager.setStatusBarTintEnabled(true);
+        }
     }
 }

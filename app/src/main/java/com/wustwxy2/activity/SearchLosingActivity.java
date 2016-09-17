@@ -3,7 +3,6 @@ package com.wustwxy2.activity;
 import android.content.Intent;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Build;
-import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -18,7 +17,6 @@ import android.widget.ListView;
 import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.readystatesoftware.systembartint.SystemBarTintManager;
 import com.wustwxy2.R;
@@ -128,7 +126,7 @@ public class SearchLosingActivity extends BaseActivity implements View.OnClickLi
     public void initData() {
         // TODO Auto-generated method stub
         if (LostAdapter == null) {
-            LostAdapter = new QuickAdapter<Lost>(this, R.layout.item_list) {
+            LostAdapter = new QuickAdapter<Lost>(this, R.layout.item_list_losing) {
                 @Override
                 protected void convert(BaseAdapterHelper helper, Lost lost) {
                     helper.setText(tv_title, lost.getTitle())
@@ -140,7 +138,7 @@ public class SearchLosingActivity extends BaseActivity implements View.OnClickLi
         }
 
         if (FoundAdapter == null) {
-            FoundAdapter = new QuickAdapter<Found>(this, R.layout.item_list) {
+            FoundAdapter = new QuickAdapter<Found>(this, R.layout.item_list_losing) {
                 @Override
                 protected void convert(BaseAdapterHelper helper, Found found) {
                     helper.setText(tv_title, found.getTitle())
@@ -345,7 +343,7 @@ public class SearchLosingActivity extends BaseActivity implements View.OnClickLi
 
 
         switch (item.getItemId()) {
-            case R.id.menu_losing_add:
+            case R.id.menu_losing_add://添加按钮
                 BmobUser bmobUser = BmobUser.getCurrentUser(User.class);
                 if(bmobUser != null){
                     // �����û�ʹ��Ӧ��
@@ -358,7 +356,7 @@ public class SearchLosingActivity extends BaseActivity implements View.OnClickLi
                     startActivity(intent);
                 }
                 break;
-            case R.id.menu_losing_mine:
+            case R.id.menu_losing_mine://我的按钮
                 BmobUser bmobUser2 = BmobUser.getCurrentUser(User.class);
                 if(bmobUser2 != null){
                     // �����û�ʹ��Ӧ��
@@ -372,9 +370,8 @@ public class SearchLosingActivity extends BaseActivity implements View.OnClickLi
                     startActivity(intent);
                 }
                 break;
-            case R.id.menu_losing_login:
-                Intent intent2 = new Intent(this, LoginActivity.class);
-                startActivity(intent2);
+            default:
+                break;
         }
         return super.onOptionsItemSelected(item);
     }

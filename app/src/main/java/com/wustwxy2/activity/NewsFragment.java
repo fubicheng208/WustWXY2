@@ -52,14 +52,14 @@ public class NewsFragment extends Fragment {
                 Fragment fragment = null;
                 //实现界面转换
                 switch (position) {
-                    case 0://综合新闻
-                        fragment = new AllNews();
+                    case 0://教务处
+                        fragment = new JWCActivity();
                         break;
                     case 1://先锋在线
                         fragment = new XFZXActivity();
                         break;
-                    case 2://教务处
-                        fragment = new JWCActivity();
+                    case 2://综合新闻
+                        fragment = new AllNews();
                         break;
                     case 3://学院新闻
                         fragment = new College();

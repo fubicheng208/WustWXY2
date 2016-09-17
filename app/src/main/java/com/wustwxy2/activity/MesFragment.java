@@ -63,6 +63,10 @@ public class MesFragment extends Fragment implements View.OnClickListener{
         BmobUser user = BmobUser.getCurrentUser(User.class);
         if(user==null){
             changeView();
+        }else{
+            //从缓存对象中得到名字和学号
+            name.setText((String)BmobUser.getObjectByKey("nickname"));
+            no.setText((String)BmobUser.getObjectByKey("username"));
         }
         //initToolbar();
         return view;

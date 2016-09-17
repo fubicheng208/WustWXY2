@@ -13,7 +13,7 @@ import android.widget.ListView;
 
 import com.wustwxy2.R;
 import com.wustwxy2.adapter.NewsAdapter;
-import com.wustwxy2.util.BrowseNewsAvtivity;
+import com.wustwxy2.activity.BrowseNewsAvtivity;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;

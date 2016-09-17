@@ -32,11 +32,7 @@
          android:textSize="18sp"
          />
      <Spinner
-<<<<<<< HEAD
          android:layout_marginEnd="16dp"
-         android:layout_marginRight="16dp"
-=======
->>>>>>> biloba123-master
          android:id="@+id/sp_score"
          android:layout_width="match_parent"
          android:layout_height="wrap_content"

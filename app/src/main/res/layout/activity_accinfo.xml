@@ -1,105 +1,134 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/background_login" >
+    android:background="@color/bg_grey_light"
+    android:fitsSystemWindows="true"
+    android:orientation="vertical">
+
+    <include layout="@layout/toolbar"/>
 
     <LinearLayout
         android:id="@+id/headLayout"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_centerHorizontal="true"
-        android:layout_margin="35dp">
+        android:layout_centerVertical="true"
+        android:layout_marginTop="10dp"
+        android:divider="@drawable/grey_divider"
+        android:orientation="vertical"
+        android:showDividers="end">
 
-        <ImageView
+        <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
             android:id="@+id/imageview"
-            android:layout_width="108dp"
-            android:layout_height="145dp"
-            />
+            android:layout_width="105dp"
+            android:layout_height="105dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="10dp"
+            app:civ_border_color="@color/lightGrey"
+            app:civ_border_width="2dp" />
 
-        <LinearLayout
+
+        <TextView
+            android:id="@+id/username"
+            style="@style/Fbc.TextView._Black"
             android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:orientation="vertical" >
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="2dp"
+            android:gravity="center"
+            android:text="张  三"
+            android:textColor="@color/colorText"
+            android:textSize="20sp"
+            android:textStyle="bold" />
 
-            <TextView
-                android:id="@+id/username"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:background="@drawable/background_login_div"
-                android:gravity="center"
-                android:textSize="20sp"
-                android:layout_margin="10dp"
-                android:text="张  三" />
+        <TextView
+            android:id="@+id/userid"
+            style="@style/Fbc.TextView._Black"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="2dp"
+            android:gravity="center"
+            android:text="201320000000"
+            android:textSize="18sp" />
 
-            <TextView
-                android:id="@+id/userid"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:background="@drawable/background_login_div"
-                android:gravity="center"
-                android:textSize="20sp"
-                android:layout_margin="10dp"
-                android:text="201320000000" />
+        <TextView
+            android:id="@+id/userdept"
+            style="@style/Fbc.TextView._Black"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp"
+            android:gravity="center"
+            android:text="蓝翔高级手扶拖拉机学院"
+            android:textSize="18sp" />
 
-            <TextView
-                android:id="@+id/userdept"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:background="@drawable/background_login_div"
-                android:gravity="center"
-                android:textSize="20sp"
-                android:layout_margin="10dp"
-                android:text="蓝翔高级手扶拖拉机学院" />
-
-        </LinearLayout>
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
+        android:layout_height="wrap_content"
         android:layout_below="@id/headLayout"
-        android:orientation="vertical">
-        <TextView android:id="@+id/userbalance"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:background="@drawable/background_login_div"
-            android:gravity="center"
-            android:textSize="25sp"
-            android:layout_margin="10dp"
-            android:textColor="#ccff0000"
-            />
+        android:divider="@drawable/grey_divider"
+        android:orientation="vertical"
+        android:showDividers="middle|end">
 
-        <Button android:id="@+id/btnquerytoday"
+
+        <Button
+            android:id="@+id/btnquerytoday"
+            style="@style/Fbc.TextView._Black"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/background_login_btn"
-            android:textSize="27sp"
-            android:layout_margin="10dp"
+            android:background="@drawable/mes_button_selector"
+            android:drawableLeft="@mipmap/today"
+            android:drawablePadding="10dp"
+            android:gravity="center_vertical"
+            android:paddingBottom="10dp"
+            android:paddingLeft="20dp"
+            android:paddingTop="5dp"
             android:text="今日消费明细"
-            android:textColor="#000"
-            />
+            android:textSize="18sp" />
 
-        <Button android:id="@+id/btnqueryhistory"
+        <Button
+            android:id="@+id/btnqueryhistory"
+            style="@style/Fbc.TextView._Black"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/background_login_btn"
-            android:textSize="27sp"
-            android:layout_margin="10dp"
+            android:background="@drawable/mes_button_selector"
+            android:drawableLeft="@mipmap/his"
+            android:drawablePadding="10dp"
+            android:gravity="center_vertical"
+            android:paddingBottom="10dp"
+            android:paddingLeft="20dp"
+            android:paddingTop="5dp"
             android:text="历史消费查询"
-            android:textColor="#000"
-            />
+            android:textSize="18sp" />
 
-        <Button android:id="@+id/btnlossreport"
+        <Button
+            android:id="@+id/btnlossreport"
+            style="@style/Fbc.TextView._Black"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/background_login_btn"
-            android:textSize="25sp"
-            android:layout_margin="10dp"
-            android:textColor="#000"
+            android:background="@drawable/mes_button_selector"
+            android:drawableLeft="@mipmap/loss"
+            android:drawablePadding="10dp"
+            android:gravity="center_vertical"
+            android:paddingBottom="10dp"
+            android:paddingLeft="20dp"
+            android:paddingTop="5dp"
             android:text="卡片挂失"
-            />
+            android:textSize="18sp" />
     </LinearLayout>
 
-</RelativeLayout>
+    <TextView
+        android:id="@+id/userbalance"
+        android:layout_width="fill_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/background_login_div"
+        android:layout_margin="15dp"
+        android:gravity="center"
+        android:layout_gravity="center_horizontal"
+        style="@style/Fbc.TextView._Gray"
+        android:textColor="@color/base_color_text_gray"
+        android:textSize="20sp"
+        android:textStyle="bold"/>
+
+</LinearLayout>

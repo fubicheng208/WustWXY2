@@ -1,4 +1,4 @@
-package com.wustwxy2.card;
+package com.wustwxy2.util;
 
 /**
  * Created by ASUS on 2016/9/13.

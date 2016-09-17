@@ -11,10 +11,5 @@
         android:title="@string/menu_losing_mine"
         app:showAsAction="never" />
 
-    <item
-        android:id="@+id/menu_losing_login"
-        android:title="登陆"
-        app:showAsAction="never"/>
-
 
 </menu>

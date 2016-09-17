@@ -99,7 +99,7 @@ public class MyLosingActivity extends BaseActivity implements IPopupItemClick, A
         }
 
         if (LostAdapter == null) {
-            LostAdapter = new QuickAdapter<Lost>(this, R.layout.item_list) {
+            LostAdapter = new QuickAdapter<Lost>(this, R.layout.item_list_losing) {
                 @Override
                 protected void convert(BaseAdapterHelper helper, Lost lost) {
                     helper.setText(tv_title, lost.getTitle())
@@ -110,7 +110,7 @@ public class MyLosingActivity extends BaseActivity implements IPopupItemClick, A
             };
         }
         if (FoundAdapter == null) {
-            FoundAdapter = new QuickAdapter<Found>(this, R.layout.item_list) {
+            FoundAdapter = new QuickAdapter<Found>(this, R.layout.item_list_losing) {
                 @Override
                 protected void convert(BaseAdapterHelper helper, Found found) {
                     helper.setText(tv_title, found.getTitle())
