@@ -18,6 +18,9 @@ public class User extends BmobUser {
     private String nickname;//昵称
     private BmobFile head;//头像（暂不支持）
 
+    public User() {
+    }
+
     public User(String username, String password){
         this.setUsername(username);
         this.setPassword(password);
@@ -45,5 +48,13 @@ public class User extends BmobUser {
 
     public void setHead(BmobFile head) {
         this.head = head;
+    }
+
+    public String getCardpassword() {
+        return cardpassword;
+    }
+
+    public void setCardpassword(String cardpassword) {
+        this.cardpassword = cardpassword;
     }
 }

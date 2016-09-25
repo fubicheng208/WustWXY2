@@ -11,6 +11,14 @@
         android:layout_width="match_parent"
         android:layout_height="55dp"
         android:background="@color/colorPrimary">
+        <ImageButton
+            android:id="@+id/course_back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@mipmap/back_white"
+            android:background="@color/unSeeTop"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="15dp"/>
         <TextView
             android:id="@+id/title"
             android:layout_width="wrap_content"
@@ -24,12 +32,12 @@
             android:layout_width="55dp"
             android:layout_height="match_parent"
             android:layout_alignParentTop="true"
-            android:layout_alignParentEnd="true">
+            android:layout_alignParentRight="true">
         <Button
             android:layout_margin="14dp"
             android:layout_width="27dp"
             android:layout_height="27dp"
-            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
             android:background="@drawable/menu"
             android:id="@+id/bt_menu"
             android:layout_alignParentBottom="true"/>

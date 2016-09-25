@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:fitsSystemWindows="true"
     tools:context="com.wustwxy2.activity.SetCourseActivity">
     <RelativeLayout
         android:id="@+id/title_rl"
@@ -16,7 +17,7 @@
             android:layout_width="27dp"
             android:layout_height="27dp"
             android:id="@+id/bt_back"
-            android:background="@drawable/back"/>
+            android:background="@mipmap/back_white"/>
         <TextView
             android:id="@+id/tv_title"
             android:layout_width="wrap_content"

@@ -13,7 +13,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="This is Lib\n陈紫琴 Come on!"
+        android:text="@string/coming_soon"
         android:textSize="@dimen/title"
         android:layout_centerInParent="true" />
 

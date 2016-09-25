@@ -55,6 +55,7 @@ public class SearchCardActivity extends AppCompatActivity implements View.OnClic
         toolbar = (Toolbar)findViewById(R.id.toolbar);
         toolbar.setTitle("一卡通");
         this.setSupportActionBar(toolbar);
+        this.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
     //设置沉浸式状态栏和导航栏

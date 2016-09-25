@@ -3,6 +3,7 @@ package com.wustwxy2.activity;
 import android.content.Intent;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Build;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -39,7 +40,8 @@ import cn.bmob.v3.BmobUser;
 import cn.bmob.v3.exception.BmobException;
 import cn.bmob.v3.listener.FindListener;
 
-public class SearchLosingActivity extends BaseActivity implements View.OnClickListener, AdapterView.OnItemClickListener{
+public class SearchLosingActivity extends BaseActivity implements View.OnClickListener,
+        AdapterView.OnItemClickListener, SwipeRefreshLayout.OnRefreshListener {
 
     private static final String TAG = " LOSING";
 
@@ -59,9 +61,12 @@ public class SearchLosingActivity extends BaseActivity implements View.OnClickLi
     private Button layout_lost;
     PopupWindow morePop;
 
-    RelativeLayout progress;
+    //RelativeLayout progress;
     LinearLayout layout_no;
     TextView tv_no;
+
+    //下拉刷新布局
+    SwipeRefreshLayout refreshLayout;
 
 
     @Override
@@ -73,7 +78,7 @@ public class SearchLosingActivity extends BaseActivity implements View.OnClickLi
     public void initViews() {
         initToolbar();
         initWindow();
-        progress = (RelativeLayout) findViewById(R.id.progress);
+        //progress = (RelativeLayout) findViewById(R.id.progress);
         layout_no = (LinearLayout) findViewById(R.id.layout_no);
         tv_no = (TextView) findViewById(R.id.tv_no);
 
@@ -82,30 +87,46 @@ public class SearchLosingActivity extends BaseActivity implements View.OnClickLi
         tv_lost = (TextView) findViewById(R.id.tv_lost);
         tv_lost.setTag("Lost");
         listview = (ListView) findViewById(R.id.list_lost);
+        refreshLayout = (SwipeRefreshLayout) findViewById(R.id.losing_fresh);
+        initRefresh();
     }
 
     @Override
     public void initListeners() {
         listview.setOnItemClickListener(this);
         layout_all.setOnClickListener(this);
+        refreshLayout.setOnRefreshListener(this);
     }
 
     public void initToolbar() {
-        toolbar = (Toolbar)findViewById(R.id.losing_toolbar);
+        toolbar = (Toolbar) findViewById(R.id.losing_toolbar);
         toolbar.setTitle("");
         this.setSupportActionBar(toolbar);
+        this.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
 
     //���ó���ʽ״̬���͵�����
-    private void initWindow(){
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT){
+    private void initWindow() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
             getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
             tintManager = new SystemBarTintManager(this);
             tintManager.setStatusBarTintColor(getResources().getColor(R.color.colorPrimary));
             tintManager.setStatusBarTintEnabled(true);
         }
+    }
+
+    private void initRefresh() {
+        //设置圈圈颜色
+        refreshLayout.setColorSchemeResources(R.color.colorAccent, R.color.yellow,
+                R.color.titleLightBlue, R.color.green);
+        //设置大小
+        refreshLayout.setSize(SwipeRefreshLayout.DEFAULT);
+        //设置背景颜色
+        refreshLayout.setProgressBackgroundColorSchemeResource(R.color.fresh_bg);
+        //设置距离顶部距离
+        refreshLayout.setProgressViewEndTarget(true, 200);
     }
 
     @Override
@@ -115,10 +136,12 @@ public class SearchLosingActivity extends BaseActivity implements View.OnClickLi
         } else if (v == layout_found) {
             morePop.dismiss();
             changeTextView(v);
+            startRefresh();
             queryFounds();
         } else if (v == layout_lost) {
             changeTextView(v);
             morePop.dismiss();
+            startRefresh();
             queryLosts();
         }
     }
@@ -150,7 +173,7 @@ public class SearchLosingActivity extends BaseActivity implements View.OnClickLi
         }
         listview.setAdapter(LostAdapter);
         // Ĭ�ϼ���ʧ�����
-        queryLosts();
+        startRefresh();
     }
 
     private void changeTextView(View v) {
@@ -195,6 +218,7 @@ public class SearchLosingActivity extends BaseActivity implements View.OnClickLi
     }
 
     int position;
+
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
         position = i;
@@ -222,9 +246,9 @@ public class SearchLosingActivity extends BaseActivity implements View.OnClickLi
         intent.putExtra("describe", describe);
         intent.putExtra("phone", phone);
         intent.putExtra("title", title);
-        intent.putExtra("time",time);
+        intent.putExtra("time", time);
         intent.putExtra("from", from);
-        intent.putExtra("objectId",objectId);
+        intent.putExtra("objectId", objectId);
         startActivity(intent);
     }
 
@@ -260,19 +284,27 @@ public class SearchLosingActivity extends BaseActivity implements View.OnClickLi
         query.findObjects(new FindListener<Lost>() {
             @Override
             public void done(List<Lost> losts, BmobException e) {
-                if(e==null){
+                if (e == null) {
                     LostAdapter.clear();
                     FoundAdapter.clear();
                     if (losts == null || losts.size() == 0) {
                         showErrorView(0);
+                        if (refreshLayout != null)
+                            //刷新的spinner停止旋转
+                            refreshLayout.setRefreshing(false);
                         LostAdapter.notifyDataSetChanged();
                         return;
                     }
-                    progress.setVisibility(View.GONE);
+                    //progress.setVisibility(View.GONE);
                     LostAdapter.addAll(losts);
                     listview.setAdapter(LostAdapter);
-                }
-                else{
+                    if (refreshLayout != null)
+                        //刷新的spinner停止旋转
+                        refreshLayout.setRefreshing(false);
+                } else {
+                    if (refreshLayout != null)
+                        //刷新的spinner停止旋转
+                        refreshLayout.setRefreshing(false);
                     showErrorView(2);
                 }
             }
@@ -287,19 +319,28 @@ public class SearchLosingActivity extends BaseActivity implements View.OnClickLi
 
             @Override
             public void done(List<Found> founds, BmobException e) {
-                if(e==null){
+                if (e == null) {
                     LostAdapter.clear();
                     FoundAdapter.clear();
                     if (founds == null || founds.size() == 0) {
                         showErrorView(1);
+                        if (refreshLayout != null)
+                            //刷新的spinner停止旋转
+                            refreshLayout.setRefreshing(false);
                         FoundAdapter.notifyDataSetChanged();
                         return;
                     }
                     FoundAdapter.addAll(founds);
                     listview.setAdapter(FoundAdapter);
-                    progress.setVisibility(View.GONE);
-                }
-                else{
+                    //progress.setVisibility(View.GONE);
+                    if (refreshLayout != null) {
+                        //刷新的spinner停止旋转
+                        refreshLayout.setRefreshing(false);
+                    }
+                } else {
+                    if (refreshLayout != null)
+                        //刷新的spinner停止旋转
+                        refreshLayout.setRefreshing(false);
                     showErrorView(2);
                 }
             }
@@ -313,14 +354,14 @@ public class SearchLosingActivity extends BaseActivity implements View.OnClickLi
      * @throws
      */
     private void showErrorView(int tag) {
-        progress.setVisibility(View.GONE);
+        //progress.setVisibility(View.GONE);
         listview.setVisibility(View.GONE);
         layout_no.setVisibility(View.VISIBLE);
         if (tag == 0) {
             tv_no.setText(getResources().getText(R.string.list_no_data_lost));
-        } else if(tag == 1){
+        } else if (tag == 1) {
             tv_no.setText(getResources().getText(R.string.list_no_data_found));
-        }else {
+        } else {
             tv_no.setText(getResources().getText(R.string.losing_error));
         }
     }
@@ -345,12 +386,12 @@ public class SearchLosingActivity extends BaseActivity implements View.OnClickLi
         switch (item.getItemId()) {
             case R.id.menu_losing_add://添加按钮
                 BmobUser bmobUser = BmobUser.getCurrentUser(User.class);
-                if(bmobUser != null){
+                if (bmobUser != null) {
                     // �����û�ʹ��Ӧ��
                     Intent intent = new Intent(this, AddActivity.class);
                     intent.putExtra("from", tv_lost.getTag().toString());
                     startActivityForResult(intent, Constants.REQUESTCODE_ADD);
-                }else{
+                } else {
                     ShowToast(getResources().getText(R.string.hint_login).toString());
                     Intent intent = new Intent(this, LoginActivity.class);
                     startActivity(intent);
@@ -358,21 +399,46 @@ public class SearchLosingActivity extends BaseActivity implements View.OnClickLi
                 break;
             case R.id.menu_losing_mine://我的按钮
                 BmobUser bmobUser2 = BmobUser.getCurrentUser(User.class);
-                if(bmobUser2 != null){
+                if (bmobUser2 != null) {
                     // �����û�ʹ��Ӧ��
                     Intent intent1 = new Intent(this, MyLosingActivity.class);
                     intent1.putExtra("from", tv_lost.getTag().toString());
                     startActivityForResult(intent1, Constants.REQUESTCODE_MY);
-                }else{
+                } else {
                     //�����û�����Ϊ��ʱ�� �ɴ��û�ע����桭
                     ShowToast(getResources().getText(R.string.hint_login).toString());
                     Intent intent = new Intent(this, LoginActivity.class);
                     startActivity(intent);
                 }
                 break;
+            case android.R.id.home:
+                finish();
+                break;
             default:
                 break;
         }
         return super.onOptionsItemSelected(item);
     }
+
+    @Override
+    public void onRefresh() {
+        if (tv_lost.getText().equals("Found")) {
+            queryFounds();
+        } else {
+            queryLosts();
+        }
+    }
+
+    //人工使刷新圈开始转动
+    private void startRefresh(){
+        refreshLayout.post(new Runnable(){
+            @Override
+            public void run() {
+                refreshLayout.setRefreshing(true);
+            }
+        });
+        onRefresh();
+    }
+
+
 }

@@ -82,6 +82,14 @@ public class MesFragment extends Fragment implements View.OnClickListener{
         login.setOnClickListener(this);
 
     }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        //切换回来的时候判断是否已登录并复原
+        changeViewBack();
+    }
+
     public void initDataFromSP(){
         mPreferences = getActivity().getSharedPreferences("data", Context.MODE_PRIVATE);
         mEditor = mPreferences.edit();
@@ -142,6 +150,23 @@ public class MesFragment extends Fragment implements View.OnClickListener{
         feedback.setVisibility(View.GONE);
         login.setVisibility(View.VISIBLE);
 
+    }
+
+    //切换回来的时候判断是否已登录并复原
+    private void changeViewBack(){
+        BmobUser user = BmobUser.getCurrentUser(User.class);
+        if(user!=null){
+            //从缓存对象中得到名字和学号
+            name.setVisibility(View.VISIBLE);
+            no.setVisibility(View.VISIBLE);
+            about.setVisibility(View.VISIBLE);
+            bind.setVisibility(View.VISIBLE);
+            exit.setVisibility(View.VISIBLE);
+            feedback.setVisibility(View.VISIBLE);
+            login.setVisibility(View.GONE);
+            name.setText((String)BmobUser.getObjectByKey("nickname"));
+            no.setText((String)BmobUser.getObjectByKey("username"));
+        }
     }
 
 

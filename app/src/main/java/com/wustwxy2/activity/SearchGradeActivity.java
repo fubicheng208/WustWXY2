@@ -5,6 +5,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -69,15 +70,14 @@ public class SearchGradeActivity extends AppCompatActivity implements View.OnCli
         });
 
         btQuery.setOnClickListener(this);
-        btBack.setOnClickListener(this);
-
+        //btBack.setOnClickListener(this);
 
     }
 
     private void inite(){
         llClass=(LinearLayout)findViewById(R.id.ll_class);
         llShow=(LinearLayout)findViewById(R.id.ll_show);
-        btBack=(Button)findViewById(R.id.bt_back);
+        //btBack=(Button)findViewById(R.id.bt_back);
         tvTitle=(TextView)findViewById(R.id.tv_title);
         tvOtherInfo=(TextView)findViewById(R.id.tv_other_info);
         lvScore=(ListView)findViewById(R.id.lv_score);
@@ -88,6 +88,8 @@ public class SearchGradeActivity extends AppCompatActivity implements View.OnCli
         mJwInfoDB=JwInfoDB.getJwInfoDB(this);
         mPreferences=getSharedPreferences("data",MODE_PRIVATE);
         dataList=new ArrayList<Score>();
+        initToolbar();
+        initWindow();
     }
 
     @Override
@@ -101,7 +103,8 @@ public class SearchGradeActivity extends AppCompatActivity implements View.OnCli
                 }
                 llClass.setVisibility(View.GONE);
                 llShow.setVisibility(View.VISIBLE);
-                tvTitle.setText(spSelect.getSelectedItem().toString());
+                toolbar.setTitle(spSelect.getSelectedItem().toString());
+                //tvTitle.setText(spSelect.getSelectedItem().toString());
                 switch (spSelect.getSelectedItemPosition()){
                     case 0:
                         dataList=mJwInfoDB.loadScores();
@@ -138,8 +141,9 @@ public class SearchGradeActivity extends AppCompatActivity implements View.OnCli
 
     public void initToolbar() {
         toolbar = (Toolbar)findViewById(R.id.toolbar);
-        toolbar.setTitle("成绩");
+        toolbar.setTitle("成绩查询");
         this.setSupportActionBar(toolbar);
+        this.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
     //设置沉浸式状态栏和导航栏
@@ -152,6 +156,20 @@ public class SearchGradeActivity extends AppCompatActivity implements View.OnCli
             tintManager.setStatusBarTintEnabled(true);
         }
     }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home://增加点击事件
+                finish();
+                break;
+            default:
+                break;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+
 }
 
 

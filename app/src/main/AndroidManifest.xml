@@ -39,7 +39,8 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppBaseTheme">
-        <activity android:name=".activity.MainActivity">
+        <activity android:name=".activity.MainActivity" android:screenOrientation="portrait">
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -56,28 +57,28 @@
             android:enabled="true"
             android:process=":remote" />
 
-        <activity android:name=".activity.SearchEngActivity" />
-        <activity android:name=".activity.SearchTableActivity" />
-        <activity android:name=".activity.SearchGradeActivity" />
-        <activity android:name=".activity.SetCourseActivity" />
-        <activity android:name=".activity.SearchCardActivity" />
-        <activity android:name=".activity.SearchComputerActivity" />
-        <activity android:name=".activity.SearchBusActivity" />
-        <activity android:name=".activity.SearchMapActivity" />
-        <activity android:name=".activity.SearchLosingActivity" />
-        <activity android:name=".activity.SearchLibActivity" />
-        <activity android:name=".activity.AddActivity" />
-        <activity android:name=".activity.MyLosingActivity" />
-        <activity android:name=".activity.LoginActivity" />
-        <activity android:name=".activity.LosingDetailActivity" />
-        <activity android:name=".activity.EditLosingActivity" />
-        <activity android:name=".activity.ImageShower" />
-        <activity android:name=".activity.FeedbackActivity" />
-        <activity android:name=".activity.AboutActivity" />
-        <activity android:name=".activity.BindActivity"></activity>
-        <activity android:name=".activity.BrowseNewsAvtivity"/>
-        <activity android:name=".activity.AccInfoActivity"></activity>
-        <activity android:name=".activity.QueryListActivity"></activity>
+        <activity android:name=".activity.SearchEngActivity" android:screenOrientation="portrait" />
+        <activity android:name=".activity.SearchTableActivity"  android:screenOrientation="portrait"/>
+        <activity android:name=".activity.SearchGradeActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".activity.SetCourseActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".activity.SearchCardActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".activity.SearchComputerActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".activity.SearchBusActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".activity.SearchMapActivity" android:screenOrientation="portrait" />
+        <activity android:name=".activity.SearchLosingActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".activity.SearchLibActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".activity.AddActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".activity.MyLosingActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".activity.LoginActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".activity.LosingDetailActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".activity.EditLosingActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".activity.ImageShower" android:screenOrientation="portrait"/>
+        <activity android:name=".activity.FeedbackActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".activity.AboutActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".activity.BindActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".activity.BrowseNewsAvtivity" android:screenOrientation="portrait"/>
+        <activity android:name=".activity.AccInfoActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".activity.QueryListActivity" android:screenOrientation="portrait"/>
     </application>
 
 </manifest>

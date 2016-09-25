@@ -1,10 +1,12 @@
 package com.wustwxy2.activity;
 
+import android.app.ProgressDialog;
 import android.os.Build;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
@@ -13,8 +15,11 @@ import android.widget.Toast;
 
 import com.readystatesoftware.systembartint.SystemBarTintManager;
 import com.wustwxy2.R;
+import com.wustwxy2.bean.User;
 
 import cn.bmob.v3.BmobUser;
+import cn.bmob.v3.exception.BmobException;
+import cn.bmob.v3.listener.SaveListener;
 
 public class BindActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -54,6 +59,7 @@ public class BindActivity extends AppCompatActivity implements View.OnClickListe
         toolbar = (Toolbar)findViewById(R.id.toolbar);
         toolbar.setTitle("绑定");
         this.setSupportActionBar(toolbar);
+        this.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
 
@@ -98,5 +104,17 @@ public class BindActivity extends AppCompatActivity implements View.OnClickListe
                 Toast.makeText(this, "图书管账号绑定成功", Toast.LENGTH_SHORT).show();
             }
         }
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home://增加点击事件
+                finish();
+                break;
+            default:
+                break;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

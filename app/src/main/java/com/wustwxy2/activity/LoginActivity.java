@@ -47,6 +47,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     SharedPreferences sp;
     SharedPreferences.Editor editor;
+    //卡务中心SP保存的学号值，用来判断是否换号登录，若是则清空SP。
+    String username_card;
 
     private Handler handler=new Handler(){
         public void handleMessage(Message msg){
@@ -92,6 +94,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             username.setText(cacheAccount);
             password.setText(cachePw);
         }
+        username_card = getSharedPreferences("WustCardCenter",0).getString("username","");
     }
 
     public void initToolbar() {
@@ -148,9 +151,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
         login.setEnabled(false);
 
-        final ProgressDialog progressDialog = new ProgressDialog(LoginActivity.this,
-                R.style.AppTheme_Dark_Dialog);
+        final ProgressDialog progressDialog = new ProgressDialog(LoginActivity.this);
         progressDialog.setIndeterminate(true);
+        progressDialog.setCancelable(false);
         progressDialog.setMessage("登陆中");
         progressDialog.show();
 
@@ -176,6 +179,10 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                         public void done(User user, BmobException e) {
                             if(e==null){
                                 Log.i(TAG,"注册用户成功");
+                                //新登录用户，删除卡务中心保存的密码
+                                if(!username_card.equals(name)){
+                                   deleteCardSP();
+                                }
                                 write2Sp(name,pw,nickname);
                                 Message msgMessage = new Message();
                                 msgMessage.arg1 = 1;
@@ -201,8 +208,10 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                                         public void done(User user, BmobException e) {
                                             if(e == null){
                                                 Log.i(TAG,"登录成功");
+                                                if(!username_card.equals(name)){
+                                                    deleteCardSP();
+                                                }
                                                 write2Sp(name,pw,nickname);
-
                                                 Message msgMessage = new Message();
                                                 msgMessage.arg1 = 1;
                                                 handler.sendMessage(msgMessage);
@@ -228,6 +237,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     Message msgMessage = new Message();
                     msgMessage.arg1 = 4;
                     handler.sendMessage(msgMessage);
+                    //Toast.makeText(LoginActivity.this, "教务处又崩啦", Toast.LENGTH_SHORT).show();
                 } else{
                     Message msgMessage = new Message();
                     msgMessage.arg1 = 3;
@@ -258,6 +268,13 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         editor.putString("AccountCache", name);
         editor.putString("passwordCache",password);
         editor.commit();
+    }
+
+    private void deleteCardSP(){
+        getSharedPreferences("WustCardCenter", 0).edit()
+                .putString("username", null).apply();
+        getSharedPreferences("WustCardCenter", 0).edit()
+                .putString("password", null).apply();
     }
 
     public boolean isNetworkAvailable(AppCompatActivity activity)

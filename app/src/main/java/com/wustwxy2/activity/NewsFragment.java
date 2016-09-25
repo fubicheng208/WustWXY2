@@ -15,10 +15,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 
 import com.wustwxy2.R;
-import com.wustwxy2.models.AllNews;
-import com.wustwxy2.models.College;
-import com.wustwxy2.models.JWCActivity;
-import com.wustwxy2.models.XFZXActivity;
 
 /**
  * Created by fubicheng on 2016/7/12.

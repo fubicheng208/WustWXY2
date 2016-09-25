@@ -2,62 +2,61 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical" 
-    android:background="@color/white">
+    android:background="@color/white"
+    android:fitsSystemWindows="true"
+    android:orientation="vertical">
 
-    <include layout="@layout/toolbar"/>
+    <include layout="@layout/toolbar" />
 
     <LinearLayout
-            android:layout_width="fill_parent"
-            android:layout_height="22dp" 
-            android:orientation="horizontal"
+        android:layout_width="fill_parent"
+        android:layout_height="22dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
             android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp">
+            android:text="时间"
+            android:textColor="@color/base_color_text_black"
+            android:textSize="14sp" />
 
-            <TextView
-                android:textColor="@color/base_color_text_black"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
-                android:textSize="14sp"
-                android:layout_marginLeft="10dp"
-                android:text="时间"/>
+        <TextView
+            android:id="@+id/transtype"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="50dp"
+            android:text="类型"
+            android:textColor="@color/base_color_text_black"
+            android:textSize="14sp" />
 
-            <TextView
-                android:id="@+id/transtype"
-                android:textColor="@color/base_color_text_black"
-                android:textSize="14sp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="35dp"
-                android:text="类型"/>
-            
-             <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                 android:textColor="@color/base_color_text_black"
-                 android:textSize="14sp"
-                 android:layout_marginLeft="60dp"
-                android:text="交易"/>
-            
-            <TextView
-                style="@style/normalText"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="@color/base_color_text_black"
-                android:textSize="14sp"
-                android:layout_marginLeft="120dp"
-                android:text="余额"
-                />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="40dp"
+            android:text="交易"
+            android:textColor="@color/base_color_text_black"
+            android:textSize="14sp" />
+
+        <TextView
+            style="@style/normalText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="105dp"
+            android:text="余额"
+            android:textColor="@color/base_color_text_black"
+            android:textSize="14sp" />
     </LinearLayout>
-    
-    <ListView 
+
+
+    <ListView
         android:id="@+id/listview"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:background="@drawable/background_login_div"
-        android:padding="5dp">
-        
-    </ListView>
+        android:padding="5dp"/>
 
 </LinearLayout>

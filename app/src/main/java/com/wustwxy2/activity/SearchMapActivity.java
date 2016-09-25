@@ -4,6 +4,7 @@ import android.os.Build;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.view.MenuItem;
 import android.view.WindowManager;
 
 import com.baidu.location.BDLocation;
@@ -88,6 +89,7 @@ public class SearchMapActivity extends AppCompatActivity {
         toolbar = (Toolbar)findViewById(R.id.toolbar);
         toolbar.setTitle("校园地图");
         this.setSupportActionBar(toolbar);
+        this.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
     //设置沉浸式状态栏和导航栏
@@ -127,5 +129,17 @@ public class SearchMapActivity extends AppCompatActivity {
         option.setIsNeedAddress(true); // 返回的定位结果包含地址信息
         option.setNeedDeviceDirect(true); // 返回的定位结果包含手机机头的方向
         locationClient.setLocOption(option);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home://增加点击事件
+                finish();
+                break;
+            default:
+                break;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

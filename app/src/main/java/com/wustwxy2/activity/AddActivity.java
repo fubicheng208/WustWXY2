@@ -139,7 +139,7 @@ public class AddActivity extends BaseActivity implements View.OnClickListener, I
         dialog.setIndeterminate(true);
         //失去焦点的时候，不是去对话框
         dialog.setCancelable(false);
-        dialog.setTitle("正在上传");
+        dialog.setMessage("正在上传...");
     }
 
     @Override

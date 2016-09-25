@@ -13,6 +13,7 @@
         android:layout_gravity="center"
         android:gravity="center"
         android:textSize="18sp"
-        android:text="@string/list_no_data_lost" />
+        android:text="@string/list_no_data_lost"
+        android:textColor="@color/lightGrey"/>
 
 </LinearLayout>

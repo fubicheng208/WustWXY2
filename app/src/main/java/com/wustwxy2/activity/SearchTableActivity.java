@@ -20,11 +20,14 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.PopupWindow;
@@ -58,6 +61,7 @@ public class SearchTableActivity extends AppCompatActivity implements AdapterVie
     private PopupWindow mPopupWindowMenu;
     private RelativeLayout rlMenu;
     private Button btMenu;
+    private ImageButton back;
     public static Activity CourseActivity;
     public static final int CROP_PHOTO=0;
     public static final int CHOOSE_PHOTO=1;
@@ -67,11 +71,20 @@ public class SearchTableActivity extends AppCompatActivity implements AdapterVie
     private SystemBarTintManager tintManager;
 
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_course);
-        //
+        initWindow();
+        //initToolbar();
+        back = (ImageButton) findViewById(R.id.course_back);
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
         titleRl= (RelativeLayout) findViewById(R.id.title_rl);
         itemHeight = getResources().getDimensionPixelSize(R.dimen.weekItemHeight);
         marTop = getResources().getDimensionPixelSize(R.dimen.weekItemMarTop);
@@ -238,6 +251,8 @@ public class SearchTableActivity extends AppCompatActivity implements AdapterVie
                 intent2.setType("image/*");
                 startActivityForResult(intent2,CHOOSE_PHOTO);
                 break;
+            default:
+                break;
         }
 }
     //设置背景图片相关
@@ -347,11 +362,11 @@ public class SearchTableActivity extends AppCompatActivity implements AdapterVie
         }
     }
 
-    public void initToolbar() {
+   /* public void initToolbar() {
         toolbar = (Toolbar)findViewById(R.id.toolbar);
         toolbar.setTitle("课表");
         this.setSupportActionBar(toolbar);
-    }
+    }*/
 
     //设置沉浸式状态栏和导航栏
     private void initWindow(){
@@ -362,5 +377,17 @@ public class SearchTableActivity extends AppCompatActivity implements AdapterVie
             tintManager.setStatusBarTintColor(getResources().getColor(R.color.colorPrimary));
             tintManager.setStatusBarTintEnabled(true);
         }
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home://增加点击事件
+                finish();
+                break;
+            default:
+                break;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

@@ -9,6 +9,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.ImageView;
@@ -68,6 +69,7 @@ public class LosingDetailActivity extends BaseActivity implements View.OnClickLi
     TextView tv_describe;
     //提供的缩略图
     ImageView photo_detail;
+    ImageView back;
 
     @Override
     public void setContentView() {
@@ -88,6 +90,7 @@ public class LosingDetailActivity extends BaseActivity implements View.OnClickLi
         tv_title = (TextView)findViewById(R.id.tv_title_detail);
         tv_describe = (TextView)findViewById(R.id.tv_describe_detail);
         photo_detail = (ImageView)findViewById(R.id.losing_photo_detail);
+        back = (ImageView) findViewById(R.id.iv_detail_back);
         //initToolbar();
         initWindow();
     }
@@ -96,6 +99,7 @@ public class LosingDetailActivity extends BaseActivity implements View.OnClickLi
     public void initListeners() {
         tv_phone.setOnClickListener(this);
         photo_detail.setOnClickListener(this);
+        back.setOnClickListener(this);
     }
 
 
@@ -120,7 +124,7 @@ public class LosingDetailActivity extends BaseActivity implements View.OnClickLi
         dialog.setIndeterminate(true);
         //失去焦点的时候，不是去对话框
         dialog.setCancelable(false);
-        dialog.setTitle("正在加载");
+        dialog.setMessage("正在加载...");
         showDetail();
     }
 
@@ -226,11 +230,6 @@ public class LosingDetailActivity extends BaseActivity implements View.OnClickLi
         tv_no.setText(getResources().getText(R.string.losing_error));
     }
 
-    /*public void initToolbar() {
-        toolbar = (Toolbar)findViewById(R.id);
-        toolbar.setTitle("");
-        this.setSupportActionBar(toolbar);
-    }*/
 
     //初始化图片加载器，调用的开源的图片加载框架
     private void initImageLoader() {
@@ -252,6 +251,13 @@ public class LosingDetailActivity extends BaseActivity implements View.OnClickLi
 
         ImageLoader.getInstance().init(config);
     }
+
+   /* public void initToolbar() {
+        toolbar = (Toolbar) findViewById(R.id.losing_toolbar_detail);
+        toolbar.setTitle("");
+        this.setSupportActionBar(toolbar);
+        this.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+    }*/
 
 
     //设置沉浸式状态栏和导航栏
@@ -278,10 +284,24 @@ public class LosingDetailActivity extends BaseActivity implements View.OnClickLi
             Intent intent = new Intent(this,ImageShower.class);
             intent.putExtra("url", url);
             startActivity(intent);
+        }else if(view == back){
+            finish();
         }
     }
 
-   /* public static Bitmap drawableToBitmap(Drawable drawable) {
+    /*@Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()){
+            case android.R.id.home:
+                finish();
+                break;
+            default:
+                break;
+        }
+        return super.onOptionsItemSelected(item);
+    }*/
+
+    /* public static Bitmap drawableToBitmap(Drawable drawable) {
 
         Bitmap bitmap = Bitmap.createBitmap(
                 drawable.getIntrinsicWidth(),

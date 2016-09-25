@@ -4,6 +4,7 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Gravity;
@@ -41,7 +42,8 @@ import static com.wustwxy2.R.id.tv_photo;
 import static com.wustwxy2.R.id.tv_time;
 import static com.wustwxy2.R.id.tv_title;
 
-public class MyLosingActivity extends BaseActivity implements IPopupItemClick, AdapterView.OnItemLongClickListener {
+public class MyLosingActivity extends BaseActivity implements IPopupItemClick, AdapterView.OnItemLongClickListener,
+        SwipeRefreshLayout.OnRefreshListener{
 
     Toolbar toolbar;
     private SystemBarTintManager tintManager;
@@ -56,12 +58,14 @@ public class MyLosingActivity extends BaseActivity implements IPopupItemClick, A
 
     protected QuickAdapter<Found> FoundAdapter;// 招领
 
-    RelativeLayout progress;
+    //RelativeLayout progress;
     LinearLayout layout_no;
     TextView tv_no;
 
-
     private String from;
+
+    //下拉刷新布局
+    SwipeRefreshLayout refreshLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,16 +81,19 @@ public class MyLosingActivity extends BaseActivity implements IPopupItemClick, A
     public void initViews() {
         initToolbar();
         initWindow();
-        progress = (RelativeLayout) findViewById(R.id.progress);
+        //progress = (RelativeLayout) findViewById(R.id.progress);
         layout_no = (LinearLayout) findViewById(R.id.layout_no);
         tv_no = (TextView) findViewById(R.id.tv_no);
         listview = (ListView) findViewById(R.id.list_lost_mine);
         initEditPop();
+        refreshLayout = (SwipeRefreshLayout) findViewById(R.id.losing_fresh_detail);
+        initRefresh();
     }
 
     @Override
     public void initListeners() {
         listview.setOnItemLongClickListener(this);
+        refreshLayout.setOnRefreshListener(this);
     }
 
     @Override
@@ -124,11 +131,11 @@ public class MyLosingActivity extends BaseActivity implements IPopupItemClick, A
         if (from.equals("Lost")) {
             Log.i(TAG, from);
             listview.setAdapter(LostAdapter);
-            queryLosts();
+            startRefresh();
         } else {
             Log.i(TAG, from);
             listview.setAdapter(FoundAdapter);
-            queryFounds();
+            startRefresh();
         }
         dialog = new ProgressDialog(this);
         //设置进度条样式
@@ -136,14 +143,25 @@ public class MyLosingActivity extends BaseActivity implements IPopupItemClick, A
         dialog.setIndeterminate(true);
         //失去焦点的时候，不是去对话框
         dialog.setCancelable(false);
-        dialog.setTitle("正在删除");
-        dialog.setMax(PROGRESS_MAX);
+        dialog.setMessage("正在删除...");
     }
 
     public void initToolbar() {
         toolbar = (Toolbar)findViewById(R.id.toolbar);
         toolbar.setTitle("");
         this.setSupportActionBar(toolbar);
+    }
+
+    private void initRefresh() {
+        //设置圈圈颜色
+        refreshLayout.setColorSchemeResources(R.color.colorAccent, R.color.yellow,
+                R.color.titleLightBlue, R.color.green);
+        //设置大小
+        refreshLayout.setSize(SwipeRefreshLayout.DEFAULT);
+        //设置背景颜色
+        refreshLayout.setProgressBackgroundColorSchemeResource(R.color.fresh_bg);
+        //设置距离顶部距离
+        refreshLayout.setProgressViewEndTarget(true, 200);
     }
 
     /**
@@ -166,15 +184,24 @@ public class MyLosingActivity extends BaseActivity implements IPopupItemClick, A
                     FoundAdapter.clear();
                     if (losts == null || losts.size() == 0) {
                         showErrorView(0);
+                        if (refreshLayout != null)
+                            //刷新的spinner停止旋转
+                            refreshLayout.setRefreshing(false);
                         LostAdapter.notifyDataSetChanged();
                         return;
                     }
-                    progress.setVisibility(View.GONE);
+                    //progress.setVisibility(View.GONE);
                     LostAdapter.addAll(losts);
                     listview.setAdapter(LostAdapter);
                     Log.i(TAG, losts.size()+"");
+                    if (refreshLayout != null)
+                        //刷新的spinner停止旋转
+                        refreshLayout.setRefreshing(false);
                 }
                 else{
+                    if (refreshLayout != null)
+                        //刷新的spinner停止旋转
+                        refreshLayout.setRefreshing(false);
                     Log.i(TAG, "queryLost失败");
                     showErrorView(2);
                 }
@@ -198,14 +225,23 @@ public class MyLosingActivity extends BaseActivity implements IPopupItemClick, A
                     if (founds == null || founds.size() == 0) {
                         showErrorView(1);
                         FoundAdapter.notifyDataSetChanged();
+                        if (refreshLayout != null)
+                            //刷新的spinner停止旋转
+                            refreshLayout.setRefreshing(false);
                         return;
                     }
                     FoundAdapter.addAll(founds);
                     listview.setAdapter(FoundAdapter);
-                    progress.setVisibility(View.GONE);
+                    //progress.setVisibility(View.GONE);
                     Log.i(TAG, founds.size()+"");
+                    if (refreshLayout != null)
+                        //刷新的spinner停止旋转
+                        refreshLayout.setRefreshing(false);
                 }
                 else{
+                    if (refreshLayout != null)
+                        //刷新的spinner停止旋转
+                        refreshLayout.setRefreshing(false);
                     showErrorView(2);
                 }
             }
@@ -219,7 +255,7 @@ public class MyLosingActivity extends BaseActivity implements IPopupItemClick, A
      * @throws
      */
     private void showErrorView(int tag) {
-        progress.setVisibility(View.GONE);
+        //progress.setVisibility(View.GONE);
         listview.setVisibility(View.GONE);
         layout_no.setVisibility(View.VISIBLE);
         if (tag == 0) {
@@ -417,5 +453,24 @@ public class MyLosingActivity extends BaseActivity implements IPopupItemClick, A
             tintManager.setStatusBarTintColor(getResources().getColor(R.color.colorPrimary));
             tintManager.setStatusBarTintEnabled(true);
         }
+    }
+
+    @Override
+    public void onRefresh() {
+        if (from.equals("Lost")) {
+            queryLosts();
+        } else {
+            queryFounds();
+        }
+    }
+    //人工使刷新圈开始转动
+    private void startRefresh(){
+        refreshLayout.post(new Runnable(){
+            @Override
+            public void run() {
+                refreshLayout.setRefreshing(true);
+            }
+        });
+        onRefresh();
     }
 }

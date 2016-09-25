@@ -1,13 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.v7.widget.Toolbar xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/losing_toolbar"
+    android:id="@+id/losing_toolbar_detail"
     android:layout_width="match_parent"
-    android:layout_height="@dimen/base_action_bar_height"
+    android:layout_height="?attr/actionBarSize"
     android:background="@color/darkWhite"
     android:fitsSystemWindows="true"
-    app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
-    app:theme="@style/AppBaseTheme">
+    app:theme="@style/AppBaseTheme"
+    app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
+
+    <ImageView
+        android:id="@+id/iv_detail_back"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@mipmap/back"/>
 
     <RelativeLayout
         android:id="@+id/layout_all_detail"
@@ -16,14 +22,16 @@
         android:layout_centerInParent="true"
         android:gravity="center_horizontal">
 
+
         <TextView
             android:id="@+id/tv_nickname"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:padding="5dp"
+            android:padding="10dp"
             android:text="@string/losing_detail_default_nickname"
             android:textColor="@color/gray"
-            android:textSize="@dimen/subhead" />
+            android:textSize="18sp"
+            android:layout_centerVertical="true"/>
 
         <TextView
             android:id="@+id/tv_time_detail"
@@ -34,6 +42,9 @@
             style="@style/Fbc.TextView._Gray"
             android:textSize="@dimen/caption"
             android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="10dp"
+            android:layout_marginBottom="8dp"
             />
 
         <TextView
@@ -46,7 +57,7 @@
             android:textSize="12sp"
             android:drawablePadding="5dp"
             android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
+            android:layout_marginTop="8dp"
             style="@style/Fbc.TextView._White"
             android:background="@color/green"
             android:text="@string/default_phone"

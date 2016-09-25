@@ -5,6 +5,7 @@ import android.os.Build;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
@@ -65,6 +66,7 @@ public class FeedbackActivity extends BaseActivity implements View.OnClickListen
         toolbar = (Toolbar)findViewById(R.id.toolbar);
         toolbar.setTitle("反馈");
         this.setSupportActionBar(toolbar);
+        this.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
 
@@ -104,5 +106,17 @@ public class FeedbackActivity extends BaseActivity implements View.OnClickListen
                 }
             }
         });
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()){
+            case android.R.id.home:
+                finish();
+                break;
+            default:
+                break;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

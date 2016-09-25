@@ -15,6 +15,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.Window;
@@ -159,6 +160,7 @@ public class AccInfoActivity extends AppCompatActivity
                 // TODO Auto-generated method stub
                final DatePicker datePicker = new DatePicker(AccInfoActivity.this);
                  datePicker.setCalendarViewShown(false);
+                datePicker.setBackgroundColor(getResources().getColor(R.color.bg_datePicker_grey));
                // ((ViewGroup) ((ViewGroup) datePicker.getChildAt(0)).getChildAt(0)).getChildAt(2).setVisibility(View.GONE);
                 new  AlertDialog.Builder(AccInfoActivity.this)
                         .setTitle("选择要查询的月份" )
@@ -221,6 +223,7 @@ public class AccInfoActivity extends AppCompatActivity
         toolbar = (Toolbar)findViewById(R.id.toolbar);
         toolbar.setTitle("一卡通");
         this.setSupportActionBar(toolbar);
+        this.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
     //设置沉浸式状态栏和导航栏
@@ -233,4 +236,17 @@ public class AccInfoActivity extends AppCompatActivity
             tintManager.setStatusBarTintEnabled(true);
         }
     }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home://增加点击事件
+                finish();
+                break;
+            default:
+                break;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
 }

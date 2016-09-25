@@ -18,6 +18,7 @@
     <color name="text_gray">#969696</color>
     <color name="bg_grey">#f2f2f2</color>
     <color name="bg_grey_light">#f8f9fb</color>
+    <color name="bg_datePicker_grey">#808080</color>
     <color name="green">#5cbe6c</color>
     <color name="base_bg">#f4f6f6</color><!--基础白背景-->
     <color name="base_color_text_gray">#898989</color>
@@ -30,8 +31,9 @@
     <color name="buttonBlue">#56abe4</color><!--好看的按钮蓝色-->
     <color name="buttonBluePressed">#1976D2</color>
     <color name="lightSkyBlue">#98c5d8</color> <!-- 亮天蓝色 -->
-    <color name="unSeeTop">#00000000</color>
+    <color name="unSeeTop">#00000000</color><!--透明-->
     <color name="actionBarText">#EDEDED</color>
     <color name="colorPrimaryNews">#6ac9bd</color>
     <color name="colorPrimaryDarkNews">#00bfa5</color>
+    <color name="fresh_bg">#fafafa</color>
 </resources>

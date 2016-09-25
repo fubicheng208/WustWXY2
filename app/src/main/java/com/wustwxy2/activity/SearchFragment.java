@@ -1,10 +1,13 @@
 package com.wustwxy2.activity;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -32,6 +35,7 @@ import com.nostra13.universalimageloader.core.assist.QueueProcessingType;
 import com.wustwxy2.R;
 import com.wustwxy2.adapter.AdAdapter;
 import com.wustwxy2.adapter.MyGridAdapter;
+import com.wustwxy2.bean.User;
 import com.wustwxy2.util.WustCardCenterLogin;
 import com.wustwxy2.models.AdDomain;
 import com.wustwxy2.models.JwInfoDB;
@@ -46,6 +50,9 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
+import cn.bmob.v3.exception.BmobException;
+import cn.bmob.v3.listener.SaveListener;
+
 /**
  * Created by fubicheng on 2016/7/12.
  */
@@ -58,6 +65,8 @@ public class SearchFragment extends Fragment implements WustCardCenterLogin.Logi
 
     //登录一卡通相关
     private WustCardCenterLogin login = new WustCardCenterLogin();
+    //一卡通账号密码
+    String username, password;
 
     //界面图片相关
     public static String IMAGE_CACHE_PATH = "imageloader/Cache"; // 图片缓存路径
@@ -85,9 +94,12 @@ public class SearchFragment extends Fragment implements WustCardCenterLogin.Logi
     };
     //9个按钮界面
     private MyGridView gridview;
+
     //成绩课表相关
     private static final int QUERY_SCORE = 0;
     private static final int QUERY_COURSE = 1;
+    private static final int DIALOG_SCORE = 2;
+    private static final int DIALOG_COURSE = 3;
     private SharedPreferences mPreferences;
     private SharedPreferences.Editor mEditor;
     private JwInfoDB mJwInfoDB;
@@ -98,7 +110,7 @@ public class SearchFragment extends Fragment implements WustCardCenterLogin.Logi
             super.handleMessage(msg);
             if (!msg.obj.toString().equals("anyType{}")) {
                 switch (msg.arg1) {
-                    case QUERY_SCORE:
+                    case QUERY_SCORE://查成绩
                         String cj = msg.obj.toString();
                         if (!cj.equals(mPreferences.getString("cjData", ""))) {
                             Utility.handleScores(mJwInfoDB, cj);
@@ -108,9 +120,10 @@ public class SearchFragment extends Fragment implements WustCardCenterLogin.Logi
                             mEditor.putString("xm", Utility.xm);
                             mEditor.commit();
                         }
+                        progressDialog.dismiss();
                         startActivity(new Intent(getActivity(), SearchGradeActivity.class));
                         break;
-                    case QUERY_COURSE:
+                    case QUERY_COURSE://查课表
                         String kb = msg.obj.toString();
                         if (!kb.equals(mPreferences.getString("kbData", ""))) {
                             Utility.handleCourses(mJwInfoDB, kb);
@@ -121,11 +134,34 @@ public class SearchFragment extends Fragment implements WustCardCenterLogin.Logi
                             mEditor.putString("kbData", kb);
                             mEditor.commit();
                         }
+                        progressDialog.dismiss();
                         startActivity(new Intent(getActivity(), SearchTableActivity.class));
+                        break;
+                    default:
                         break;
                 }
             } else {
                 Toast.makeText(getActivity(), R.string.no_data_toast, Toast.LENGTH_SHORT).show();
+            }
+        }
+    };
+
+    //由于多人代码的加入，不得不创建第三个handler，来响应UI更新
+    private Handler handler2 = new Handler(){
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            switch (msg.arg1){
+                case DIALOG_SCORE:
+                    progressDialog.setMessage("正在查询...");
+                    progressDialog.show();
+                    break;
+                case DIALOG_COURSE:
+                    progressDialog.setMessage("正在载入课表...");
+                    progressDialog.show();
+                    break;
+                default:
+                    break;
             }
         }
     };
@@ -135,7 +171,12 @@ public class SearchFragment extends Fragment implements WustCardCenterLogin.Logi
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_search, container, false);
         initToolbar();
+        //初始化网格布局
         initGridView(view);
+        //初始化ProgressDialog
+        progressDialog = new ProgressDialog(getActivity());
+        progressDialog.setMessage("正在登录...");
+        progressDialog.setCancelable(false);
         //初始化成绩课表所需变量
         initScoreAndCourse();
         //initTableLayout();
@@ -199,11 +240,15 @@ public class SearchFragment extends Fragment implements WustCardCenterLogin.Logi
                                 new Thread(new Runnable() {
                                     @Override
                                     public void run() {
+                                        //通知主线程显示DIALOG
+                                        Message message2 = new Message();
+                                        message2.arg1 = DIALOG_COURSE;
+                                        handler2.sendMessage(message2);
                                         Message message = new Message();
+                                        //查询成绩
                                         message.arg1 = QUERY_COURSE;
                                         message.obj = Ksoap2.getCourseInfo("201513137125", xq);
                                         handler1.sendMessage(message);
-
                                     }
                                 }).start();
                             } else {
@@ -217,33 +262,41 @@ public class SearchFragment extends Fragment implements WustCardCenterLogin.Logi
                     }
                     break;
                     case 2: {
-                        final String xh = mPreferences.getString("Account", null);
-                        if (xh != null) {
-                            new Thread(new Runnable() {
-                                @Override
-                                public void run() {
-                                    new Thread(new Runnable() {
-                                        @Override
-                                        public void run() {
-                                            Message message = new Message();
-                                            message.arg1 = QUERY_SCORE;
-                                            message.obj = Ksoap2.getScoreInfo(xh);
-                                            handler1.sendMessage(message);
-                                        }
-                                    }).start();
-                                }
-                            }).start();
-                        } else {
-                            Toast.makeText(getActivity(), "需要先登录的哦", Toast.LENGTH_SHORT).show();
-                            startActivity(new Intent(getActivity(), LoginActivity.class));
-                            getActivity().finish();
+                        if(isNetworkAvailable(getActivity())){
+                            final String xh = mPreferences.getString("Account", null);
+                            if (xh != null) {
+                                new Thread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        new Thread(new Runnable() {
+                                            @Override
+                                            public void run() {
+                                                //通知主线程显示DIALOG
+                                                Message message2 = new Message();
+                                                message2.arg1 = DIALOG_SCORE;
+                                                handler2.sendMessage(message2);
+                                                //查询成绩
+                                                Message message = new Message();
+                                                message.arg1 = QUERY_SCORE;
+                                                message.obj = Ksoap2.getScoreInfo(xh);
+                                                handler1.sendMessage(message);
+                                            }
+                                        }).start();
+                                    }
+                                }).start();
+                            } else {
+                                Toast.makeText(getActivity(), "需要先登录的哦", Toast.LENGTH_SHORT).show();
+                                startActivity(new Intent(getActivity(), LoginActivity.class));
+                                getActivity().finish();
 
+                            }
+                        }else{
+                            Toast.makeText(getActivity(), "请检查您的网络", Toast.LENGTH_SHORT).show();
                         }
                     }
                     break;
                     case 3: {
                         //一卡通
-                        String username, password;
                         username = getActivity().getSharedPreferences("WustCardCenter", 0).getString("username", null);
                         password = getActivity().getSharedPreferences("WustCardCenter", 0).getString("password", null);
                         if (username == null || password == null) {
@@ -251,9 +304,6 @@ public class SearchFragment extends Fragment implements WustCardCenterLogin.Logi
                             Intent intent = new Intent(getActivity(), BindActivity.class);
                             startActivity(intent);
                         } else {
-                            progressDialog = new ProgressDialog(getActivity());
-                            progressDialog.setMessage("正在登录...");
-                            progressDialog.setCancelable(false);
                             progressDialog.show();
                             //调用WustCardCenterLogin类进行登录
                             login.login(username, password);
@@ -291,15 +341,12 @@ public class SearchFragment extends Fragment implements WustCardCenterLogin.Logi
     @Override
     public void OnLoginCompleted(boolean bSuccess, String desc) {
         progressDialog.dismiss();
-        if(bSuccess)
-        {
+        if (bSuccess) {
             Toast.makeText(getActivity(), "登录成功", Toast.LENGTH_SHORT).show();
             AccInfoActivity.login = login;
             Intent intent = new Intent(getActivity(), AccInfoActivity.class);
             startActivity(intent);
-        }
-        else
-        {
+        } else {
             Toast.makeText(getActivity(), desc, Toast.LENGTH_LONG).show();
             Intent intent = new Intent(getActivity(), BindActivity.class);
             startActivity(intent);
@@ -469,5 +516,37 @@ public class SearchFragment extends Fragment implements WustCardCenterLogin.Logi
         super.onStop();
         // 当Activity不可见的时候停止切换
         scheduledExecutorService.shutdown();
+    }
+
+    public boolean isNetworkAvailable(Activity activity)
+    {
+        Context context = activity.getApplicationContext();
+        // 获取手机所有连接管理对象（包括对wi-fi,net等连接的管理）
+        ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+
+        if (connectivityManager == null)
+        {
+            return false;
+        }
+        else
+        {
+            // 获取NetworkInfo对象
+            NetworkInfo[] networkInfo = connectivityManager.getAllNetworkInfo();
+
+            if (networkInfo != null && networkInfo.length > 0)
+            {
+                for (int i = 0; i < networkInfo.length; i++)
+                {
+                    System.out.println(i + "===状态===" + networkInfo[i].getState());
+                    System.out.println(i + "===类型===" + networkInfo[i].getTypeName());
+                    // 判断当前网络状态是否为连接状态
+                    if (networkInfo[i].getState() == NetworkInfo.State.CONNECTED)
+                    {
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
     }
 }
