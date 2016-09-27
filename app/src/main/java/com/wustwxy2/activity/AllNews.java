@@ -10,7 +10,6 @@ import android.os.Message;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,8 +20,7 @@ import android.widget.TextView;
 
 import com.wustwxy2.R;
 import com.wustwxy2.adapter.NewsAdapter;
-import com.wustwxy2.activity.BrowseNewsAvtivity;
-import com.wustwxy2.models.News;
+import com.wustwxy2.bean.News;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;

@@ -8,7 +8,7 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.wustwxy2.R;
-import com.wustwxy2.models.News;
+import com.wustwxy2.bean.News;
 
 import java.util.List;
 

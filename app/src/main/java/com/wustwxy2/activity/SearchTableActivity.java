@@ -27,7 +27,6 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.PopupWindow;
@@ -37,7 +36,7 @@ import android.widget.Toast;
 
 import com.readystatesoftware.systembartint.SystemBarTintManager;
 import com.wustwxy2.R;
-import com.wustwxy2.models.Course;
+import com.wustwxy2.bean.Course;
 import com.wustwxy2.models.JwInfoDB;
 import com.wustwxy2.util.Utility;
 

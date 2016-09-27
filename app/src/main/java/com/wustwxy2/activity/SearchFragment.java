@@ -433,31 +433,31 @@ public class SearchFragment extends Fragment implements WustCardCenterLogin.Logi
 
         AdDomain adDomain = new AdDomain();
         adDomain.setId("108078");
-        adDomain.setImgUrl("http://bmob-cdn-5254.b0.upaiyun.com/2016/09/08/94d8ab279e3843afa5ea38da2480628a.jpg");
+        adDomain.setImgUrl("http://202.114.255.76:8087/wkdwxy/now1.jpg");
         adDomain.setAd(false);
         adList.add(adDomain);
 
         AdDomain adDomain2 = new AdDomain();
         adDomain2.setId("108078");
-        adDomain2.setImgUrl("http://bmob-cdn-5254.b0.upaiyun.com/2016/09/08/dedb6516808041bdb6eb780305b446b3.jpg");
+        adDomain2.setImgUrl("http://202.114.255.76:8087/wkdwxy/now2.jpeg");
         adDomain2.setAd(false);
         adList.add(adDomain2);
 
         AdDomain adDomain3 = new AdDomain();
         adDomain3.setId("108078");
-        adDomain3.setImgUrl("http://bmob-cdn-5254.b0.upaiyun.com/2016/09/08/4507575d5dc6413c805786bb02e1d0a1.jpg");
+        adDomain3.setImgUrl("http://202.114.255.76:8087/wkdwxy/now3.jpg");
         adDomain3.setAd(false);
         adList.add(adDomain3);
 
         AdDomain adDomain4 = new AdDomain();
         adDomain4.setId("108078");
-        adDomain4.setImgUrl("http://bmob-cdn-5254.b0.upaiyun.com/2016/09/08/14381f681b69433d997b66fe49fdb3f6.jpg");
+        adDomain4.setImgUrl("http://202.114.255.76:8087/wkdwxy/now4.jpeg");
         adDomain4.setAd(false);
         adList.add(adDomain4);
 
         AdDomain adDomain5 = new AdDomain();
         adDomain5.setId("108078");
-        adDomain5.setImgUrl("http://bmob-cdn-5254.b0.upaiyun.com/2016/09/08/b24d9981cf134689a86b434153ff2663.jpg");
+        adDomain5.setImgUrl("http://202.114.255.76:8087/wkdwxy/now5.jpg");
         adDomain5.setAd(true); // 代表是广告
         adList.add(adDomain5);
 

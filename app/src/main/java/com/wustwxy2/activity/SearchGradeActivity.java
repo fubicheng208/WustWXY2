@@ -21,7 +21,7 @@ import com.readystatesoftware.systembartint.SystemBarTintManager;
 import com.wustwxy2.R;
 import com.wustwxy2.adapter.ScoreAdapter;
 import com.wustwxy2.models.JwInfoDB;
-import com.wustwxy2.models.Score;
+import com.wustwxy2.bean.Score;
 
 import java.util.ArrayList;
 import java.util.List;

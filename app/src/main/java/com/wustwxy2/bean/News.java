@@ -1,4 +1,4 @@
-package com.wustwxy2.models;
+package com.wustwxy2.bean;
 
 /**
  * Created by Administrator on 2016/7/15.

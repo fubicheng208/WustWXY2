@@ -6,6 +6,8 @@ import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
+import com.wustwxy2.bean.Course;
+import com.wustwxy2.bean.Score;
 import com.wustwxy2.util.JwOpenHelper;
 
 import java.util.ArrayList;

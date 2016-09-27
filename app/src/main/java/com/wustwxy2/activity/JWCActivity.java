@@ -20,7 +20,7 @@ import android.widget.TextView;
 
 import com.wustwxy2.R;
 import com.wustwxy2.adapter.NewsAdapter;
-import com.wustwxy2.models.News;
+import com.wustwxy2.bean.News;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;

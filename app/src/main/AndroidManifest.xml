@@ -2,6 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.wustwxy2">
 
+    <!-- 安装apk权限-->
+    <uses-permission android:name="android.permission.INSTALL_PACKAGES" />
     <!-- 拨打电话权限 -->
     <uses-permission android:name="android.permission.CALL_PHONE" />
     <!-- 允许联网 -->

@@ -8,7 +8,7 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import com.wustwxy2.R;
-import com.wustwxy2.models.Score;
+import com.wustwxy2.bean.Score;
 
 import java.util.List;
 

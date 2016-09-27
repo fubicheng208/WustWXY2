@@ -88,6 +88,7 @@
     <string name="bind">绑定</string>
     <string name="coming_soon">功能开发中，敬请期待...</string>
     <string name="copyright">Copyright © 领航工作室</string>
+    <string name="serverurl">http://202.114.255.76:8087/wkdwxy/update.xml</string>
 
     <style name="AnimationActivity" parent="@android:style/Animation.Activity">
         <item name="android:activityOpenEnterAnimation">@anim/push_left_in</item>
