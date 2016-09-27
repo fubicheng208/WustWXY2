@@ -4,8 +4,8 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -19,8 +19,7 @@ import android.widget.Toast;
 
 import com.readystatesoftware.systembartint.SystemBarTintManager;
 import com.wustwxy2.R;
-import com.wustwxy2.card.AccInfoActivity;
-import com.wustwxy2.card.WustCardCenterLogin;
+import com.wustwxy2.util.WustCardCenterLogin;
 
 public class SearchCardActivity extends AppCompatActivity implements View.OnClickListener, WustCardCenterLogin.LoginListener{
 
@@ -56,6 +55,7 @@ public class SearchCardActivity extends AppCompatActivity implements View.OnClic
         toolbar = (Toolbar)findViewById(R.id.toolbar);
         toolbar.setTitle("一卡通");
         this.setSupportActionBar(toolbar);
+        this.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
     //设置沉浸式状态栏和导航栏
@@ -82,27 +82,6 @@ public class SearchCardActivity extends AppCompatActivity implements View.OnClic
     }
 
     @Override
-    public void OnLoginCompleted(boolean bSuccess, String desc)
-    {
-        // TODO Auto-generated method stub
-        progressDialog.dismiss();
-        if(bSuccess)
-        {
-            getSharedPreferences("WustCardCenter", 0).edit().putString("username", username.getText().toString()).apply();
-            getSharedPreferences("WustCardCenter", 0).edit().putString("password", password.getText().toString()).apply();
-            Toast.makeText(this, "登录成功", Toast.LENGTH_SHORT).show();
-
-            AccInfoActivity.login = login;
-            Intent intent = new Intent(this, AccInfoActivity.class);
-            startActivity(intent);
-        }
-        else
-        {
-            Toast.makeText(this, desc, Toast.LENGTH_LONG).show();
-        }
-    }
-
-    @Override
     public void onClick(View v)
     {
         // TODO Auto-generated method stub
@@ -126,6 +105,27 @@ public class SearchCardActivity extends AppCompatActivity implements View.OnClic
         progressDialog.setCancelable(false);
         progressDialog.show();
         login.login(username.getText().toString(), password.getText().toString());
+    }
+
+    @Override
+    public void OnLoginCompleted(boolean bSuccess, String desc)
+    {
+        // TODO Auto-generated method stub
+        progressDialog.dismiss();
+        if(bSuccess)
+        {
+            getSharedPreferences("WustCardCenter", 0).edit().putString("username", username.getText().toString()).apply();
+            getSharedPreferences("WustCardCenter", 0).edit().putString("password", password.getText().toString()).apply();
+            Toast.makeText(this, "登录成功", Toast.LENGTH_SHORT).show();
+
+            AccInfoActivity.login = login;
+            Intent intent = new Intent(this, AccInfoActivity.class);
+            startActivity(intent);
+        }
+        else
+        {
+            Toast.makeText(this, desc, Toast.LENGTH_LONG).show();
+        }
     }
 }
 

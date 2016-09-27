@@ -1,9 +1,13 @@
 package com.wustwxy2.activity;
 
+import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -36,6 +40,7 @@ import com.wustwxy2.models.JwInfoDB;
 import com.wustwxy2.models.MyGridView;
 import com.wustwxy2.util.Ksoap2;
 import com.wustwxy2.util.Utility;
+import com.wustwxy2.util.WustCardCenterLogin;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -47,20 +52,24 @@ import java.util.concurrent.TimeUnit;
 /**
  * Created by fubicheng on 2016/7/12.
  */
-public class SearchFragment extends Fragment{
+public class SearchFragment extends Fragment implements WustCardCenterLogin.LoginListener {
 
     private static final String TAG = "SearchFragment";
     Toolbar toolbar;
     //TabLayout tabLayout;
+    private ProgressDialog progressDialog;
 
+    //登录一卡通相关
+    private WustCardCenterLogin login = new WustCardCenterLogin();
+    //一卡通账号密码
+    String username, password;
+
+    //界面图片相关
     public static String IMAGE_CACHE_PATH = "imageloader/Cache"; // 图片缓存路径
-
     private ViewPager adViewPager;
     private List<ImageView> imageViews;// 滑动的图片集合
-
     private List<View> dots; // 图片标题正文的那些点
     private List<View> dotList;
-
     private int currentItem = 0; // 当前图片的索引号
     // 定义的五个指示点
     private View dot0;
@@ -68,65 +77,87 @@ public class SearchFragment extends Fragment{
     private View dot2;
     private View dot3;
     private View dot4;
-
     private ScheduledExecutorService scheduledExecutorService;
-
     // 异步加载图片
     private ImageLoader mImageLoader;
     private DisplayImageOptions options;
-
     // 轮播banner的数据
     private List<AdDomain> adList;
-
     private Handler handler = new Handler() {
         public void handleMessage(android.os.Message msg) {
             adViewPager.setCurrentItem(currentItem);
         }
     };
-
     //9个按钮界面
     private MyGridView gridview;
+
     //成绩课表相关
-    private static final int QUERY_SCORE=0;
-    private static final int QUERY_COURSE=1;
+    private static final int QUERY_SCORE = 0;
+    private static final int QUERY_COURSE = 1;
+    private static final int DIALOG_SCORE = 2;
+    private static final int DIALOG_COURSE = 3;
     private SharedPreferences mPreferences;
     private SharedPreferences.Editor mEditor;
     private JwInfoDB mJwInfoDB;
     private String xq;
-    private Handler handler1=new Handler(){
+    private Handler handler1 = new Handler() {
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
             if (!msg.obj.toString().equals("anyType{}")) {
                 switch (msg.arg1) {
-                    case QUERY_SCORE:
+                    case QUERY_SCORE://查成绩
                         String cj = msg.obj.toString();
-                        if(!cj.equals(mPreferences.getString("cjData",""))) {
+                        if (!cj.equals(mPreferences.getString("cjData", ""))) {
                             Utility.handleScores(mJwInfoDB, cj);
-                            mEditor.putString("cjData",cj);
-                            mEditor.putString("currentTeam",Utility.currentTeam);
-                            mEditor.putString("xh",Utility.xh);
-                            mEditor.putString("xm",Utility.xm);
+                            mEditor.putString("cjData", cj);
+                            mEditor.putString("currentTeam", Utility.currentTeam);
+                            mEditor.putString("xh", Utility.xh);
+                            mEditor.putString("xm", Utility.xm);
                             mEditor.commit();
                         }
-                        startActivity(new Intent(getActivity(),SearchGradeActivity.class));
+                        progressDialog.dismiss();
+                        startActivity(new Intent(getActivity(), SearchGradeActivity.class));
                         break;
-                    case QUERY_COURSE:
+                    case QUERY_COURSE://查课表
                         String kb = msg.obj.toString();
-                        if(!kb.equals(mPreferences.getString("kbData",""))){
-                            Utility.handleCourses(mJwInfoDB,kb);
-                            mEditor.putInt("currentZc",1);
-                            mEditor.putString("startDate",Utility.getDate());
-                            mEditor.putInt("startWeek",Utility.getWeekOfDate());
-                            mEditor.putString("xq",xq);
-                            mEditor.putString("kbData",kb);
+                        if (!kb.equals(mPreferences.getString("kbData", ""))) {
+                            Utility.handleCourses(mJwInfoDB, kb);
+                            mEditor.putInt("currentZc", 1);
+                            mEditor.putString("startDate", Utility.getDate());
+                            mEditor.putInt("startWeek", Utility.getWeekOfDate());
+                            mEditor.putString("xq", xq);
+                            mEditor.putString("kbData", kb);
                             mEditor.commit();
                         }
-                        startActivity(new Intent(getActivity(),SearchTableActivity.class));
+                        progressDialog.dismiss();
+                        startActivity(new Intent(getActivity(), SearchTableActivity.class));
+                        break;
+                    default:
                         break;
                 }
-            }else {
-                Toast.makeText(getActivity(), R.string.no_data_toast ,Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(getActivity(), R.string.no_data_toast, Toast.LENGTH_SHORT).show();
+            }
+        }
+    };
+
+    //由于多人代码的加入，不得不创建第三个handler，来响应UI更新
+    private Handler handler2 = new Handler(){
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            switch (msg.arg1){
+                case DIALOG_SCORE:
+                    progressDialog.setMessage("正在查询...");
+                    progressDialog.show();
+                    break;
+                case DIALOG_COURSE:
+                    progressDialog.setMessage("正在载入课表...");
+                    progressDialog.show();
+                    break;
+                default:
+                    break;
             }
         }
     };
@@ -136,7 +167,12 @@ public class SearchFragment extends Fragment{
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_search, container, false);
         initToolbar();
+        //初始化网格布局
         initGridView(view);
+        //初始化ProgressDialog
+        progressDialog = new ProgressDialog(getActivity());
+        progressDialog.setMessage("正在登录...");
+        progressDialog.setCancelable(false);
         //初始化成绩课表所需变量
         initScoreAndCourse();
         //initTableLayout();
@@ -154,21 +190,21 @@ public class SearchFragment extends Fragment{
         initAdData(view);
         startAd();
         initGridView(view);
+        login.setLoginListener(this);
         return view;
     }
 
-    public void initToolbar()
-    {
-        toolbar = (Toolbar)getActivity().findViewById(R.id.toolbar);
+    public void initToolbar() {
+        toolbar = (Toolbar) getActivity().findViewById(R.id.toolbar);
         toolbar.setTitle("信息查询");
         setHasOptionsMenu(true);
         ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
     }
 
-    private void initScoreAndCourse(){
-        mPreferences=getActivity().getSharedPreferences("data", Context.MODE_PRIVATE);
-        mEditor=mPreferences.edit();
-        mJwInfoDB=JwInfoDB.getJwInfoDB(getActivity());
+    private void initScoreAndCourse() {
+        mPreferences = getActivity().getSharedPreferences("data", Context.MODE_PRIVATE);
+        mEditor = mPreferences.edit();
+        mJwInfoDB = JwInfoDB.getJwInfoDB(getActivity());
     }
     /*public void initTableLayout() {
         tabLayout = (TabLayout)getActivity().findViewById(R.id.sliding_tabs);
@@ -176,90 +212,141 @@ public class SearchFragment extends Fragment{
     }*/
 
     private void initGridView(View view) {
-        gridview=(MyGridView) view.findViewById(R.id.gridview);
+        gridview = (MyGridView) view.findViewById(R.id.gridview);
         gridview.setAdapter(new MyGridAdapter(getActivity()));
         //控制点击后的跳转
         gridview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                switch (i){
-                    case 0:{
-                        startActivity(new Intent(getActivity(),SearchLibActivity.class));
-                    }break;
-                    case 1:{
-                        final String xh1=mPreferences.getString("Account",null);
+                switch (i) {
+                    case 0: {
+                        startActivity(new Intent(getActivity(), SearchLibActivity.class));
+                    }
+                    break;
+                    case 1: {
+                        final String xh1 = mPreferences.getString("Account", null);
                         if (xh1 != null) {
-                            if(mPreferences.getString("kbData","").isEmpty()) {
-                                int year= Utility.getYear();
-                                if (Utility.getDate().compareTo(year+"-"+"07-01")>=0) {
-                                    xq=year+"-"+(year+1)+"-"+"1";
-                                }else {
-                                    xq=(year-1)+"-"+year+"-"+"2";
+                            if (mPreferences.getString("kbData", "").isEmpty()) {
+                                int year = Utility.getYear();
+                                if (Utility.getDate().compareTo(year + "-" + "07-01") >= 0) {
+                                    xq = year + "-" + (year + 1) + "-" + "1";
+                                } else {
+                                    xq = (year - 1) + "-" + year + "-" + "2";
                                 }
                                 new Thread(new Runnable() {
                                     @Override
                                     public void run() {
+                                        //通知主线程显示DIALOG
+                                        Message message2 = new Message();
+                                        message2.arg1 = DIALOG_COURSE;
+                                        handler2.sendMessage(message2);
                                         Message message = new Message();
+                                        //查询成绩
                                         message.arg1 = QUERY_COURSE;
-                                        message.obj = Ksoap2.getCourseInfo("201513137125",xq);
+                                        message.obj = Ksoap2.getCourseInfo(xh1, xq);
                                         handler1.sendMessage(message);
-
                                     }
                                 }).start();
-                            }else {
+                            } else {
                                 startActivity(new Intent(getActivity(), SearchTableActivity.class));
                             }
-                        }else {
+                        } else {
                             Toast.makeText(getActivity(), "需要先登录的哦", Toast.LENGTH_SHORT).show();
                             startActivity(new Intent(getActivity(), LoginActivity.class));
                             getActivity().finish();
                         }
-                    }break;
-                    case 2:{
-                        final String xh=mPreferences.getString("Account",null);
-                        if (xh != null) {
-                            new Thread(new Runnable() {
-                                @Override
-                                public void run() {
-                                    new Thread(new Runnable() {
-                                        @Override
-                                        public void run() {
-                                            Message message=new Message();
-                                            message.arg1=QUERY_SCORE;
-                                            message.obj=Ksoap2.getScoreInfo(xh);
-                                            handler1.sendMessage(message);
-                                        }
-                                    }).start();
-                                }
-                            }).start();
-                        }else {
-                            Toast.makeText(getActivity(), "需要先登录的哦", Toast.LENGTH_SHORT).show();
-                            startActivity(new Intent(getActivity(), LoginActivity.class));
-                            getActivity().finish();
+                    }
+                    break;
+                    case 2: {
+                        if(isNetworkAvailable(getActivity())){
+                            final String xh = mPreferences.getString("Account", null);
+                            if (xh != null) {
+                                new Thread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        new Thread(new Runnable() {
+                                            @Override
+                                            public void run() {
+                                                //通知主线程显示DIALOG
+                                                Message message2 = new Message();
+                                                message2.arg1 = DIALOG_SCORE;
+                                                handler2.sendMessage(message2);
+                                                //查询成绩
+                                                Message message = new Message();
+                                                message.arg1 = QUERY_SCORE;
+                                                message.obj = Ksoap2.getScoreInfo(xh);
+                                                handler1.sendMessage(message);
+                                            }
+                                        }).start();
+                                    }
+                                }).start();
+                            } else {
+                                Toast.makeText(getActivity(), "需要先登录的哦", Toast.LENGTH_SHORT).show();
+                                startActivity(new Intent(getActivity(), LoginActivity.class));
+                                getActivity().finish();
 
+                            }
+                        }else{
+                            Toast.makeText(getActivity(), "请检查您的网络", Toast.LENGTH_SHORT).show();
                         }
-                    }break;
-                    case 3:{
-                        startActivity(new Intent(getActivity(),SearchCardActivity.class));
-                    }break;
-                    case 4:{
-                        startActivity(new Intent(getActivity(),SearchLosingActivity.class));
-                    }break;
-                    case 5:{
-                        startActivity(new Intent(getActivity(),SearchBusActivity.class));
-                    }break;
-                    case 6:{
-                        startActivity(new Intent(getActivity(),SearchMapActivity.class));
-                    }break;
-                    case 7:{
-                        startActivity(new Intent(getActivity(),SearchComputerActivity.class));
-                    }break;
-                    case 8:{
-                        startActivity(new Intent(getActivity(),SearchEngActivity.class));
-                    }break;
+                    }
+                    break;
+                    case 3: {
+                        //一卡通
+                        username = getActivity().getSharedPreferences("WustCardCenter", 0).getString("username", null);
+                        password = getActivity().getSharedPreferences("WustCardCenter", 0).getString("password", null);
+                        if (username == null || password == null) {
+                            Toast.makeText(getActivity(), "请先绑定一卡通密码", Toast.LENGTH_SHORT).show();
+                            Intent intent = new Intent(getActivity(), BindActivity.class);
+                            startActivity(intent);
+                        } else {
+                            progressDialog.show();
+                            //调用WustCardCenterLogin类进行登录
+                            login.login(username, password);
+                            Log.i(TAG, username + "||" + password);
+                        }
+                    }
+                    break;
+                    case 4: {
+                        startActivity(new Intent(getActivity(), SearchLosingActivity.class));
+                    }
+                    break;
+                    case 5: {
+                        startActivity(new Intent(getActivity(), SearchBusActivity.class));
+                    }
+                    break;
+                    case 6: {
+                        startActivity(new Intent(getActivity(), SearchMapActivity.class));
+                    }
+                    break;
+                    case 7: {
+                        startActivity(new Intent(getActivity(), SearchComputerActivity.class));
+                    }
+                    break;
+                    case 8: {
+                        startActivity(new Intent(getActivity(), SearchEngActivity.class));
+                    }
+                    break;
                 }
             }
         });
+    }
+
+    //继承的的登录判断接口，如果登录成功则进入AccInfoActivity,否则跳转到
+    //BindActivity重新绑定
+    @Override
+    public void OnLoginCompleted(boolean bSuccess, String desc) {
+        progressDialog.dismiss();
+        if (bSuccess) {
+            Toast.makeText(getActivity(), "登录成功", Toast.LENGTH_SHORT).show();
+            AccInfoActivity.login = login;
+            Intent intent = new Intent(getActivity(), AccInfoActivity.class);
+            startActivity(intent);
+        } else {
+            Toast.makeText(getActivity(), desc, Toast.LENGTH_LONG).show();
+            Intent intent = new Intent(getActivity(), BindActivity.class);
+            startActivity(intent);
+        }
     }
 
     //初始化图片加载器，调用的开源的图片加载框架
@@ -304,7 +391,7 @@ public class SearchFragment extends Fragment{
         dots.add(dot4);
 
         adViewPager = (ViewPager) view.findViewById(R.id.vp);
-        adViewPager.setAdapter(new AdAdapter(adList,imageViews));// 设置填充ViewPager页面的适配器
+        adViewPager.setAdapter(new AdAdapter(adList, imageViews));// 设置填充ViewPager页面的适配器
         // 设置一个监听器，当ViewPager中的页面改变时调用
         adViewPager.setOnPageChangeListener(new MyPageChangeListener());
         addDynamicView();
@@ -342,31 +429,31 @@ public class SearchFragment extends Fragment{
 
         AdDomain adDomain = new AdDomain();
         adDomain.setId("108078");
-        adDomain.setImgUrl("http://bmob-cdn-5254.b0.upaiyun.com/2016/09/08/94d8ab279e3843afa5ea38da2480628a.jpg");
+        adDomain.setImgUrl("http://202.114.255.76:8087/wkdwxy/now1.jpg");
         adDomain.setAd(false);
         adList.add(adDomain);
 
         AdDomain adDomain2 = new AdDomain();
         adDomain2.setId("108078");
-        adDomain2.setImgUrl("http://bmob-cdn-5254.b0.upaiyun.com/2016/09/08/dedb6516808041bdb6eb780305b446b3.jpg");
+        adDomain2.setImgUrl("http://202.114.255.76:8087/wkdwxy/now2.jpeg");
         adDomain2.setAd(false);
         adList.add(adDomain2);
 
         AdDomain adDomain3 = new AdDomain();
         adDomain3.setId("108078");
-        adDomain3.setImgUrl("http://bmob-cdn-5254.b0.upaiyun.com/2016/09/08/4507575d5dc6413c805786bb02e1d0a1.jpg");
+        adDomain3.setImgUrl("http://202.114.255.76:8087/wkdwxy/now3.jpg");
         adDomain3.setAd(false);
         adList.add(adDomain3);
 
         AdDomain adDomain4 = new AdDomain();
         adDomain4.setId("108078");
-        adDomain4.setImgUrl("http://bmob-cdn-5254.b0.upaiyun.com/2016/09/08/14381f681b69433d997b66fe49fdb3f6.jpg");
+        adDomain4.setImgUrl("http://202.114.255.76:8087/wkdwxy/now4.jpeg");
         adDomain4.setAd(false);
         adList.add(adDomain4);
 
         AdDomain adDomain5 = new AdDomain();
         adDomain5.setId("108078");
-        adDomain5.setImgUrl("http://bmob-cdn-5254.b0.upaiyun.com/2016/09/08/b24d9981cf134689a86b434153ff2663.jpg");
+        adDomain5.setImgUrl("http://202.114.255.76:8087/wkdwxy/now5.jpg");
         adDomain5.setAd(true); // 代表是广告
         adList.add(adDomain5);
 
@@ -425,5 +512,37 @@ public class SearchFragment extends Fragment{
         super.onStop();
         // 当Activity不可见的时候停止切换
         scheduledExecutorService.shutdown();
+    }
+
+    public boolean isNetworkAvailable(Activity activity)
+    {
+        Context context = activity.getApplicationContext();
+        // 获取手机所有连接管理对象（包括对wi-fi,net等连接的管理）
+        ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+
+        if (connectivityManager == null)
+        {
+            return false;
+        }
+        else
+        {
+            // 获取NetworkInfo对象
+            NetworkInfo[] networkInfo = connectivityManager.getAllNetworkInfo();
+
+            if (networkInfo != null && networkInfo.length > 0)
+            {
+                for (int i = 0; i < networkInfo.length; i++)
+                {
+                    System.out.println(i + "===状态===" + networkInfo[i].getState());
+                    System.out.println(i + "===类型===" + networkInfo[i].getTypeName());
+                    // 判断当前网络状态是否为连接状态
+                    if (networkInfo[i].getState() == NetworkInfo.State.CONNECTED)
+                    {
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
     }
 }

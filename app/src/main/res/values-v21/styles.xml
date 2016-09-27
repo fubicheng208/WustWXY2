@@ -1,1 +1,17 @@
-<resources></resources>
+<resources>
+
+        <style name="AppBaseTheme" parent="Theme.AppCompat.Light.NoActionBar">
+                <!-- toolbar（actionbar）颜色 -->
+                <item name="colorPrimary">@color/colorPrimary</item>
+                <!-- 状态栏颜色 -->
+                <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+                <!--toolbar文字的颜色-->
+                <item name="@android:textColorPrimary">@android:color/white</item>
+                <!-- 窗口的背景颜色 -->
+                <item name="android:windowBackground">@android:color/white</item>
+                <!--toolbar上菜单文字的颜色-->
+                <item name="actionMenuTextColor">#ffffff</item>
+                <!--monospace字体已被替换为自定义字体-->
+                <item name="android:typeface">monospace</item>
+        </style>
+</resources>

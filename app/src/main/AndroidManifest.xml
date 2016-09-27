@@ -1,7 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.wustwxy2">
+          xmlns:tools="http://schemas.android.com/tools"
+          package="com.wustwxy2">
 
+    <!-- 安装apk权限-->
+    <uses-permission android:name="android.permission.INSTALL_PACKAGES"
+                     tools:ignore="ProtectedPermissions"/>
     <!-- 拨打电话权限 -->
     <uses-permission android:name="android.permission.CALL_PHONE" />
     <!-- 允许联网 -->
@@ -19,7 +23,18 @@
     <!-- 允许读取手机状态 用于创建BmobInstallation -->
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS" />
-    <uses-permission android:name="android.permission.VIBRATE"/>
+
+    <!-- 这个权限用于进行网络定位 -->
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <!-- 这个权限用于访问GPS定位 -->
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <!-- 这个权限用于获取wifi的获取权限，wifi信息会用来进行网络定位 -->
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
+    <!-- SD卡读取权限，用户写入离线定位数据 -->
+    <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS" />
+    <uses-permission android:name="com.android.launcher.permission.READ_SETTINGS" />
+    <uses-permission android:name="android.permission.GET_TASKS" />
+    <uses-permission android:name="android.permission.WRITE_SETTINGS" />
 
     <application
         android:name=".Application"
@@ -27,33 +42,48 @@
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
-        android:theme="@style/AppBaseTheme">
-        <activity android:name=".activity.MainActivity">
+        android:theme="@style/AppBaseTheme"
+        tools:ignore="AllowBackup">
+        <activity android:name=".activity.MainActivity" android:screenOrientation="portrait">
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".activity.SearchEngActivity" />
-        <activity android:name=".activity.SearchTableActivity" />
-        <activity android:name=".activity.SearchGradeActivity" />
-        <activity android:name=".activity.SearchCardActivity" />
-        <activity android:name=".activity.SearchComputerActivity" />
-        <activity android:name=".activity.SearchBusActivity" />
-        <activity android:name=".activity.SearchMapActivity" />
-        <activity android:name=".activity.SearchLosingActivity" />
-        <activity android:name=".activity.SearchLibActivity" />
-        <activity android:name=".activity.AddActivity" />
-        <activity android:name=".activity.MyLosingActivity" />
-        <activity android:name=".activity.LoginActivity" />
-        <activity android:name=".activity.LosingDetailActivity" />
-        <activity android:name=".activity.EditLosingActivity"/>
-        <activity android:name=".activity.ImageShower"/>
-        <activity android:name=".activity.SetCourseActivity"/>
-        <activity android:name=".util.BrowseNewsAvtivity"/>
-        <activity android:name=".card.AccInfoActivity"></activity>
-        <activity android:name=".card.QueryListActivity"></activity>
+
+        <meta-data
+            android:name="com.baidu.lbsapi.API_KEY"
+            android:value="uy7FffxtIAnGTC0a9BGG87BfShC6TqDy" />
+
+        <service
+            android:name="com.baidu.location.f"
+            android:enabled="true"
+            android:process=":remote" />
+
+        <activity android:name=".activity.SearchEngActivity" android:screenOrientation="portrait" />
+        <activity android:name=".activity.SearchTableActivity"  android:screenOrientation="portrait"/>
+        <activity android:name=".activity.SearchGradeActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".activity.SetCourseActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".activity.SearchCardActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".activity.SearchComputerActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".activity.SearchBusActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".activity.SearchMapActivity" android:screenOrientation="portrait" />
+        <activity android:name=".activity.SearchLosingActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".activity.SearchLibActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".activity.AddActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".activity.MyLosingActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".activity.LoginActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".activity.LosingDetailActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".activity.EditLosingActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".activity.ImageShower" android:screenOrientation="portrait"/>
+        <activity android:name=".activity.FeedbackActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".activity.AboutActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".activity.BindActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".activity.BrowseNewsAvtivity" android:screenOrientation="portrait"/>
+        <activity android:name=".activity.AccInfoActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".activity.QueryListActivity" android:screenOrientation="portrait"/>
     </application>
 
 </manifest>

@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    android:orientation="vertical"
+    tools:context="com.wustwxy2.activity.FeedbackActivity">
+
+    <include layout="@layout/toolbar"/>
+
+
+    <EditText
+        android:id="@+id/feedback_et"
+        android:hint="@string/feedback_hint"
+        android:background="@drawable/input"
+        android:paddingLeft="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        style="@style/Fbc.TextView._Gray"
+        android:minLines="5"
+        />
+
+    <Button
+        android:id="@+id/add_feedback"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/buttonBlue"
+        android:layout_margin="10dp"
+        android:text="@string/feedback"
+        android:textColor="@color/base_bg"
+        android:textSize="18sp"/>
+</LinearLayout>

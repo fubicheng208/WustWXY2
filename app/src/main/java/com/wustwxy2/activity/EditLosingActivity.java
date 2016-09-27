@@ -97,7 +97,7 @@ public class EditLosingActivity extends BaseActivity implements View.OnClickList
         dialog.setIndeterminate(true);
         //失去焦点的时候，不是去对话框
         dialog.setCancelable(false);
-        dialog.setTitle("正在提交修改");
+        dialog.setMessage("正在提交修改...");
     }
 
     @Override

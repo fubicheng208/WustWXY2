@@ -3,11 +3,11 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/losing_toolbar"
     android:layout_width="match_parent"
-    android:layout_height="@dimen/base_action_bar_height"
+    android:layout_height="?attr/actionBarSize"
     android:background="@color/colorPrimary"
     android:fitsSystemWindows="true"
-    app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
-    app:theme="@style/AppBaseTheme">
+    app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+    app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
 
         <LinearLayout
             android:id="@+id/layout_all"

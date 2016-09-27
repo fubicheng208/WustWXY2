@@ -107,8 +107,8 @@ public class DragImageView extends ImageView {
 		bitmap_W = bm.getWidth();
 		bitmap_H = bm.getHeight();
 
-		MAX_W = bitmap_W * 3;
-		MAX_H = bitmap_H * 3;
+		MAX_W = bitmap_W * 4;
+		MAX_H = bitmap_H * 4;
 
 		MIN_W = bitmap_W / 2;
 		MIN_H = bitmap_H / 2;

@@ -26,10 +26,11 @@
                 style="@style/Fbc.TextView._Black"
                 android:text="@string/losing_title_default"
                 android:textStyle="bold"
-                android:textSize="35sp"
+                android:textSize="25sp"
                 android:minLines="1"
                 android:maxLines="2"
                 android:padding="10dp"
+                android:layout_gravity="center_horizontal"
                 />
 
             <TextView

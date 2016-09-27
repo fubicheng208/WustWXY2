@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -15,6 +16,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
+import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -25,6 +27,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.readystatesoftware.systembartint.SystemBarTintManager;
 import com.wustwxy2.R;
 import com.wustwxy2.models.JwInfoDB;
 import com.wustwxy2.util.Ksoap2;
@@ -35,6 +38,7 @@ import java.util.List;
 
 public class SetCourseActivity extends Activity implements View.OnClickListener, AdapterView.OnItemClickListener {
 
+    private SystemBarTintManager tintManager;
     private RelativeLayout titleRl;
     private Button btBack;
     private TextView tvTitle;
@@ -72,6 +76,7 @@ public class SetCourseActivity extends Activity implements View.OnClickListener,
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_set_course);
+        initWindow();
         titleRl= (RelativeLayout) findViewById(R.id.title_rl);
         btBack=(Button)findViewById(R.id.bt_back);
         tvTitle=(TextView)findViewById(R.id.tv_title);
@@ -194,6 +199,17 @@ public class SetCourseActivity extends Activity implements View.OnClickListener,
         super.onBackPressed();
         if(SearchTableActivity.CourseActivity.isFinishing()){
             startActivity(new Intent(SetCourseActivity.this,SearchTableActivity.class));
+        }
+    }
+
+    //设置沉浸式状态栏和导航栏
+    private void initWindow(){
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT){
+            getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+            getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
+            tintManager = new SystemBarTintManager(this);
+            tintManager.setStatusBarTintColor(getResources().getColor(R.color.colorPrimary));
+            tintManager.setStatusBarTintEnabled(true);
         }
     }
 

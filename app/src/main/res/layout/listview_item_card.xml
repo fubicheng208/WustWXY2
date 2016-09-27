@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:padding="10dp"
+    android:orientation="horizontal"
+    android:background="@color/white">
+
+    <TextView
+        android:id="@+id/datetime"
+        android:layout_width="75dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:lines="2"
+        android:text="2016-9-17 17:27"
+        android:textColor="@color/lightGrey"
+        android:textSize="13sp"
+        />
+
+    <TextView
+        android:id="@+id/transtype"
+        android:layout_width="30dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:textSize="13sp"
+        android:textColor="@color/lightGrey"
+        android:text="商务收费"/>
+
+
+
+    <LinearLayout
+        android:layout_width="130dp"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginLeft="15dp">
+
+        <TextView
+            android:id="@+id/volume"
+            style="@style/Fbc.TextView._Black"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:text="-7"/>
+
+        <TextView
+            android:id="@+id/merchants"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ellipsize="middle"
+            android:maxLines="1"
+            android:singleLine="true"
+            android:textColor="@color/colorText"
+            android:layout_marginTop="2dp"
+            android:textSize="10sp"
+            android:text="南苑三楼" />
+
+    </LinearLayout>
+
+
+            <TextView
+                android:id="@+id/balance"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:textColor="@color/white"
+                android:gravity="center"
+                android:textSize="14sp"
+                android:background="@color/green"
+                android:paddingLeft="5dp"
+                android:paddingRight="5dp"
+                android:paddingTop="1dp"
+                android:paddingBottom="1dp"
+                android:text="119.91"
+                android:drawableLeft="@mipmap/rmb"/>
+
+
+</LinearLayout>

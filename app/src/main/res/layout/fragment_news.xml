@@ -1,14 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
-
-    <android.support.v4.view.ViewPager
-        android:id="@+id/pager"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        >
-    </android.support.v4.view.ViewPager>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
     <TableRow
         android:layout_width="match_parent"
@@ -21,34 +15,46 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:text="综合新闻"
-            android:textSize="14sp"
-            android:background="@color/colorPrimaryDarkNews"/>
+            android:background="@color/colorPrimaryDarkNews"
+            android:text="教务处"
+            android:textSize="14sp" />
+
         <Button
             android:id="@+id/bt2"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:text="先锋在线"
-            android:textSize="14sp"
             android:background="@color/colorPrimaryDarkNews"
-            />
+            android:text="先锋在线"
+            android:textSize="14sp" />
+
         <Button
             android:id="@+id/bt3"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:text="教务处"
-            android:textSize="14sp"
-            android:background="@color/colorPrimaryDarkNews"/>
+            android:background="@color/colorPrimaryDarkNews"
+            android:text="综合新闻"
+            android:textSize="14sp" />
+
         <Button
             android:id="@+id/bt4"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
+            android:background="@color/colorPrimaryDarkNews"
             android:text="学院新闻"
-            android:textSize="14sp"
-            android:background="@color/colorPrimaryDarkNews"/>
+            android:textSize="14sp" />
     </TableRow>
 
-</RelativeLayout>
+    <android.support.v4.view.ViewPager
+        android:id="@+id/pager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#eeeeee">
+
+        <include layout="@layout/activity_get_news" />
+    </android.support.v4.view.ViewPager>
+
+
+</LinearLayout>

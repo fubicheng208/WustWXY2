@@ -1,6 +1,8 @@
 package com.wustwxy2.util;
 
 
+import android.util.Log;
+
 import com.wustwxy2.models.Md5Util;
 
 import org.ksoap2.SoapEnvelope;
@@ -130,6 +132,8 @@ public class Ksoap2 {
 
     public static String getLoginInfo(String xh, String pwd) {
 
+        String result;
+
         // 调用的方法名称
         String methodName = "xslogin";
 
@@ -174,8 +178,12 @@ public class Ksoap2 {
         // 获取返回的数据
         SoapObject object = (SoapObject) envelope.bodyIn;
         // 获取返回的结果
-        String result = object.toString();
-
+        if(object == null){
+            Log.i("KSOAP2", "null object");
+            result = "100";
+        }else{
+            result = object.getProperty("out").toString();
+        }
         return result;
     }
 }

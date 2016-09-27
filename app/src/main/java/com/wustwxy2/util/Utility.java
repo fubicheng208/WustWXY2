@@ -1,9 +1,9 @@
 package com.wustwxy2.util;
 
 
-import com.wustwxy2.models.Course;
+import com.wustwxy2.bean.Course;
 import com.wustwxy2.models.JwInfoDB;
-import com.wustwxy2.models.Score;
+import com.wustwxy2.bean.Score;
 
 import org.json.JSONArray;
 import org.json.JSONException;

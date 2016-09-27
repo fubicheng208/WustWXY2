@@ -5,7 +5,7 @@
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/colorAccent</item>
+        <item name="colorAccent">@color/white</item>
     </style>
 
     <style name="AppBaseTheme" parent="Theme.AppCompat.Light.NoActionBar">
@@ -21,6 +21,11 @@
         <item name="actionMenuTextColor">#ffffff</item>
         <!--monospace字体已被替换为自定义字体-->
         <item name="android:typeface">monospace</item>
+    </style>
+
+    <style name="LosingDetailActionBar" parent="ThemeOverlay.AppCompat.Dark.ActionBar">
+        <!-- 状态栏颜色 -->
+        <item name="colorPrimaryDark">@color/black</item>
     </style>
 
     <style name="MyTabLayoutTextAppearance" parent="TextAppearance.AppCompat.Widget.ActionBar.Title">
@@ -100,13 +105,13 @@
         <item name="android:windowExitAnimation">@anim/zoomin_right</item>
     </style>
 
-    <!--<style name="ShowPicDialog">
+    <style name="ShowPicDialog">
         <item name="android:windowBackground">@color/black</item>
         <item name="android:windowNoTitle">true</item>
         <item name="android:windowFullscreen">true</item>
         <item name="android:windowIsTranslucent">true</item>
         <item name="android:windowAnimationStyle">@android:style/Animation.Translucent</item>
-    </style>-->
+    </style>
 
     <style name="ImageloadingDialogStyle" parent="android:Theme.Dialog">
         <item name="android:windowBackground">@android:color/transparent</item>
@@ -119,11 +124,18 @@
         <item name="android:backgroundDimEnabled">true</item>
     </style>
 
+
+    <style name="AppTheme.Dark.Dialog" parent="Theme.AppCompat.Dialog">
+        <item name="colorAccent">@color/white</item>
+        <item name="android:textColorPrimary">@color/iron</item>
+        <item name="android:background">@color/colorPrimary</item>
+    </style>
+
     <style name="AppBaseTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
     <style name="AppBaseTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
-    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar"/>
+    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
     <style name="normalText" parent="@android:style/TextAppearance">
         <item name="android:textColor">#444</item>
