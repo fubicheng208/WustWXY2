@@ -10,7 +10,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
-import android.icu.text.DateFormat;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -150,7 +149,7 @@ public class AccInfoActivity extends AppCompatActivity {
                 // TODO Auto-generated method stub
                 final DatePicker datePicker = new DatePicker(AccInfoActivity.this);
                 datePicker.setCalendarViewShown(false);
-                //datePicker.setBackgroundColor(getResources().getColor(R.color.bg_datePicker_grey));
+                datePicker.setBackgroundColor(getResources().getColor(R.color.bg_datePicker_grey));
                 //不需要选择日期，故隐藏
                 hideDay(datePicker);
                 // ((ViewGroup) ((ViewGroup) datePicker.getChildAt(0)).getChildAt(0)).getChildAt(2).setVisibility(View.GONE);
