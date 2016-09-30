@@ -1,16 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
+    android:gravity="center"
     android:background="@mipmap/backgroung_login">
     <LinearLayout
         android:layout_width="wrap_content"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:layout_marginRight="20dp"
-        android:layout_marginLeft="20dp"
+        android:layout_gravity="center"
+        android:layout_marginRight="5dp"
+        android:layout_marginLeft="5dp"
         android:weightSum="1">
 
         <ImageView
@@ -18,13 +20,14 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@mipmap/logo3"
-            android:layout_marginLeft="45dp"
-            android:layout_marginRight="45dp" />
+            android:layout_marginLeft="50dp"
+            android:layout_marginRight="50dp" />
 
         <!-- account Label -->
         <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
             android:layout_marginBottom="8dp"
             android:textColorHint="@color/loginText">
             <EditText
@@ -32,7 +35,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="number"
-                android:hint="@string/stuNo" />
+                android:hint="@string/stuNo"
+                android:textColor="@color/white"/>
 
         </android.support.design.widget.TextInputLayout>
         <!-- Password Label -->
@@ -46,7 +50,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="textPassword"
-                android:hint="@string/pw"/>
+                android:hint="@string/pw"
+                android:textColor="@android:color/white"/>
         </android.support.design.widget.TextInputLayout>
 
 
@@ -73,4 +78,4 @@
 
     </LinearLayout>
 
-</LinearLayout >
+</RelativeLayout >

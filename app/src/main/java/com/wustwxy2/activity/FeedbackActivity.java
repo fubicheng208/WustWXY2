@@ -5,6 +5,7 @@ import android.os.Build;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
@@ -93,6 +94,9 @@ public class FeedbackActivity extends BaseActivity implements View.OnClickListen
         User user = BmobUser.getCurrentUser(User.class);
         Feedback feedback = new Feedback();
         feedback.setBack(editText.getText().toString());
+        if(user == null){
+            Log.i(TAG, "USER NULL");
+        }
         feedback.setAuthor(user);
         feedback.save(new SaveListener<String>() {
             @Override

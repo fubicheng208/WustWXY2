@@ -34,6 +34,8 @@
     <color name="unSeeTop">#00000000</color><!--透明-->
     <color name="actionBarText">#EDEDED</color>
     <color name="colorPrimaryNews">#6ac9bd</color>
-    <color name="colorPrimaryDarkNews">#00bfa5</color>
+    <color name="colorPrimaryDarkNews">#06c1ae</color>
     <color name="fresh_bg">#fafafa</color>
+    <color name="person_info_title_color">#26a69a</color>
+    <color name="div_color">#dfe0e1</color>
 </resources>

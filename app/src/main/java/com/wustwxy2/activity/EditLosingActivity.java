@@ -82,10 +82,10 @@ public class EditLosingActivity extends BaseActivity implements View.OnClickList
         edit_phone.setText(old_phone);
 
 
-        if (from.equals("Lost")) {
-            tv_add.setText("修改失物信息");
+        if (from.equals(getResources().getText(R.string.lost))) {
+            tv_add.setText("修改寻物启事");
         } else {
-            tv_add.setText("修改招领信息");
+            tv_add.setText("修改招领启事");
         }
 
         mMainPresenter = new MainPresenter(this, this);
@@ -119,7 +119,7 @@ public class EditLosingActivity extends BaseActivity implements View.OnClickList
         title = edit_title.getText().toString();
         describe = edit_describe.getText().toString();
         phone = edit_phone.getText().toString();
-        if(from.equals("Lost")){
+        if(from.equals(getResources().getText(R.string.lost))){
             Lost lost = new Lost();
             lost.setTitle(title);
             lost.setDescribe(describe);

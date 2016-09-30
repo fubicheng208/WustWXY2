@@ -1,8 +1,6 @@
 package com.wustwxy2.activity;
 
 import android.Manifest;
-import android.app.Activity;
-import android.app.Notification;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -12,23 +10,23 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Build;
+import android.os.Bundle;
 import android.os.Handler;
-import android.os.Looper;
 import android.os.Message;
 import android.provider.Settings;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.nostra13.universalimageloader.utils.L;
 import com.readystatesoftware.systembartint.SystemBarTintManager;
 import com.wustwxy2.R;
 import com.wustwxy2.bean.User;
@@ -39,17 +37,17 @@ import cn.bmob.v3.BmobUser;
 import cn.bmob.v3.exception.BmobException;
 import cn.bmob.v3.listener.SaveListener;
 
-public class LoginActivity extends BaseActivity implements View.OnClickListener{
+public class LoginActivityInside extends BaseActivity implements View.OnClickListener{
 
     private static final int REQUEST_SIGNUP = 0;
-    private static final String TAG = "Login";
+    private static final String TAG = "LoginInside";
     Toolbar toolbar;
     EditText username;
     EditText password;
     Button login;
     TextView tv;
     private SystemBarTintManager tintManager;
-
+    InputMethodManager manager;
     SharedPreferences sp;
     SharedPreferences.Editor editor;
     //卡务中心SP保存的学号值，用来判断是否换号登录，若是则清空SP。
@@ -61,21 +59,22 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener{
             switch (msg.arg1) {
                 //登录成功
                 case 1:
-                    Toast.makeText(LoginActivity.this, "登录成功", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(LoginActivityInside.this, "登录成功", Toast.LENGTH_SHORT).show();
+                    //startActivity(new Intent(LoginActivityInside.this, MainActivity.class));
                     break;
                 //登录失败
                 case 2:
-                    Toast.makeText(LoginActivity.this, "登录失败，请检查您的网络", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(LoginActivityInside.this, "登录失败，请检查您的网络", Toast.LENGTH_SHORT).show();
                     break;
                 //账号或密码错误
                 case 3:
-                    Toast.makeText(LoginActivity.this, "账号名或密码错误", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(LoginActivityInside.this, "账号名或密码错误", Toast.LENGTH_SHORT).show();
                     break;
                 case 4:
-                    Toast.makeText(LoginActivity.this, "教务处又崩啦", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(LoginActivityInside.this, "教务处又崩啦", Toast.LENGTH_SHORT).show();
                     break;
                 case 5:
-                    Toast.makeText(LoginActivity.this, "服务器不稳定，请重试", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(LoginActivityInside.this, "服务器不稳定，请重试", Toast.LENGTH_SHORT).show();
                     break;
                 default:
                     break;
@@ -86,9 +85,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener{
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Log.i(TAG,"This is LoginActivity!");
-        //initToolbar();
-
+        Log.i(TAG,"This is LoginActivityInside!");
         requestPermission(new String[]{Manifest.permission.READ_PHONE_STATE,Manifest.permission.ACCESS_COARSE_LOCATION,
                 Manifest.permission.ACCESS_FINE_LOCATION,Manifest.permission.CALL_PHONE,
                 Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE}, new PermissionHandler() {
@@ -98,13 +95,13 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener{
 
             @Override
             public void onDenied() {
-                Toast.makeText(LoginActivity.this, "由于您拒绝了权限申请，无法正常打开应用", Toast.LENGTH_LONG).show();
+                Toast.makeText(LoginActivityInside.this, "由于您拒绝了权限申请，无法正常打开应用", Toast.LENGTH_LONG).show();
                 finish();
             }
 
             @Override
             public boolean onNeverAsk() {
-                new AlertDialog.Builder(LoginActivity.this)
+                new AlertDialog.Builder(LoginActivityInside.this)
                         .setTitle(R.string.permission_ask_title)
                         .setMessage(R.string.permission_mes)
                         .setPositiveButton("去开启", new DialogInterface.OnClickListener() {
@@ -124,12 +121,10 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener{
                 return  true;
             }
         });
-
-        BmobUser user = BmobUser.getCurrentUser(User.class);
-        if(user != null){
-            startActivity(new Intent(this, MainActivity.class));
-            this.finish();
-        }
+        setContentView(R.layout.activity_login);
+        //initToolbar();
+        //initWindow();
+        manager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
         username = (EditText)findViewById(R.id.input_account);
         password = (EditText)findViewById(R.id.input_password);
         tv = (TextView)findViewById(R.id.AsPass);
@@ -192,7 +187,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener{
             if(isNetworkAvailable(this)){
                 login();
             }else{
-                Toast.makeText(LoginActivity.this,"请检查您的网路",Toast.LENGTH_SHORT).show();
+                Toast.makeText(LoginActivityInside.this,"请检查您的网路",Toast.LENGTH_SHORT).show();
             }
         }else if(view == tv){
             Intent intent = new Intent(this, MainActivity.class);
@@ -221,7 +216,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener{
 
         login.setEnabled(false);
 
-        final ProgressDialog progressDialog = new ProgressDialog(LoginActivity.this);
+        final ProgressDialog progressDialog = new ProgressDialog(LoginActivityInside.this);
         progressDialog.setIndeterminate(true);
         progressDialog.setCancelable(false);
         progressDialog.setMessage("登录中");
@@ -259,7 +254,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener{
                                 handler.sendMessage(msgMessage);
                                 progressDialog.dismiss();
                                 //Toast.makeText(LoginActivity.this, "登录成功", Toast.LENGTH_SHORT).show();
-                                //finish();
+                                finish();
                             }
                             else{
                                 //返回202表示账号名已存在
@@ -286,9 +281,8 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener{
                                                 msgMessage.arg1 = 1;
                                                 handler.sendMessage(msgMessage);
                                                 progressDialog.dismiss();
-                                                startActivity(new Intent(LoginActivity.this, MainActivity.class));
                                                 //Toast.makeText(LoginActivity.this, "登录成功", Toast.LENGTH_SHORT).show();
-                                                //finish();
+                                                finish();
                                             }else{
                                                 Log.i(TAG, "登录失败:" +e.getMessage() );
                                                 Message msgMessage = new Message();
@@ -395,7 +389,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener{
 
                 // TODO: Implement successful signup logic here
                 // By default we just finish the Activity and log them in automatically
-                //this.finish();
+                this.finish();
             }
         }
     }
@@ -404,11 +398,12 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener{
     public void onBackPressed() {
         // Disable going back to the MainActivity
         moveTaskToBack(true);
+        finish();
     }
 
     public void onLoginSuccess() {
         login.setEnabled(true);
-        //finish();
+        finish();
     }
 
     public void onLoginFailed() {
@@ -437,5 +432,16 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener{
         }
 
         return valid;
+    }
+
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        // TODO Auto-generated method stub
+        if(event.getAction() == MotionEvent.ACTION_DOWN){
+            if(getCurrentFocus()!=null && getCurrentFocus().getWindowToken()!=null){
+                manager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+            }
+        }
+        return super.onTouchEvent(event);
     }
 }

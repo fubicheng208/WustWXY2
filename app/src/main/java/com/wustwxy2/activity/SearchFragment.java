@@ -1,5 +1,6 @@
 package com.wustwxy2.activity;
 
+import android.Manifest;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -36,12 +37,12 @@ import com.wustwxy2.R;
 import com.wustwxy2.adapter.AdAdapter;
 import com.wustwxy2.adapter.MyGridAdapter;
 import com.wustwxy2.bean.User;
-import com.wustwxy2.util.WustCardCenterLogin;
 import com.wustwxy2.models.AdDomain;
 import com.wustwxy2.models.JwInfoDB;
 import com.wustwxy2.models.MyGridView;
 import com.wustwxy2.util.Ksoap2;
 import com.wustwxy2.util.Utility;
+import com.wustwxy2.util.WustCardCenterLogin;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -50,8 +51,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
-import cn.bmob.v3.exception.BmobException;
-import cn.bmob.v3.listener.SaveListener;
+import cn.bmob.v3.BmobUser;
 
 /**
  * Created by fubicheng on 2016/7/12.
@@ -88,7 +88,7 @@ public class SearchFragment extends Fragment implements WustCardCenterLogin.Logi
     // 轮播banner的数据
     private List<AdDomain> adList;
     private Handler handler = new Handler() {
-        public void handleMessage(android.os.Message msg) {
+        public void handleMessage(Message msg) {
             adViewPager.setCurrentItem(currentItem);
         }
     };
@@ -223,7 +223,7 @@ public class SearchFragment extends Fragment implements WustCardCenterLogin.Logi
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 switch (i) {
-                    case 0: {
+                    case 6: {
                         startActivity(new Intent(getActivity(), SearchLibActivity.class));
                     }
                     break;
@@ -247,7 +247,7 @@ public class SearchFragment extends Fragment implements WustCardCenterLogin.Logi
                                         Message message = new Message();
                                         //查询成绩
                                         message.arg1 = QUERY_COURSE;
-                                        message.obj = Ksoap2.getCourseInfo("201513137125", xq);
+                                        message.obj = Ksoap2.getCourseInfo(xh1, xq);
                                         handler1.sendMessage(message);
                                     }
                                 }).start();
@@ -256,8 +256,7 @@ public class SearchFragment extends Fragment implements WustCardCenterLogin.Logi
                             }
                         } else {
                             Toast.makeText(getActivity(), "需要先登录的哦", Toast.LENGTH_SHORT).show();
-                            startActivity(new Intent(getActivity(), LoginActivity.class));
-                            getActivity().finish();
+                            startActivity(new Intent(getActivity(), LoginActivityInside.class));
                         }
                     }
                     break;
@@ -286,8 +285,7 @@ public class SearchFragment extends Fragment implements WustCardCenterLogin.Logi
                                 }).start();
                             } else {
                                 Toast.makeText(getActivity(), "需要先登录的哦", Toast.LENGTH_SHORT).show();
-                                startActivity(new Intent(getActivity(), LoginActivity.class));
-                                getActivity().finish();
+                                startActivity(new Intent(getActivity(), LoginActivityInside.class));
 
                             }
                         }else{
@@ -295,19 +293,27 @@ public class SearchFragment extends Fragment implements WustCardCenterLogin.Logi
                         }
                     }
                     break;
-                    case 3: {
+                    case 0: {
                         //一卡通
-                        username = getActivity().getSharedPreferences("WustCardCenter", 0).getString("username", null);
-                        password = getActivity().getSharedPreferences("WustCardCenter", 0).getString("password", null);
-                        if (username == null || password == null) {
-                            Toast.makeText(getActivity(), "请先绑定一卡通密码", Toast.LENGTH_SHORT).show();
-                            Intent intent = new Intent(getActivity(), BindActivity.class);
-                            startActivity(intent);
-                        } else {
-                            progressDialog.show();
-                            //调用WustCardCenterLogin类进行登录
-                            login.login(username, password);
-                            Log.i(TAG, username + "||" + password);
+                        BmobUser user = BmobUser.getCurrentUser(User.class);
+                        if(user==null ){
+                            Log.i(TAG, "USER NULL");
+                            Toast.makeText(getActivity(), "需要先登录的哦", Toast.LENGTH_SHORT).show();
+                            startActivity(new Intent(getActivity(), LoginActivityInside.class));
+                        }else {
+                            Log.i(TAG,"USER NOT NULL");
+                            username = getActivity().getSharedPreferences("WustCardCenter", 0).getString("username", null);
+                            password = getActivity().getSharedPreferences("WustCardCenter", 0).getString("password", null);
+                            if (username == null || password == null) {
+                                Toast.makeText(getActivity(), "请先绑定一卡通密码", Toast.LENGTH_SHORT).show();
+                                Intent intent = new Intent(getActivity(), BindActivity.class);
+                                startActivity(intent);
+                            } else {
+                                progressDialog.show();
+                                //调用WustCardCenterLogin类进行登录
+                                login.login(username, password);
+                                Log.i(TAG, username + "||" + password);
+                            }
                         }
                     }
                     break;
@@ -319,7 +325,7 @@ public class SearchFragment extends Fragment implements WustCardCenterLogin.Logi
                         startActivity(new Intent(getActivity(), SearchBusActivity.class));
                     }
                     break;
-                    case 6: {
+                    case 3: {
                         startActivity(new Intent(getActivity(), SearchMapActivity.class));
                     }
                     break;
@@ -347,6 +353,7 @@ public class SearchFragment extends Fragment implements WustCardCenterLogin.Logi
             Intent intent = new Intent(getActivity(), AccInfoActivity.class);
             startActivity(intent);
         } else {
+            progressDialog.dismiss();
             Toast.makeText(getActivity(), desc, Toast.LENGTH_LONG).show();
             Intent intent = new Intent(getActivity(), BindActivity.class);
             startActivity(intent);

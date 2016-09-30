@@ -124,7 +124,7 @@ public class AddActivity extends BaseActivity implements View.OnClickListener, I
         edit_phone.setText(old_phone);
 
 
-        if (from.equals("Lost")) {
+        if (from.equals(getResources().getText(R.string.lost))) {
             tv_add.setText(getResources().getText(R.string.add_losing));
         } else {
             tv_add.setText(getResources().getText(R.string.add_found));
@@ -239,7 +239,7 @@ public class AddActivity extends BaseActivity implements View.OnClickListener, I
             ShowToast("请填写手机");
             return;
         }
-        if(from.equals("Lost")){
+        if(from.equals(getResources().getText(R.string.lost))){
             addLost();
         }else{
             addFound();
@@ -332,12 +332,12 @@ public class AddActivity extends BaseActivity implements View.OnClickListener, I
             @Override
             public void done(String s, BmobException e) {
                 if(e==null){
-                    if(from.equals("Lost")) {
-                        ShowToast("失物信息添加成功!" );
-                        Log.i(TAG, "失物信息添加成功:" + obj.getObjectId());
+                    if(from.equals(getResources().getText(R.string.lost))) {
+                        ShowToast(getString(R.string.toast_losing) );
+                        Log.i(TAG, getString(R.string.toast_losing) + obj.getObjectId());
                     }else{
-                        ShowToast("寻物信息添加成功!");
-                        Log.i(TAG, "寻物信息添加成功:" + obj.getObjectId());
+                        ShowToast(getString(R.string.toast_found));
+                        Log.i(TAG, getString(R.string.toast_found) + obj.getObjectId());
                     }
                     dialog.dismiss();
                     setResult(RESULT_OK);
@@ -345,12 +345,12 @@ public class AddActivity extends BaseActivity implements View.OnClickListener, I
                 }
                 else{
                     dialog.dismiss();
-                    if(from.equals("Lost")){
-                        Log.i(TAG,"失物信息添加失败");
-                        ShowToast("失物信息添加失败");
+                    if(from.equals(getResources().getText(R.string.lost))){
+                        Log.i(TAG,getString(R.string.toast_losing_fail));
+                        ShowToast(getString(R.string.toast_losing_fail));
                     }else{
-                        Log.i(TAG,"寻物信息添加失败");
-                        ShowToast("寻物信息添加失败");
+                        Log.i(TAG,getString(R.string.toast_found_fail));
+                        ShowToast(getString(R.string.toast_found_fail));
                     }
                 }
             }

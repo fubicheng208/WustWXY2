@@ -19,8 +19,8 @@
         android:id="@+id/tv_add"
         style="@style/Fbc.TextView._White"
         android:layout_centerInParent="true"
-        android:text="Lost"
-        android:textSize="22sp" />
+        android:text="@string/lost"
+        android:textSize="20sp" />
 
 
     <Button

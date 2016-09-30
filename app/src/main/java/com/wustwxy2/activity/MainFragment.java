@@ -76,6 +76,7 @@ public class MainFragment extends Fragment {
 
         //viewpager加载adapter
         vp_FindFragment_pager.setAdapter(fAdapter);
+        vp_FindFragment_pager.setCurrentItem(1);
         //tab_FindFragment_title.setViewPager(vp_FindFragment_pager);
         //TabLayout加载viewpager
         tab_FindFragment_title.setupWithViewPager(vp_FindFragment_pager);

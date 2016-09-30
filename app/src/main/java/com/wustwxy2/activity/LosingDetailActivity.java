@@ -142,7 +142,7 @@ public class LosingDetailActivity extends BaseActivity implements View.OnClickLi
         Log.i(TAG, "phone:"+ phone );
         Log.i(TAG, "title:"+ title);
         Log.i(TAG, "describe:" + describe);
-        if(from.equals("Lost")){
+        if(from.equals(getResources().getText(R.string.lost))){
             BmobQuery<Lost> query = new BmobQuery<Lost>();
             query.include("author");
             query.getObject(objectId, new QueryListener<Lost>() {

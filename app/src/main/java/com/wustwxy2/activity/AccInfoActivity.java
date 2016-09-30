@@ -5,14 +5,16 @@ package com.wustwxy2.activity;
  */
 
 
-import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
+import android.icu.text.DateFormat;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
@@ -30,15 +32,16 @@ import com.readystatesoftware.systembartint.SystemBarTintManager;
 import com.wustwxy2.R;
 import com.wustwxy2.util.WustCardCenterLogin;
 
+import java.lang.reflect.Field;
 
-public class AccInfoActivity extends AppCompatActivity
-{
+
+public class AccInfoActivity extends AppCompatActivity {
 
     Toolbar toolbar;
     private SystemBarTintManager tintManager;
 
     public static WustCardCenterLogin login;
-    private  Bitmap  bitmap3=null;
+    private Bitmap bitmap3 = null;
 
     private ImageView imageView;
     private TextView username;
@@ -57,26 +60,21 @@ public class AccInfoActivity extends AppCompatActivity
 
     private ProgressDialog progressDialog;
 
-    private Handler handler = new Handler()
-    {
-        public void handleMessage(android.os.Message msg)
-        {
-            switch (msg.what)
-            {
+    private Handler handler = new Handler() {
+        public void handleMessage(android.os.Message msg) {
+            switch (msg.what) {
                 case MSG_IMAGELOAD:
                     imageView.setImageBitmap((Bitmap) msg.obj);
                     break;
 
-                case MSG_QUERYCOMPLETE:
-                {
+                case MSG_QUERYCOMPLETE: {
                     progressDialog.dismiss();
                     Intent intent = new Intent(AccInfoActivity.this, QueryListActivity.class);
                     startActivity(intent);
                     break;
                 }
 
-                case MSG_QUERYERROR:
-                {
+                case MSG_QUERYERROR: {
                     progressDialog.dismiss();
                     Toast.makeText(AccInfoActivity.this, "查询失败,请重试!", Toast.LENGTH_LONG).show();
                     break;
@@ -84,12 +82,12 @@ public class AccInfoActivity extends AppCompatActivity
                 default:
                     break;
             }
-        };
+        }
+
     };
 
     @Override
-    protected void onCreate(Bundle savedInstanceState)
-    {
+    protected void onCreate(Bundle savedInstanceState) {
         // TODO Auto-generated method stub
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -108,15 +106,13 @@ public class AccInfoActivity extends AppCompatActivity
         initToolbar();
         initWindow();
 
-        new Thread(new Runnable()
-        {
+        new Thread(new Runnable() {
 
             @Override
-            public void run()
-            {
+            public void run() {
                 // TODO Auto-generated method stub
                 Bitmap photo = login.getPhoto();
-                if(photo == null) System.out.println("photo null");
+                if (photo == null) System.out.println("photo null");
                 handler.obtainMessage(MSG_IMAGELOAD, photo).sendToTarget();
             }
         }).start();
@@ -126,22 +122,18 @@ public class AccInfoActivity extends AppCompatActivity
         userdept.setText(login.getDept());
         userbalance.setText("余  额: " + login.getBalance());
 
-        btnquerytoday.setOnClickListener(new OnClickListener()
-        {
+        btnquerytoday.setOnClickListener(new OnClickListener() {
             @Override
-            public void onClick(View v)
-            {
+            public void onClick(View v) {
                 // TODO Auto-generated method stub
                 progressDialog = new ProgressDialog(AccInfoActivity.this);
                 progressDialog.setMessage("正在查询...");
                 progressDialog.setCancelable(false);
                 progressDialog.show();
 
-                new Thread(new Runnable()
-                {
+                new Thread(new Runnable() {
                     @Override
-                    public void run()
-                    {
+                    public void run() {
                         // TODO Auto-generated method stub
                         QueryListActivity.title = login.getTodayQueryTitle();
                         QueryListActivity.dataList = login.getTodayQueryData();
@@ -151,25 +143,23 @@ public class AccInfoActivity extends AppCompatActivity
             }
         });
 
-        btnqueryhistory.setOnClickListener(new OnClickListener()
-        {
+        btnqueryhistory.setOnClickListener(new OnClickListener() {
 
             @Override
-            public void onClick(View v)
-            {
+            public void onClick(View v) {
                 // TODO Auto-generated method stub
-               final DatePicker datePicker = new DatePicker(AccInfoActivity.this);
-                 datePicker.setCalendarViewShown(false);
-                datePicker.setBackgroundColor(getResources().getColor(R.color.bg_datePicker_grey));
-               // ((ViewGroup) ((ViewGroup) datePicker.getChildAt(0)).getChildAt(0)).getChildAt(2).setVisibility(View.GONE);
-                new  AlertDialog.Builder(AccInfoActivity.this)
-                        .setTitle("选择要查询的月份" )
+                final DatePicker datePicker = new DatePicker(AccInfoActivity.this);
+                datePicker.setCalendarViewShown(false);
+                //datePicker.setBackgroundColor(getResources().getColor(R.color.bg_datePicker_grey));
+                //不需要选择日期，故隐藏
+                hideDay(datePicker);
+                // ((ViewGroup) ((ViewGroup) datePicker.getChildAt(0)).getChildAt(0)).getChildAt(2).setVisibility(View.GONE);
+                new AlertDialog.Builder(AccInfoActivity.this)
+                        .setTitle("选择要查询的月份")
                         .setView(datePicker)
-                        .setPositiveButton("确定" , new DialogInterface.OnClickListener()
-                        {
+                        .setPositiveButton("确定", new DialogInterface.OnClickListener() {
                             @Override
-                            public void onClick(DialogInterface dialog, int which)
-                            {
+                            public void onClick(DialogInterface dialog, int which) {
 
                                 // TODO Auto-generated method stub
                                 final String year = Integer.toString(datePicker.getYear());
@@ -180,20 +170,16 @@ public class AccInfoActivity extends AppCompatActivity
                                 progressDialog.setCancelable(false);
                                 progressDialog.show();
 
-                                new Thread(new Runnable()
-                                {
+                                new Thread(new Runnable() {
 
                                     @Override
-                                    public void run()
-                                    {
+                                    public void run() {
                                         // TODO Auto-generated method stub
                                         QueryListActivity.title = year + "年" + month + "月历史交易记录";
-                                        try
-                                        {
+                                        try {
                                             QueryListActivity.dataList = login.getHistoryQueryData(year, month);
                                             handler.obtainMessage(MSG_QUERYCOMPLETE).sendToTarget();
-                                        } catch (Exception e)
-                                        {
+                                        } catch (Exception e) {
                                             // TODO Auto-generated catch block
                                             handler.obtainMessage(MSG_QUERYERROR).sendToTarget();
                                         }
@@ -201,18 +187,16 @@ public class AccInfoActivity extends AppCompatActivity
                                 }).start();
                             }
                         })
-                        .setNegativeButton("取消" ,  null )
+                        .setNegativeButton("取消", null)
                         .show();
 
             }
         });
 
-        btnlossreport.setOnClickListener(new OnClickListener()
-        {
+        btnlossreport.setOnClickListener(new OnClickListener() {
 
             @Override
-            public void onClick(View v)
-            {
+            public void onClick(View v) {
                 // TODO Auto-generated method stub
                 Toast.makeText(AccInfoActivity.this, "请到相关工作地点或者拨打电话挂失^_^", Toast.LENGTH_LONG).show();
             }
@@ -220,15 +204,15 @@ public class AccInfoActivity extends AppCompatActivity
     }
 
     public void initToolbar() {
-        toolbar = (Toolbar)findViewById(R.id.toolbar);
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.setTitle("一卡通");
         this.setSupportActionBar(toolbar);
         this.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
     //设置沉浸式状态栏和导航栏
-    private void initWindow(){
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT){
+    private void initWindow() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
             getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
             tintManager = new SystemBarTintManager(this);
@@ -248,5 +232,40 @@ public class AccInfoActivity extends AppCompatActivity
         }
         return super.onOptionsItemSelected(item);
     }
+
+    //隐藏datePicker中的日这一选项
+    private void hideDay(DatePicker mDatePicker) {
+        try {
+            /* 处理android5.0以上的特殊情况 */
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                int daySpinnerId = Resources.getSystem().getIdentifier("day", "id", "android");
+                if (daySpinnerId != 0) {
+                    View daySpinner = mDatePicker.findViewById(daySpinnerId);
+                    if (daySpinner != null) {
+                        daySpinner.setVisibility(View.GONE);
+                    }
+                }
+            } else {
+                Field[] datePickerfFields = mDatePicker.getClass().getDeclaredFields();
+                for (Field datePickerField : datePickerfFields) {
+                    if ("mDaySpinner".equals(datePickerField.getName()) || ("mDayPicker").equals(datePickerField.getName())) {
+                        datePickerField.setAccessible(true);
+                        Object dayPicker = new Object();
+                        try {
+                            dayPicker = datePickerField.get(mDatePicker);
+                        } catch (IllegalAccessException e) {
+                            e.printStackTrace();
+                        } catch (IllegalArgumentException e) {
+                            e.printStackTrace();
+                        }
+                        ((View) dayPicker).setVisibility(View.GONE);
+                    }
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
 
 }

@@ -17,6 +17,7 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.util.Xml;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.Window;
@@ -62,13 +63,15 @@ public class MainActivity extends BaseActivity {
             e.printStackTrace();
         }
 
-        //如果得不到则为0,1为登录过，2为游客登录
+
+        /*//如果得不到则为0,1为登录过，2为游客登录
         int from = getIntent().getIntExtra("from",0);
         BmobUser user = BmobUser.getCurrentUser(User.class);
         if(from!=2&&user==null){
             Intent intent = new Intent(this, LoginActivity.class);
             startActivity(intent);
-        }
+        }*/
+
         setContentView();
         initFragment(savedInstanceState);
         initViews();
@@ -175,6 +178,8 @@ public class MainActivity extends BaseActivity {
                         info.setVersion(parser.nextText()); //获取版本号
                     }else if ("url".equals(parser.getName())){
                         info.setUrl(parser.nextText()); //获取要升级的APK文件
+                    }else if ("description".equals(parser.getName())){
+                        info.setDescription(parser.nextText()); //获取该文件的信息
                     }
                     break;
             }
@@ -285,8 +290,8 @@ public class MainActivity extends BaseActivity {
      */
     protected void showUpdataDialog() {
         AlertDialog.Builder builer = new AlertDialog.Builder(this) ;
-        builer.setTitle("版本升级");
-        builer.setMessage("检测到最新版本,请及时更新!");
+        builer.setTitle(R.string.find_new_version);
+        builer.setMessage(info.getDescription());
         //当点确定按钮时从服务器上下载 新的apk 然后安装
         builer.setPositiveButton("确定", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
@@ -339,6 +344,19 @@ public class MainActivity extends BaseActivity {
         //执行的数据类型
         intent.setDataAndType(Uri.fromFile(file), "application/vnd.android.package-archive");
         startActivity(intent);
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            Intent home = new Intent(Intent.ACTION_MAIN);
+            home.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            home.addCategory(Intent.CATEGORY_HOME);
+            startActivity(home);
+            return true;
+        }
+        return super.onKeyDown(keyCode, event);
     }
 
     /*

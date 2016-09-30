@@ -38,7 +38,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:padding="5dp"
-            android:text="@string/default_time"
+            android:text=""
             style="@style/Fbc.TextView._Gray"
             android:textSize="@dimen/caption"
             android:layout_alignParentBottom="true"
@@ -60,7 +60,7 @@
             android:layout_marginTop="8dp"
             style="@style/Fbc.TextView._White"
             android:background="@color/green"
-            android:text="@string/default_phone"
+            android:text="15671562403"
             android:drawableLeft="@mipmap/icon_phone" >
         </TextView>
     </RelativeLayout>

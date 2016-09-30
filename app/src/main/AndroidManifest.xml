@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.wustwxy2">
 
     <!-- 安装apk权限-->
-    <uses-permission android:name="android.permission.INSTALL_PACKAGES" />
+    <uses-permission android:name="android.permission.INSTALL_PACKAGES"
+        tools:ignore="ProtectedPermissions"/>
     <!-- 拨打电话权限 -->
     <uses-permission android:name="android.permission.CALL_PHONE" />
     <!-- 允许联网 -->
@@ -40,9 +42,9 @@
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
-        android:theme="@style/AppBaseTheme">
-        <activity android:name=".activity.MainActivity" android:screenOrientation="portrait">
-
+        android:theme="@style/AppBaseTheme"
+        tools:ignore="AllowBackup">
+        <activity android:name=".activity.LoginActivity" android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -59,6 +61,7 @@
             android:enabled="true"
             android:process=":remote" />
 
+        <activity android:name=".activity.MainActivity" android:screenOrientation="portrait"/>
         <activity android:name=".activity.SearchEngActivity" android:screenOrientation="portrait" />
         <activity android:name=".activity.SearchTableActivity"  android:screenOrientation="portrait"/>
         <activity android:name=".activity.SearchGradeActivity" android:screenOrientation="portrait"/>
@@ -71,7 +74,6 @@
         <activity android:name=".activity.SearchLibActivity" android:screenOrientation="portrait"/>
         <activity android:name=".activity.AddActivity" android:screenOrientation="portrait"/>
         <activity android:name=".activity.MyLosingActivity" android:screenOrientation="portrait"/>
-        <activity android:name=".activity.LoginActivity" android:screenOrientation="portrait"/>
         <activity android:name=".activity.LosingDetailActivity" android:screenOrientation="portrait"/>
         <activity android:name=".activity.EditLosingActivity" android:screenOrientation="portrait"/>
         <activity android:name=".activity.ImageShower" android:screenOrientation="portrait"/>
@@ -81,6 +83,8 @@
         <activity android:name=".activity.BrowseNewsAvtivity" android:screenOrientation="portrait"/>
         <activity android:name=".activity.AccInfoActivity" android:screenOrientation="portrait"/>
         <activity android:name=".activity.QueryListActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".activity.LoginActivityInside" android:screenOrientation="portrait"
+            android:launchMode="singleInstance"/>
     </application>
 
 </manifest>

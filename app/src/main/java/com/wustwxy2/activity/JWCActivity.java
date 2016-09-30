@@ -13,6 +13,7 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -33,7 +34,7 @@ import java.util.List;
 /**
  * Created by Administrator on 2016/7/17.
  */
-public class JWCActivity extends Fragment implements SwipeRefreshLayout.OnRefreshListener{
+public class JWCActivity extends Fragment implements SwipeRefreshLayout.OnRefreshListener, AbsListView.OnScrollListener{
     private NewsAdapter adapter;
     private List<News> newsList;
     private ListView lv;
@@ -56,7 +57,6 @@ public class JWCActivity extends Fragment implements SwipeRefreshLayout.OnRefres
                 String getnews[] = news.split(",");
                 for (int i = 0; i < 48; i += 2) {
                     newsList.add(new News(getnews[i], getnews[i + 1]));
-
                 }
             }
             if (refreshLayout != null)
@@ -83,6 +83,7 @@ public class JWCActivity extends Fragment implements SwipeRefreshLayout.OnRefres
         refreshLayout = (SwipeRefreshLayout) rootView.findViewById(R.id.refresh_news);
         //为组件加入参数
         initRefresh();
+        lv.setOnScrollListener(this);
         refreshLayout.setOnRefreshListener(this);
         if(!isNetworkAvailable(getActivity())){
             showErrorView();
@@ -133,7 +134,6 @@ public class JWCActivity extends Fragment implements SwipeRefreshLayout.OnRefres
             public void run() { //使用线程，用Jsoup解析网页html文件，获取新闻标题和链接
                 try {
                     String str = "";
-
                     {
                         Document doc = Jsoup.connect(url).get();
                         Elements elements = doc.select("div .mainframe_2").select("li");//获取HTML文件中指定位置的新闻
@@ -169,6 +169,8 @@ public class JWCActivity extends Fragment implements SwipeRefreshLayout.OnRefres
 
     @Override
     public void onRefresh() {
+        //在刷新之前先清空原来的
+        newsList.clear();
         if(isNetworkAvailable(getActivity())){
             showTrueView();
             parseHtml(handler);
@@ -208,5 +210,21 @@ public class JWCActivity extends Fragment implements SwipeRefreshLayout.OnRefres
             }
         }
         return false;
+    }
+
+
+    //监听滑动事件，如到达第一项才可下滑更新
+    @Override
+    public void onScrollStateChanged(AbsListView absListView, int i) {
+
+    }
+
+    @Override
+    public void onScroll(AbsListView absListView, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+        if(firstVisibleItem == 0){
+            refreshLayout.setEnabled(true);
+        }else{
+            refreshLayout.setEnabled(false);
+        }
     }
 }

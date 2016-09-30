@@ -1,13 +1,13 @@
 <resources>
     <string name="app_name">武科大微校园</string>
     <string name="lib">图书馆</string>
-    <string name="list_no_data_lost">暂时还未有失物信息</string>
-    <string name="list_no_data_lost_mine">您还未发布失物信息</string>
+    <string name="list_no_data_lost">暂时还未有寻物启事</string>
+    <string name="list_no_data_lost_mine">您还未发布寻物启事</string>
     <string name="progress_loading">正在获取数据..</string>
-    <string name="lost">失物</string>
-    <string name="found">招领</string>
-    <string name="list_no_data_found">暂时还未有招领信息</string>
-    <string name="list_no_data_found_mine">您还未发布招领信息</string>
+    <string name="lost">寻物启事</string>
+    <string name="found">招领启事</string>
+    <string name="list_no_data_found">暂时还未有招领启事</string>
+    <string name="list_no_data_found_mine">您还未发布招领启事</string>
     <string name="title_activity_main2">Main2Activity</string>
     <string name="menu_losing_add">添加</string>
     <string name="menu_losing_mine">我的</string>
@@ -24,10 +24,10 @@
     <string name="default_time">2016年9月9日</string>
     <string name="default_phone">138024249542</string>
     <string name="hint_login">请先登录</string>
-    <string name="my_lost">我的失物</string>
-    <string name="my_found">我的招领</string>
-    <string name="add_losing">添加失物信息</string>
-    <string name="add_found">添加招领信息</string>
+    <string name="my_lost">我的寻物启事</string>
+    <string name="my_found">我的招领启事</string>
+    <string name="add_losing">添加寻物启事</string>
+    <string name="add_found">添加招领启事</string>
     <string-array name="score_array">
         <item>所有成绩</item>
         <item>本学期成绩</item>
@@ -89,6 +89,13 @@
     <string name="coming_soon">功能开发中，敬请期待...</string>
     <string name="copyright">Copyright © 领航工作室</string>
     <string name="serverurl">http://202.114.255.76:8087/wkdwxy/update.xml</string>
+    <string name="toast_losing">寻物启事添加成功!</string>
+    <string name="toast_found">招领启事添加成功!</string>
+    <string name="toast_losing_fail">寻物启事添加失败</string>
+    <string name="toast_found_fail">招领启事添加失败</string>
+    <string name="permission_ask_title">权限申请</string>
+    <string name="permission_mes">在设置-应用-权限中开启各项权限，以保证功能的正常使用</string>
+    <string name="find_new_version">检测到有新版本</string>
 
     <style name="AnimationActivity" parent="@android:style/Animation.Activity">
         <item name="android:activityOpenEnterAnimation">@anim/push_left_in</item>

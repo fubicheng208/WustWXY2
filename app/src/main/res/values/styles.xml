@@ -13,8 +13,6 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <!-- 状态栏颜色 -->
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <!--toolbar文字的颜色-->
-        <item name="@android:textColorPrimary">@android:color/white</item>
         <!-- 窗口的背景颜色 -->
         <item name="android:windowBackground">@android:color/white</item>
         <!--toolbar上菜单文字的颜色-->
