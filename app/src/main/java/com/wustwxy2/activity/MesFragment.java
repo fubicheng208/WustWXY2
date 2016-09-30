@@ -51,8 +51,7 @@ public class MesFragment extends Fragment implements View.OnClickListener{
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
-
+        initToolbar();
         View view = inflater.inflate(R.layout.fragment_mes, container, false);
         name = (TextView)view.findViewById(R.id.mes_name);
         no = (TextView)view.findViewById(R.id.mes_no);

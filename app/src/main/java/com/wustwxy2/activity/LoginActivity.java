@@ -69,7 +69,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener{
                     break;
                 //账号或密码错误
                 case 3:
-                    Toast.makeText(LoginActivity.this, "账号名或密码错误", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(LoginActivity.this, "账号名或密码错误，教务处密码默认为学号", Toast.LENGTH_SHORT).show();
                     break;
                 case 4:
                     Toast.makeText(LoginActivity.this, "教务处又崩啦", Toast.LENGTH_SHORT).show();
@@ -257,6 +257,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener{
                                 Message msgMessage = new Message();
                                 msgMessage.arg1 = 1;
                                 handler.sendMessage(msgMessage);
+                                startActivity(new Intent(LoginActivity.this, MainActivity.class));
                                 progressDialog.dismiss();
                                 //Toast.makeText(LoginActivity.this, "登录成功", Toast.LENGTH_SHORT).show();
                                 //finish();
@@ -285,8 +286,8 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener{
                                                 Message msgMessage = new Message();
                                                 msgMessage.arg1 = 1;
                                                 handler.sendMessage(msgMessage);
-                                                progressDialog.dismiss();
                                                 startActivity(new Intent(LoginActivity.this, MainActivity.class));
+                                                progressDialog.dismiss();
                                                 //Toast.makeText(LoginActivity.this, "登录成功", Toast.LENGTH_SHORT).show();
                                                 //finish();
                                             }else{

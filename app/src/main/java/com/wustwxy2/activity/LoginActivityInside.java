@@ -68,7 +68,7 @@ public class LoginActivityInside extends BaseActivity implements View.OnClickLis
                     break;
                 //账号或密码错误
                 case 3:
-                    Toast.makeText(LoginActivityInside.this, "账号名或密码错误", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(LoginActivityInside.this, "账号名或密码错误，教务处密码默认为学号", Toast.LENGTH_SHORT).show();
                     break;
                 case 4:
                     Toast.makeText(LoginActivityInside.this, "教务处又崩啦", Toast.LENGTH_SHORT).show();
