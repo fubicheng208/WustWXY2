@@ -76,15 +76,15 @@ public class SearchMapActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-       /* requestPermission(new String[]{Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION}, new PermissionHandler() {
+        requestPermission(new String[]{Manifest.permission.ACCESS_COARSE_LOCATION,
+                Manifest.permission.ACCESS_FINE_LOCATION}, new PermissionHandler() {
             @Override
             public void onGranted() {
-
             }
 
             @Override
             public void onDenied() {
-                Toast.makeText(SearchMapActivity.this, "由于您拒绝了权限申请，此功能无法正常运行", Toast.LENGTH_LONG).show();
+                Toast.makeText(SearchMapActivity.this, "由于您拒绝了权限申请，无法正常使用该功能", Toast.LENGTH_LONG).show();
                 finish();
             }
 
@@ -104,12 +104,18 @@ public class SearchMapActivity extends BaseActivity {
                                 dialogInterface.dismiss();
                             }
                         })
-                        .setNegativeButton("取消", null)
+                        .setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                finish();
+                                dialogInterface.dismiss();
+                            }
+                        })
                         .setCancelable(false)
                         .show();
                 return  true;
             }
-        });*/
+        });
         SDKInitializer.initialize(getApplicationContext());
         setContentView(R.layout.activity_search_map);
         initToolbar();

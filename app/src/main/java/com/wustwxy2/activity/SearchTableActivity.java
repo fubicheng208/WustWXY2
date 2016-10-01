@@ -1,8 +1,10 @@
 package com.wustwxy2.activity;
 
+import android.Manifest;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.ContentUris;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
@@ -14,7 +16,9 @@ import android.os.Build;
 import android.os.Bundle;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
+import android.provider.Settings;
 import android.support.design.widget.AppBarLayout;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -44,7 +48,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SearchTableActivity extends AppCompatActivity implements AdapterView.OnItemClickListener, View.OnClickListener {
+public class SearchTableActivity extends BaseActivity implements AdapterView.OnItemClickListener, View.OnClickListener {
 
     private RelativeLayout titleRl;
     private LinearLayout weekPanels[] = new LinearLayout[7];
@@ -134,6 +138,26 @@ public class SearchTableActivity extends AppCompatActivity implements AdapterVie
             weekPanels[i] = (LinearLayout) findViewById(R.id.weekPanel_1 + i);
             initWeekPanel(weekPanels[i], mJwInfoDB.loadCourses(currentZc, i + 1));
         }
+    }
+
+    @Override
+    public void setContentView() {
+
+    }
+
+    @Override
+    public void initViews() {
+
+    }
+
+    @Override
+    public void initListeners() {
+
+    }
+
+    @Override
+    public void initData() {
+
     }
 
     public void initWeekPanel(LinearLayout ll, List<Course> data) {
@@ -246,9 +270,41 @@ public class SearchTableActivity extends AppCompatActivity implements AdapterVie
                 startActivity(intent);
                 break;
             case R.id.set_bj_btn:
-                Intent intent2=new Intent("android.intent.action.GET_CONTENT");
-                intent2.setType("image/*");
-                startActivityForResult(intent2,CHOOSE_PHOTO);
+                requestPermission(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE}, new BaseActivity.PermissionHandler() {
+                    @Override
+                    public void onGranted() {
+                        Intent intent2=new Intent("android.intent.action.GET_CONTENT");
+                        intent2.setType("image/*");
+                        startActivityForResult(intent2,CHOOSE_PHOTO);
+                    }
+
+                    @Override
+                    public void onDenied() {
+                        Toast.makeText(SearchTableActivity.this, "由于您拒绝了权限申请，无法正常使用该功能", Toast.LENGTH_LONG).show();
+                    }
+
+                    @Override
+                    public boolean onNeverAsk() {
+                        new AlertDialog.Builder(SearchTableActivity.this)
+                                .setTitle(R.string.permission_ask_title)
+                                .setMessage(R.string.permission_mes)
+                                .setPositiveButton("去开启", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialogInterface, int i) {
+                                        Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+                                        Uri uri = Uri.fromParts("package", getPackageName(), null);
+                                        intent.setData(uri);
+                                        startActivity(intent);
+
+                                        dialogInterface.dismiss();
+                                    }
+                                })
+                                .setNegativeButton("取消", null)
+                                .setCancelable(false)
+                                .show();
+                        return  true;
+                    }
+                });
                 break;
             default:
                 break;

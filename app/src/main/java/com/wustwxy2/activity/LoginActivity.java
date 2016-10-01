@@ -89,16 +89,14 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener{
         Log.i(TAG,"This is LoginActivity!");
         //initToolbar();
 
-        requestPermission(new String[]{Manifest.permission.READ_PHONE_STATE,Manifest.permission.ACCESS_COARSE_LOCATION,
-                Manifest.permission.ACCESS_FINE_LOCATION,Manifest.permission.CALL_PHONE,
-                Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE}, new PermissionHandler() {
+        requestPermission(new String[]{Manifest.permission.READ_PHONE_STATE}, new PermissionHandler() {
             @Override
             public void onGranted() {
             }
 
             @Override
             public void onDenied() {
-                Toast.makeText(LoginActivity.this, "由于您拒绝了权限申请，无法正常打开应用", Toast.LENGTH_LONG).show();
+                Toast.makeText(LoginActivity.this, "由于您拒绝了基础权限申请，无法正常打开应用", Toast.LENGTH_LONG).show();
                 finish();
             }
 
@@ -118,7 +116,13 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener{
                                 dialogInterface.dismiss();
                             }
                         })
-                        .setNegativeButton("取消", null)
+                        .setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                finish();
+                                dialogInterface.dismiss();
+                            }
+                        })
                         .setCancelable(false)
                         .show();
                 return  true;

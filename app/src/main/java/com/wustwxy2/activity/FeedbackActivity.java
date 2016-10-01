@@ -59,7 +59,7 @@ public class FeedbackActivity extends BaseActivity implements View.OnClickListen
         dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
         dialog.setIndeterminate(true);
         dialog.setCancelable(false);
-        dialog.setTitle("正在提交");
+        dialog.setMessage("正在提交");
 
     }
 

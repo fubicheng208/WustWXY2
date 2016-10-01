@@ -2,11 +2,15 @@ package com.wustwxy2.activity;
 
 
 
+import android.Manifest;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Build;
+import android.provider.Settings;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
@@ -17,6 +21,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.nostra13.universalimageloader.cache.disc.impl.UnlimitedDiscCache;
 import com.nostra13.universalimageloader.cache.memory.impl.LruMemoryCache;
@@ -275,11 +280,43 @@ public class LosingDetailActivity extends BaseActivity implements View.OnClickLi
     public void onClick(View view) {
         if(view == tv_phone){
             //根据号码拨打电话
-            Intent intent = new Intent();
-            intent.setAction(Intent.ACTION_DIAL);
-            intent.setData(Uri.parse("tel:"+tv_phone.getText().toString()));
-            Log.i(TAG, "tel:" + tv_phone.getText().toString());
-            startActivity(intent);
+            requestPermission(new String[]{Manifest.permission.CALL_PHONE}, new PermissionHandler() {
+                @Override
+                public void onGranted() {
+                    Intent intent = new Intent();
+                    intent.setAction(Intent.ACTION_DIAL);
+                    intent.setData(Uri.parse("tel:"+tv_phone.getText().toString()));
+                    Log.i(TAG, "tel:" + tv_phone.getText().toString());
+                    startActivity(intent);
+                }
+
+                @Override
+                public void onDenied() {
+                    Toast.makeText(LosingDetailActivity.this, "由于您拒绝了权限申请，无法正常使用该功能", Toast.LENGTH_LONG).show();
+                }
+
+                @Override
+                public boolean onNeverAsk() {
+                    new AlertDialog.Builder(LosingDetailActivity.this)
+                            .setTitle(R.string.permission_ask_title)
+                            .setMessage(R.string.permission_mes)
+                            .setPositiveButton("去开启", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialogInterface, int i) {
+                                    Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+                                    Uri uri = Uri.fromParts("package", getPackageName(), null);
+                                    intent.setData(uri);
+                                    startActivity(intent);
+
+                                    dialogInterface.dismiss();
+                                }
+                            })
+                            .setNegativeButton("取消", null)
+                            .setCancelable(false)
+                            .show();
+                    return  true;
+                }
+            });
         }else if(view == photo_detail){
             Intent intent = new Intent(this,ImageShower.class);
             intent.putExtra("url", url);

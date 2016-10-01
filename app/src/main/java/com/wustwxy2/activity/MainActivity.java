@@ -1,6 +1,9 @@
 package com.wustwxy2.activity;
 
+import android.Manifest;
+import android.app.ActivityManager;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
@@ -11,6 +14,7 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
+import android.provider.Settings;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AlertDialog;
@@ -52,6 +56,46 @@ public class MainActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        requestPermission(new String[]{Manifest.permission.READ_PHONE_STATE}, new PermissionHandler() {
+            @Override
+            public void onGranted() {
+            }
+
+            @Override
+            public void onDenied() {
+                Toast.makeText(MainActivity.this, "由于您拒绝了基础权限申请，无法正常打开应用", Toast.LENGTH_LONG).show();
+                ActivityManager am = (ActivityManager)getSystemService (Context.ACTIVITY_SERVICE);
+                am.restartPackage(getPackageName());
+            }
+
+            @Override
+            public boolean onNeverAsk() {
+                new AlertDialog.Builder(MainActivity.this)
+                        .setTitle(R.string.permission_ask_title)
+                        .setMessage(R.string.permission_mes)
+                        .setPositiveButton("去开启", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+                                Uri uri = Uri.fromParts("package", getPackageName(), null);
+                                intent.setData(uri);
+                                startActivity(intent);
+
+                                dialogInterface.dismiss();
+                            }
+                        })
+                        .setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                finish();
+                                dialogInterface.dismiss();
+                            }
+                        })
+                        .setCancelable(false)
+                        .show();
+                return  true;
+            }
+        });
         info = new UpdateInfo();
         CheckVersionTask task = new CheckVersionTask();
         Thread thread = new Thread(task);

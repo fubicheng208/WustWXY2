@@ -75,7 +75,7 @@ public class AccInfoActivity extends AppCompatActivity {
 
                 case MSG_QUERYERROR: {
                     progressDialog.dismiss();
-                    Toast.makeText(AccInfoActivity.this, "查询失败,请重试!", Toast.LENGTH_LONG).show();
+                    Toast.makeText(AccInfoActivity.this, "查询失败,请稍后重试!", Toast.LENGTH_LONG).show();
                     break;
                 }
                 default:
@@ -149,7 +149,7 @@ public class AccInfoActivity extends AppCompatActivity {
                 // TODO Auto-generated method stub
                 final DatePicker datePicker = new DatePicker(AccInfoActivity.this);
                 datePicker.setCalendarViewShown(false);
-                datePicker.setBackgroundColor(getResources().getColor(R.color.bg_datePicker_grey));
+                //datePicker.setBackgroundColor(getResources().getColor(R.color.bg_datePicker_grey));
                 //不需要选择日期，故隐藏
                 hideDay(datePicker);
                 // ((ViewGroup) ((ViewGroup) datePicker.getChildAt(0)).getChildAt(0)).getChildAt(2).setVisibility(View.GONE);

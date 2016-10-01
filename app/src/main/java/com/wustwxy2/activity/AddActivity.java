@@ -1,11 +1,13 @@
 package com.wustwxy2.activity;
 
+import android.Manifest;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.ContentResolver;
 import android.content.ContentUris;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
@@ -15,6 +17,8 @@ import android.os.Build;
 import android.os.Environment;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
+import android.provider.Settings;
+import android.support.v7.app.AlertDialog;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
@@ -23,6 +27,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.readystatesoftware.systembartint.SystemBarTintManager;
 import com.wustwxy2.R;
@@ -152,14 +157,46 @@ public class AddActivity extends BaseActivity implements View.OnClickListener, I
             intent.addCategory(Intent.CATEGORY_OPENABLE);
             intent.setType("image*//*");
             startActivityForResult(Intent.createChooser(intent,"选择图片"),SELECT_PICTURE);*/
-            Intent intent=new Intent(Intent.ACTION_GET_CONTENT);//ACTION_OPEN_DOCUMENT
-            intent.addCategory(Intent.CATEGORY_OPENABLE);
-            intent.setType("image/jpeg");
-            if(android.os.Build.VERSION.SDK_INT>=android.os.Build.VERSION_CODES.KITKAT){
-                startActivityForResult(intent, SELECT_PIC_KITKAT);
-            }else{
-                startActivityForResult(intent, SELECT_PIC);
-            }
+            requestPermission(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE}, new PermissionHandler() {
+                @Override
+                public void onGranted() {
+                    Intent intent=new Intent(Intent.ACTION_GET_CONTENT);//ACTION_OPEN_DOCUMENT
+                    intent.addCategory(Intent.CATEGORY_OPENABLE);
+                    intent.setType("image/jpeg");
+                    if(android.os.Build.VERSION.SDK_INT>=android.os.Build.VERSION_CODES.KITKAT){
+                        startActivityForResult(intent, SELECT_PIC_KITKAT);
+                    }else{
+                        startActivityForResult(intent, SELECT_PIC);
+                    }
+                }
+
+                @Override
+                public void onDenied() {
+                    Toast.makeText(AddActivity.this, "由于您拒绝了权限申请，无法正常使用该功能", Toast.LENGTH_LONG).show();
+                }
+
+                @Override
+                public boolean onNeverAsk() {
+                    new AlertDialog.Builder(AddActivity.this)
+                            .setTitle(R.string.permission_ask_title)
+                            .setMessage(R.string.permission_mes)
+                            .setPositiveButton("去开启", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialogInterface, int i) {
+                                    Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+                                    Uri uri = Uri.fromParts("package", getPackageName(), null);
+                                    intent.setData(uri);
+                                    startActivity(intent);
+
+                                    dialogInterface.dismiss();
+                                }
+                            })
+                            .setNegativeButton("取消", null)
+                            .setCancelable(false)
+                            .show();
+                    return  true;
+                }
+            });
         } else if (v == btn_back) {
             finish();
         }
