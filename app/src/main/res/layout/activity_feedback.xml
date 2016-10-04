@@ -5,30 +5,43 @@
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
     android:orientation="vertical"
+    android:background="@color/base_bg"
     tools:context="com.wustwxy2.activity.FeedbackActivity">
 
-    <include layout="@layout/toolbar"/>
+    <include layout="@layout/toolbar" />
 
 
     <EditText
         android:id="@+id/feedback_et"
-        android:hint="@string/feedback_hint"
-        android:background="@drawable/input"
-        android:paddingLeft="10dp"
+        style="@style/Fbc.TextView._Gray"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
-        style="@style/Fbc.TextView._Gray"
+        android:background="@drawable/input"
+        android:hint="@string/feedback_hint"
         android:minLines="5"
+        android:paddingLeft="10dp" />
+
+    <EditText
+        android:id="@+id/feedback_email"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/base_edit_height"
+        android:paddingLeft="10dp"
+        android:layout_margin="10dp"
+        android:inputType="textEmailAddress"
+        android:hint="联系邮箱（可不填）"
+        style="@style/Fbc.TextView._Gray"
+        android:background="@drawable/input"
+        android:maxLines="1"
         />
 
     <Button
         android:id="@+id/add_feedback"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/buttonBlue"
         android:layout_margin="10dp"
+        android:background="@color/buttonBlue"
         android:text="@string/feedback"
         android:textColor="@color/base_bg"
-        android:textSize="18sp"/>
+        android:textSize="18sp" />
 </LinearLayout>

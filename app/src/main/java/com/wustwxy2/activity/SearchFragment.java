@@ -141,6 +141,7 @@ public class SearchFragment extends Fragment implements WustCardCenterLogin.Logi
                         break;
                 }
             } else {
+                progressDialog.dismiss();
                 Toast.makeText(getActivity(), R.string.no_data_toast, Toast.LENGTH_SHORT).show();
             }
         }

@@ -21,6 +21,7 @@ import android.provider.Settings;
 import android.support.v7.app.AlertDialog;
 import android.text.TextUtils;
 import android.util.Log;
+import android.util.Patterns;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
@@ -45,6 +46,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.text.DecimalFormat;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import cn.bmob.v3.BmobObject;
 import cn.bmob.v3.BmobUser;
@@ -56,7 +59,7 @@ import cn.bmob.v3.listener.UploadFileListener;
 public class AddActivity extends BaseActivity implements View.OnClickListener, IMainView {
 
     private static final int SELECT_PIC_KITKAT = 0x11;
-    private static final int SELECT_PIC= 0x12;
+    private static final int SELECT_PIC = 0x12;
     private SystemBarTintManager tintManager;
     private IMainPresenter mMainPresenter;
 
@@ -81,7 +84,7 @@ public class AddActivity extends BaseActivity implements View.OnClickListener, I
     String old_describe = "";
     String old_phone = "";
 
-    String path="";
+    String path = "";
 
     @Override
     public void setContentView() {
@@ -152,7 +155,7 @@ public class AddActivity extends BaseActivity implements View.OnClickListener, I
         // TODO Auto-generated method stub
         if (v == btn_true) {
             addByType();
-        }else if(v == iv_photo){
+        } else if (v == iv_photo) {
             /*Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
             intent.addCategory(Intent.CATEGORY_OPENABLE);
             intent.setType("image*//*");
@@ -160,12 +163,12 @@ public class AddActivity extends BaseActivity implements View.OnClickListener, I
             requestPermission(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE}, new PermissionHandler() {
                 @Override
                 public void onGranted() {
-                    Intent intent=new Intent(Intent.ACTION_GET_CONTENT);//ACTION_OPEN_DOCUMENT
+                    Intent intent = new Intent(Intent.ACTION_GET_CONTENT);//ACTION_OPEN_DOCUMENT
                     intent.addCategory(Intent.CATEGORY_OPENABLE);
                     intent.setType("image/jpeg");
-                    if(android.os.Build.VERSION.SDK_INT>=android.os.Build.VERSION_CODES.KITKAT){
+                    if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.KITKAT) {
                         startActivityForResult(intent, SELECT_PIC_KITKAT);
-                    }else{
+                    } else {
                         startActivityForResult(intent, SELECT_PIC);
                     }
                 }
@@ -194,7 +197,7 @@ public class AddActivity extends BaseActivity implements View.OnClickListener, I
                             .setNegativeButton("取消", null)
                             .setCancelable(false)
                             .show();
-                    return  true;
+                    return true;
                 }
             });
         } else if (v == btn_back) {
@@ -213,21 +216,20 @@ public class AddActivity extends BaseActivity implements View.OnClickListener, I
             Drawable drawable =new BitmapDrawable(bitmapSelected);
             losing_photo.setBackground(drawable);
         }*/
-        if(resultCode == RESULT_OK){
+        if (resultCode == RESULT_OK) {
             Uri uri = data.getData();
             ContentResolver cr = this.getContentResolver();
-            try{
-                if(bitmapSelected!=null)//如果不施放的话，不断读取图片，将会内存不够
+            try {
+                if (bitmapSelected != null)//如果不施放的话，不断读取图片，将会内存不够
                     bitmapSelected.recycle();
                 bitmapSelected = BitmapFactory.decodeStream(cr.openInputStream(uri));
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-                    if(DocumentsContract.isDocumentUri(this, uri))
-                        path = getPath(this,uri);
+                    if (DocumentsContract.isDocumentUri(this, uri))
+                        path = getPath(this, uri);
                     else
                         path = selectImage(this, data);
-                }
-                else{
-                    path = getPath(this,uri);
+                } else {
+                    path = getPath(this, uri);
                 }
 
                 /*String[] proj = {MediaStore.Images.Media.DATA};
@@ -252,39 +254,45 @@ public class AddActivity extends BaseActivity implements View.OnClickListener, I
 
     String title = "";
     String describe = "";
-    String phone="";
+    String phone = "";
 
-    /**根据类型添加失物/招领
+    /**
+     * 根据类型添加失物/招领
      * addByType
-     * @Title: addByType
+     *
      * @throws
+     * @Title: addByType
      */
-    private void addByType()  {
+    private void addByType() {
         title = edit_title.getText().toString();
         describe = edit_describe.getText().toString();
         phone = edit_phone.getText().toString();
 
-        if(TextUtils.isEmpty(title)){
+        if (TextUtils.isEmpty(title)) {
             ShowToast("请填写标题");
             return;
         }
-        if(TextUtils.isEmpty(describe)){
+        if (TextUtils.isEmpty(describe)) {
             ShowToast("请填写描述");
             return;
         }
-        if(TextUtils.isEmpty(phone)){
-            ShowToast("请填写手机");
+        if (TextUtils.isEmpty(phone)) {
+            ShowToast("请填写手机号");
             return;
         }
-        if(from.equals(getResources().getText(R.string.lost))){
+        if (!isMobileNO(phone)) {
+            ShowToast("请输入正确的手机号");
+            return;
+        }
+        if (from.equals(getResources().getText(R.string.lost))) {
             addLost();
-        }else{
+        } else {
             addFound();
         }
     }
 
-    private void addLost()  {
-        if(!path.equals("")){
+    private void addLost() {
+        if (!path.equals("")) {
             //Bitmap bitmap = ImageUtils.getInstant().getCompressedBitmap(path);
             File before_compressed = new File(path);
             File file = Compressor.getDefault(this).compressToFile(before_compressed);
@@ -295,36 +303,33 @@ public class AddActivity extends BaseActivity implements View.OnClickListener, I
             bmobFile.uploadblock(new UploadFileListener() {
                 @Override
                 public void done(BmobException e) {
-                    if(e==null){
-                        Log.i(TAG, "图片上传成功:"+bmobFile.getFileUrl());
+                    if (e == null) {
+                        Log.i(TAG, "图片上传成功:" + bmobFile.getFileUrl());
                         User user = BmobUser.getCurrentUser(User.class);
                         String username = user.getUsername();
                         Log.i(TAG, username);
-                        Lost lost = new Lost(title,phone,describe,bmobFile);
+                        Lost lost = new Lost(title, phone, describe, bmobFile);
                         lost.setPhotoUrl(bmobFile.getFileUrl());
                         lost.setAuthor(user);
                         insertObject(lost);
-                    }
-                    else{
-                        Log.i(TAG,"上传失败"+e.getMessage()+","+e.getErrorCode());
+                    } else {
+                        Log.i(TAG, "上传失败" + e.getMessage() + "," + e.getErrorCode());
                         ShowToast("网络异常，上传失败");
                     }
                 }
             });
-        }
-        else
-        {
+        } else {
             dialog.setTitle("正在提交");
             dialog.show();
-            Lost lost = new Lost(title, phone,  describe);
+            Lost lost = new Lost(title, phone, describe);
             User user = BmobUser.getCurrentUser(User.class);
             lost.setAuthor(user);
             insertObject(lost);
         }
     }
 
-    private void addFound(){
-        if(!path.equals("")){
+    private void addFound() {
+        if (!path.equals("")) {
             File before_compressed = new File(path);
             //文件压缩
             File file = Compressor.getDefault(this).compressToFile(before_compressed);
@@ -335,28 +340,25 @@ public class AddActivity extends BaseActivity implements View.OnClickListener, I
             bmobFile.uploadblock(new UploadFileListener() {
                 @Override
                 public void done(BmobException e) {
-                    if(e==null){
-                        Log.i(TAG, "图片上传成功:"+bmobFile.getFileUrl());
+                    if (e == null) {
+                        Log.i(TAG, "图片上传成功:" + bmobFile.getFileUrl());
                         User user = BmobUser.getCurrentUser(User.class);
                         String username = user.getUsername();
                         Log.i(TAG, username);
-                        Found found = new Found(title,phone,describe,bmobFile);
+                        Found found = new Found(title, phone, describe, bmobFile);
                         found.setPhotoUrl(bmobFile.getFileUrl());
                         found.setAuthor(user);
                         insertObject(found);
-                    }
-                    else{
-                        Log.i(TAG,"上传失败"+e.getMessage()+","+e.getErrorCode());
+                    } else {
+                        Log.i(TAG, "上传失败" + e.getMessage() + "," + e.getErrorCode());
                         ShowToast("网络异常，上传失败");
                     }
                 }
             });
-        }
-        else
-        {
+        } else {
             dialog.setTitle("正在提交");
             dialog.show();
-            Found found = new Found(title,phone,describe);
+            Found found = new Found(title, phone, describe);
             User user = BmobUser.getCurrentUser(User.class);
             found.setAuthor(user);
             insertObject(found);
@@ -364,29 +366,28 @@ public class AddActivity extends BaseActivity implements View.OnClickListener, I
     }
 
 
-    private void insertObject(final BmobObject obj){
+    private void insertObject(final BmobObject obj) {
         obj.save(new SaveListener<String>() {
             @Override
             public void done(String s, BmobException e) {
-                if(e==null){
-                    if(from.equals(getResources().getText(R.string.lost))) {
-                        ShowToast(getString(R.string.toast_losing) );
+                if (e == null) {
+                    if (from.equals(getResources().getText(R.string.lost))) {
+                        ShowToast(getString(R.string.toast_losing));
                         Log.i(TAG, getString(R.string.toast_losing) + obj.getObjectId());
-                    }else{
+                    } else {
                         ShowToast(getString(R.string.toast_found));
                         Log.i(TAG, getString(R.string.toast_found) + obj.getObjectId());
                     }
                     dialog.dismiss();
                     setResult(RESULT_OK);
                     finish();
-                }
-                else{
+                } else {
                     dialog.dismiss();
-                    if(from.equals(getResources().getText(R.string.lost))){
-                        Log.i(TAG,getString(R.string.toast_losing_fail));
+                    if (from.equals(getResources().getText(R.string.lost))) {
+                        Log.i(TAG, getString(R.string.toast_losing_fail));
                         ShowToast(getString(R.string.toast_losing_fail));
-                    }else{
-                        Log.i(TAG,getString(R.string.toast_found_fail));
+                    } else {
+                        Log.i(TAG, getString(R.string.toast_found_fail));
                         ShowToast(getString(R.string.toast_found_fail));
                     }
                 }
@@ -395,8 +396,8 @@ public class AddActivity extends BaseActivity implements View.OnClickListener, I
     }
 
     //设置沉浸式状态栏和导航栏
-    private void initWindow(){
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT){
+    private void initWindow() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
             getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
             tintManager = new SystemBarTintManager(this);
@@ -465,7 +466,7 @@ public class AddActivity extends BaseActivity implements View.OnClickListener, I
                 }
 
                 final String selection = "_id=?";
-                final String[] selectionArgs = new String[] {
+                final String[] selectionArgs = new String[]{
                         split[1]
                 };
 
@@ -493,9 +494,9 @@ public class AddActivity extends BaseActivity implements View.OnClickListener, I
      * Get the value of the data column for this Uri. This is useful for
      * MediaStore Uris, and other file-based ContentProviders.
      *
-     * @param context The context.
-     * @param uri The Uri to query.
-     * @param selection (Optional) Filter used in the query.
+     * @param context       The context.
+     * @param uri           The Uri to query.
+     * @param selection     (Optional) Filter used in the query.
      * @param selectionArgs (Optional) Selection arguments used in the query.
      * @return The value of the _data column, which is typically a file path.
      */
@@ -555,19 +556,19 @@ public class AddActivity extends BaseActivity implements View.OnClickListener, I
         return "com.google.android.apps.photos.content".equals(uri.getAuthority());
     }
 
-    public static String selectImage(Context context,Intent data){
+    public static String selectImage(Context context, Intent data) {
         Uri selectedImage = data.getData();
 //      Log.e(TAG, selectedImage.toString());
-        if(selectedImage!=null){
-            String uriStr=selectedImage.toString();
-            String path=uriStr.substring(10,uriStr.length());
-            if(path.startsWith("com.sec.android.gallery3d")){
-                Log.e(TAG, "It's auto backup pic path:"+selectedImage.toString());
+        if (selectedImage != null) {
+            String uriStr = selectedImage.toString();
+            String path = uriStr.substring(10, uriStr.length());
+            if (path.startsWith("com.sec.android.gallery3d")) {
+                Log.e(TAG, "It's auto backup pic path:" + selectedImage.toString());
                 return null;
             }
         }
-        String[] filePathColumn = { MediaStore.Images.Media.DATA };
-        Cursor cursor = context.getContentResolver().query(selectedImage,filePathColumn, null, null, null);
+        String[] filePathColumn = {MediaStore.Images.Media.DATA};
+        Cursor cursor = context.getContentResolver().query(selectedImage, filePathColumn, null, null, null);
         cursor.moveToFirst();
         int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
         String picturePath = cursor.getString(columnIndex);
@@ -588,5 +589,15 @@ public class AddActivity extends BaseActivity implements View.OnClickListener, I
         final String[] units = new String[]{"B", "KB", "MB", "GB", "TB"};
         int digitGroups = (int) (Math.log10(size) / Math.log10(1024));
         return new DecimalFormat("#,##0.#").format(size / Math.pow(1024, digitGroups)) + " " + units[digitGroups];
+    }
+
+    public static boolean isMobileNO(String mobiles) {
+
+        Pattern p = Pattern.compile("^((13[0-9])|(15[^4,\\D])|(18[0,5-9]))\\d{8}$");
+
+        Matcher m = p.matcher(mobiles);
+
+        return m.matches();
+
     }
 }

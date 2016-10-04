@@ -61,10 +61,10 @@
         <item>第25周</item>
     </string-array>
     <string name="title_activity_course">CourseActivity</string>
-    <string name="no_data_toast">暂时查不到数据，一定是教务处崩了...</string>
-    <string name="no_course_data_toast">查询不到课程数据，或教务处又崩了...</string>
+    <string name="no_data_toast">查询不到相应数据或者教务处故障</string>
+    <string name="no_course_data_toast">查询不到课程数据或者教务处故障</string>
     <string name="feedback">提交</string>
-    <string name="feedback_hint">有什么意见告诉我们吧,记得留下您的邮箱哦</string>
+    <string name="feedback_hint">您的建议非常宝贵(｡˘•ε•˘｡) </string>
     <string name="mes_name_default">傅碧澄</string>
     <string name="exit">退出</string>
     <string name="mes_no_default">201413131234</string>
