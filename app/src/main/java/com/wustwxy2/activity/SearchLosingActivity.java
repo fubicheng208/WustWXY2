@@ -431,6 +431,12 @@ public class SearchLosingActivity extends BaseActivity implements View.OnClickLi
         }
     }
 
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        startRefresh();
+    }
+
     //人工使刷新圈开始转动
     private void startRefresh(){
         refreshLayout.post(new Runnable(){

@@ -157,8 +157,8 @@ public class LosingDetailActivity extends BaseActivity implements View.OnClickLi
                         User user = lost.getAuthor();
                         String nickname = user.getNickname();
                         Log.i(TAG, "nickname:" + nickname);
-                        if(nickname==null){
-                            tv_nickname.setText(getResources().getText(R.string.default_name));
+                        if(nickname.isEmpty()){
+                            tv_nickname.setText(getResources().getText(R.string.losing_detail_default_nickname));
                         }else {
                             tv_nickname.setText(nickname);
                         }
@@ -194,8 +194,8 @@ public class LosingDetailActivity extends BaseActivity implements View.OnClickLi
                         Log.i(TAG, "userId" + userId);
                         String nickname = user.getNickname();
                         Log.i(TAG, "nickname:" + nickname);
-                        if(nickname==null){
-                            tv_nickname.setText(getResources().getText(R.string.default_name));
+                        if(nickname.isEmpty()){
+                            tv_nickname.setText(getResources().getText(R.string.losing_detail_default_nickname));
                         }else {
                             tv_nickname.setText(nickname);
                         }

@@ -1,8 +1,6 @@
 package com.wustwxy2.activity;
 
 import android.Manifest;
-import android.app.Activity;
-import android.app.Notification;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -12,13 +10,12 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Build;
+import android.os.Bundle;
 import android.os.Handler;
-import android.os.Looper;
 import android.os.Message;
 import android.provider.Settings;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
@@ -28,7 +25,6 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.nostra13.universalimageloader.utils.L;
 import com.readystatesoftware.systembartint.SystemBarTintManager;
 import com.wustwxy2.R;
 import com.wustwxy2.bean.User;

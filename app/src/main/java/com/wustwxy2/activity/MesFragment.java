@@ -181,6 +181,4 @@ public class MesFragment extends Fragment implements View.OnClickListener{
         mEditor.putString("nickname",null);
         mEditor.commit();
     }
-
-
 }

@@ -52,6 +52,9 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
 import cn.bmob.v3.BmobUser;
+import cn.bmob.v3.exception.BmobException;
+import cn.bmob.v3.listener.SaveListener;
+import cn.bmob.v3.listener.UpdateListener;
 
 /**
  * Created by fubicheng on 2016/7/12.
@@ -104,6 +107,7 @@ public class SearchFragment extends Fragment implements WustCardCenterLogin.Logi
     private SharedPreferences.Editor mEditor;
     private JwInfoDB mJwInfoDB;
     private String xq;
+    private String nickname;
     private Handler handler1 = new Handler() {
         @Override
         public void handleMessage(Message msg) {
@@ -118,6 +122,10 @@ public class SearchFragment extends Fragment implements WustCardCenterLogin.Logi
                             mEditor.putString("currentTeam", Utility.currentTeam);
                             mEditor.putString("xh", Utility.xh);
                             mEditor.putString("xm", Utility.xm);
+                            //如果新获取到的nickname不为空，则插入SP
+                            if(!nickname.isEmpty()){
+                                mEditor.putString("nickname", nickname);
+                            }
                             mEditor.commit();
                         }
                         progressDialog.dismiss();
@@ -241,6 +249,24 @@ public class SearchFragment extends Fragment implements WustCardCenterLogin.Logi
                                 new Thread(new Runnable() {
                                     @Override
                                     public void run() {
+                                        nickname = (String)BmobUser.getObjectByKey("nickname");
+                                        //如果缓存里没有保存Nickname,则重新联网以得到它再进行服务器端更新
+                                        if(nickname.isEmpty()){
+                                            nickname = Utility.getName(Ksoap2.getScoreInfo(xh1));
+                                            User updateUser = new User();
+                                            updateUser.setNickname(nickname);
+                                            BmobUser bmobUser = BmobUser.getCurrentUser(User.class);
+                                            updateUser.update(bmobUser.getObjectId(), new UpdateListener() {
+                                                @Override
+                                                public void done(BmobException e) {
+                                                    if(e == null){
+                                                        Log.i(TAG, "更新姓名成功");
+                                                    }else{
+                                                        Log.i(TAG, "更新姓名失败");
+                                                    }
+                                                }
+                                            });
+                                        }
                                         //通知主线程显示DIALOG
                                         Message message2 = new Message();
                                         message2.arg1 = DIALOG_COURSE;
