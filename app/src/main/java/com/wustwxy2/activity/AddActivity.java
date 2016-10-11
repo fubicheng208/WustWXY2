@@ -232,16 +232,6 @@ public class AddActivity extends BaseActivity implements View.OnClickListener, I
                     path = getPath(this, uri);
                 }
 
-                /*String[] proj = {MediaStore.Images.Media.DATA};
-                //好像是android多媒体数据库的封装接口，具体的看Android文档
-                Cursor cursor = getContentResolver().query(uri,proj, null, null, null);
-                //按我个人理解 这个是获得用户选择的图片的索引值
-                int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
-                //将光标移至开头 ，这个很重要，不小心很容易引起越界
-                cursor.moveToFirst();
-                //最后根据索引值获取图片路径
-                path = cursor.getString(column_index);
-                Log.i(TAG,""+path);*/
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
             }
