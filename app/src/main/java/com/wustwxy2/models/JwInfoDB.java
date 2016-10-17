@@ -161,10 +161,14 @@ public class JwInfoDB {
         db.delete("Course",null,null);
     }
 
+    public void deleteCourse(int id){
+        db.delete("Course","id=?",new String[]{id+""});
+    }
+
     public List<Course> loadCourses(int currentZc, int week){
         List<Course> list=new ArrayList<Course>();
         Cursor cursor=db.query("Course",null,"week=? and ?>=startZc and ?<=endZc",new String[]{String.valueOf(week),
-                String.valueOf(currentZc), String.valueOf(currentZc)},null,null,null);
+                String.valueOf(currentZc), String.valueOf(currentZc)},null,null,"classStart asc");
         if(cursor.moveToFirst()){
             do{
                 Course course=new Course();
@@ -177,11 +181,36 @@ public class JwInfoDB {
                 course.setStart(cursor.getInt(cursor.getColumnIndex("classStart")));
                 course.setStep(cursor.getInt(cursor.getColumnIndex("classStep")));
                 course.setClassCode(cursor.getInt(cursor.getColumnIndex("classCode")));
+                course.setId(cursor.getInt(cursor.getColumnIndex("id")));
                 list.add(course);
             }while (cursor.moveToNext());
         }
         cursor.close();
         return list;
+    }
+
+    public Course loadCurCourse(int currentZc, int week,int start){
+        Course course=null;
+        Cursor cursor=db.query("Course",null,"week=? and ?>=startZc and ?<=endZc and classStart=?"
+                ,new String[]{String.valueOf(week),
+                String.valueOf(currentZc), String.valueOf(currentZc),start+""},null,null,null);
+        if(cursor.moveToFirst()){
+            course=new Course();
+            course.setName(cursor.getString(cursor.getColumnIndex("kcmc")));
+            course.setRoom(cursor.getString(cursor.getColumnIndex("skdd")));
+            course.setTeach(cursor.getString(cursor.getColumnIndex("skjs")));
+            course.setStartZc(cursor.getInt(cursor.getColumnIndex("startZc")));
+            course.setEndZc(cursor.getInt(cursor.getColumnIndex("endZc")));
+            course.setWeek(cursor.getInt(cursor.getColumnIndex("week")));
+            course.setStart(cursor.getInt(cursor.getColumnIndex("classStart")));
+            course.setStep(cursor.getInt(cursor.getColumnIndex("classStep")));
+            course.setClassCode(cursor.getInt(cursor.getColumnIndex("classCode")));
+            course.setId(cursor.getInt(cursor.getColumnIndex("id")));
+        }else {
+            return course;
+        }
+        cursor.close();
+        return course;
     }
 
    /* + "id integer  primary key autoincrement,"

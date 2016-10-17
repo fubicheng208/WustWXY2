@@ -22,6 +22,7 @@ import java.util.Date;
 public class Utility {
 
     public static String currentTeam="",xh="",xm="";
+    public static int classCode;
 
     public synchronized static String getName(String responce){
         String name="";
@@ -88,6 +89,7 @@ public class Utility {
         try {
             JSONArray jsonArray=new JSONArray(response);
             jwInfoDB.deleteAllCourse();
+            classCode=jsonArray.length();
             for(int j=0;j<jsonArray.length();j++){
                 JSONObject jsonObject=jsonArray.getJSONObject(j);
                 if(!jsonObject.getString("skzc").equals("")) {
@@ -154,6 +156,71 @@ public class Utility {
         Date date=new Date();
         DateFormat format=new SimpleDateFormat("yyyy");
         return Integer.valueOf(format.format(date));
+    }
+
+    public static int getCurrentClass(){
+        Date date=new Date();
+        DateFormat format=new SimpleDateFormat("HH")
+                ,format1=new SimpleDateFormat("mm");
+        int hour=Integer.valueOf(format.format(date))
+                ,minute=Integer.valueOf(format1.format(date));
+        int totalMinutes=hour*60+minute;
+        int num=100;
+        if(totalMinutes<10*60){
+            num= 1;
+        }else if(totalMinutes<11*60+55){
+            num= 3;
+        }else if(totalMinutes<15*60+50){
+            num= 5;
+        }else if(totalMinutes<17*60+40){
+            num= 7;
+        }else if(totalMinutes<20*60+30){
+            num= 9;
+        }
+        return num;
+    }
+
+    public static int getClassStart(){
+        Date date=new Date();
+        DateFormat format=new SimpleDateFormat("HH");
+        switch (Integer.valueOf(format.format(date))) {
+            case 8:
+                return 1;
+            case 10:
+                return 3;
+            case 13:
+                return 5;
+            case 15:
+                return 7;
+            case 18:
+                return 9;
+            default:
+                return 0;
+        }
+    }
+
+    public static int getTimeCode(){
+        Date date=new Date();
+        DateFormat format=new SimpleDateFormat("HH")
+                ,format1=new SimpleDateFormat("mm");
+        int hour=Integer.valueOf(format.format(date))
+                ,minute=Integer.valueOf(format1.format(date));
+        int totalMinutes=hour*60+minute;
+        int num;
+        if(totalMinutes<8*60+5){
+            num= 8*60+5-totalMinutes;
+        }else if(totalMinutes<10*60){
+            num= 10*60-totalMinutes;
+        }else if(totalMinutes<13*60+55){
+            num= 13*60+55-totalMinutes;
+        }else if(totalMinutes<15*60+45){
+            num= 15*60+45-totalMinutes;
+        }else if(totalMinutes<18*60+45){
+            num= 16*60+45-totalMinutes;
+        }else {
+            num= 24*60-totalMinutes+8*60+5;
+        }
+        return num;
     }
 
     public static int getDays(String d1, String d2){

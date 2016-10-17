@@ -21,6 +21,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.baidu.mapapi.map.Text;
 import com.wustwxy2.R;
 import com.wustwxy2.bean.User;
 
@@ -37,11 +38,12 @@ public class MesFragment extends Fragment implements View.OnClickListener{
     Toolbar toolbar;
     TextView name;
     TextView no;
+    TextView card_login;
     Button bind;
     Button feedback;
     Button about;
     Button exit;
-    Button login;
+    //Button login;
     private SharedPreferences mPreferences;
     private SharedPreferences.Editor mEditor;
 
@@ -49,16 +51,16 @@ public class MesFragment extends Fragment implements View.OnClickListener{
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
-
+        initToolbar();
         View view = inflater.inflate(R.layout.fragment_mes, container, false);
         name = (TextView)view.findViewById(R.id.mes_name);
         no = (TextView)view.findViewById(R.id.mes_no);
+        card_login = (TextView) view.findViewById(R.id.mes_card_login);
         bind = (Button) view.findViewById(R.id.mes_bind);
         feedback = (Button) view.findViewById(R.id.mes_feedback);
         about = (Button) view.findViewById(R.id.mes_about);
         exit = (Button) view.findViewById(R.id.exit);
-        login = (Button) view.findViewById(R.id.mes_login);
+        //login = (Button) view.findViewById(R.id.mes_login);
         initDataFromSP();
         BmobUser user = BmobUser.getCurrentUser(User.class);
         if(user==null){
@@ -79,8 +81,8 @@ public class MesFragment extends Fragment implements View.OnClickListener{
         about.setOnClickListener(this);
         feedback.setOnClickListener(this);
         exit.setOnClickListener(this);
-        login.setOnClickListener(this);
-
+        //login.setOnClickListener(this);
+        card_login.setOnClickListener(this);
     }
 
     @Override
@@ -134,8 +136,8 @@ public class MesFragment extends Fragment implements View.OnClickListener{
             //清空SP里的数据
             emptySP();
             changeView();
-        }else if(view ==login){
-            Intent intent = new Intent(getActivity(),LoginActivity.class);
+        }else if(view == card_login){
+            Intent intent = new Intent(getActivity(),LoginActivityInside.class);
             startActivity(intent);
         }
     }
@@ -148,8 +150,8 @@ public class MesFragment extends Fragment implements View.OnClickListener{
         bind.setVisibility(View.GONE);
         exit.setVisibility(View.GONE);
         feedback.setVisibility(View.GONE);
-        login.setVisibility(View.VISIBLE);
-
+        //login.setVisibility(View.VISIBLE);
+        card_login.setVisibility(View.VISIBLE);
     }
 
     //切换回来的时候判断是否已登录并复原
@@ -163,7 +165,8 @@ public class MesFragment extends Fragment implements View.OnClickListener{
             bind.setVisibility(View.VISIBLE);
             exit.setVisibility(View.VISIBLE);
             feedback.setVisibility(View.VISIBLE);
-            login.setVisibility(View.GONE);
+            //login.setVisibility(View.GONE);
+            card_login.setVisibility(View.GONE);
             name.setText((String)BmobUser.getObjectByKey("nickname"));
             no.setText((String)BmobUser.getObjectByKey("username"));
         }
@@ -178,6 +181,4 @@ public class MesFragment extends Fragment implements View.OnClickListener{
         mEditor.putString("nickname",null);
         mEditor.commit();
     }
-
-
 }

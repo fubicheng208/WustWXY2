@@ -10,6 +10,7 @@ import cn.bmob.v3.BmobObject;
  */
 public class Feedback extends BmobObject{
     private String back;
+    private String email;
     private User author;//反馈人外键
 
     public String getBack() {
@@ -26,5 +27,13 @@ public class Feedback extends BmobObject{
 
     public void setAuthor(User author) {
         this.author = author;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 }

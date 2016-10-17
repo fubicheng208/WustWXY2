@@ -24,9 +24,11 @@
     <color name="base_color_text_gray">#898989</color>
     <color name="base_color_text_black">#3e3e36</color>
     <color name="transparent">#00000000</color>
-    <color name="classIndex" >#5ecccccc</color>
+    <color name="classIndex" >#16000000</color>
     <color name="courseTextColor" >#ECECEC</color>
     <color name="text">#3299cc</color>
+    <color name="course_info_title">#333333</color>
+    <color name="course_info_text">#666666</color>
     <color name="bar">#64a8b9</color>
     <color name="buttonBlue">#56abe4</color><!--好看的按钮蓝色-->
     <color name="buttonBluePressed">#1976D2</color>
@@ -38,4 +40,9 @@
     <color name="fresh_bg">#fafafa</color>
     <color name="person_info_title_color">#26a69a</color>
     <color name="div_color">#dfe0e1</color>
+    <color name="delete">#ef9a9a</color>
+    <color name="delete_unenable">#d8d8d8</color>
+    <color name="course_info_title_remind">#fafafa</color>
+    <color name="course_info_text_remind">#f4f4f4</color>
+    <color name="text_remind">#47a3d1</color>
 </resources>

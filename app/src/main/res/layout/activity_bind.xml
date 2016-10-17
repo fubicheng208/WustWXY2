@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/bg_grey_light"
+    android:background="@color/base_bg"
     android:fitsSystemWindows="true"
     android:orientation="vertical"
     tools:context="com.wustwxy2.activity.BindActivity">
@@ -59,7 +59,7 @@
 
             <Button
                 android:id="@+id/bt_bind_card"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="20dp"
                 android:layout_marginRight="20dp"

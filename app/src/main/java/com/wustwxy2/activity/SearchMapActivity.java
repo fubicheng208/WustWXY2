@@ -1,11 +1,19 @@
 package com.wustwxy2.activity;
 
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Build;
+import android.provider.Settings;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.WindowManager;
+
+import android.Manifest;
+import android.widget.Toast;
 
 import com.baidu.location.BDLocation;
 import com.baidu.location.BDLocationListener;
@@ -23,7 +31,7 @@ import com.readystatesoftware.systembartint.SystemBarTintManager;
 import com.wustwxy2.R;
 
 
-public class SearchMapActivity extends AppCompatActivity {
+public class SearchMapActivity extends BaseActivity {
 
     Toolbar toolbar;
     private SystemBarTintManager tintManager;
@@ -68,11 +76,50 @@ public class SearchMapActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        requestPermission(new String[]{Manifest.permission.ACCESS_COARSE_LOCATION,
+                Manifest.permission.ACCESS_FINE_LOCATION}, new PermissionHandler() {
+            @Override
+            public void onGranted() {
+            }
+
+            @Override
+            public void onDenied() {
+                Toast.makeText(SearchMapActivity.this, "由于您拒绝了权限申请，无法正常使用该功能", Toast.LENGTH_LONG).show();
+                finish();
+            }
+
+            @Override
+            public boolean onNeverAsk() {
+                new AlertDialog.Builder(SearchMapActivity.this)
+                        .setTitle(R.string.permission_ask_title)
+                        .setMessage(R.string.permission_mes)
+                        .setPositiveButton("去开启", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+                                Uri uri = Uri.fromParts("package", getPackageName(), null);
+                                intent.setData(uri);
+                                startActivity(intent);
+
+                                dialogInterface.dismiss();
+                            }
+                        })
+                        .setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                finish();
+                                dialogInterface.dismiss();
+                            }
+                        })
+                        .setCancelable(false)
+                        .show();
+                return  true;
+            }
+        });
         SDKInitializer.initialize(getApplicationContext());
         setContentView(R.layout.activity_search_map);
         initToolbar();
         initWindow();
-
 
         mapView = (MapView) findViewById(R.id.bmapView); // 获取地图控件引用
         baiduMap = mapView.getMap();
@@ -83,6 +130,26 @@ public class SearchMapActivity extends AppCompatActivity {
         locationClient.registerLocationListener(myListener); // 注册监听函数
         this.setLocationOption();   //设置定位参数
         locationClient.start(); // 开始定位
+    }
+
+    @Override
+    public void setContentView() {
+
+    }
+
+    @Override
+    public void initViews() {
+
+    }
+
+    @Override
+    public void initListeners() {
+
+    }
+
+    @Override
+    public void initData() {
+
     }
 
     public void initToolbar() {

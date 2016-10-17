@@ -1,19 +1,21 @@
 package com.wustwxy2.activity;
 
-import android.app.Activity;
-import android.app.Notification;
+import android.Manifest;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.net.Uri;
 import android.os.Build;
-import android.os.Handler;
-import android.os.Looper;
-import android.os.Message;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
+import android.provider.Settings;
+import android.support.v7.app.AlertDialog;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
@@ -23,7 +25,6 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.nostra13.universalimageloader.utils.L;
 import com.readystatesoftware.systembartint.SystemBarTintManager;
 import com.wustwxy2.R;
 import com.wustwxy2.bean.User;
@@ -34,7 +35,7 @@ import cn.bmob.v3.BmobUser;
 import cn.bmob.v3.exception.BmobException;
 import cn.bmob.v3.listener.SaveListener;
 
-public class LoginActivity extends AppCompatActivity implements View.OnClickListener{
+public class LoginActivity extends BaseActivity implements View.OnClickListener{
 
     private static final int REQUEST_SIGNUP = 0;
     private static final String TAG = "Login";
@@ -64,10 +65,14 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     break;
                 //账号或密码错误
                 case 3:
-                    Toast.makeText(LoginActivity.this, "账号名或密码错误", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(LoginActivity.this, "账号名或密码错误，教务处密码默认为学号", Toast.LENGTH_SHORT).show();
                     break;
                 case 4:
                     Toast.makeText(LoginActivity.this, "教务处又崩啦", Toast.LENGTH_SHORT).show();
+                    break;
+                case 5:
+                    Toast.makeText(LoginActivity.this, "服务器不稳定，请重试", Toast.LENGTH_SHORT).show();
+                    break;
                 default:
                     break;
             }
@@ -77,9 +82,54 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login);
+        Log.i(TAG,"This is LoginActivity!");
         //initToolbar();
-        initWindow();
+
+        requestPermission(new String[]{Manifest.permission.READ_PHONE_STATE}, new PermissionHandler() {
+            @Override
+            public void onGranted() {
+            }
+
+            @Override
+            public void onDenied() {
+                Toast.makeText(LoginActivity.this, "由于您拒绝了基础权限申请，无法正常打开应用", Toast.LENGTH_LONG).show();
+                finish();
+            }
+
+            @Override
+            public boolean onNeverAsk() {
+                new AlertDialog.Builder(LoginActivity.this)
+                        .setTitle(R.string.permission_ask_title)
+                        .setMessage(R.string.permission_mes)
+                        .setPositiveButton("去开启", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+                                Uri uri = Uri.fromParts("package", getPackageName(), null);
+                                intent.setData(uri);
+                                startActivity(intent);
+
+                                dialogInterface.dismiss();
+                            }
+                        })
+                        .setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                finish();
+                                dialogInterface.dismiss();
+                            }
+                        })
+                        .setCancelable(false)
+                        .show();
+                return  true;
+            }
+        });
+
+        BmobUser user = BmobUser.getCurrentUser(User.class);
+        if(user != null){
+            startActivity(new Intent(this, MainActivity.class));
+            this.finish();
+        }
         username = (EditText)findViewById(R.id.input_account);
         password = (EditText)findViewById(R.id.input_password);
         tv = (TextView)findViewById(R.id.AsPass);
@@ -95,6 +145,26 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             password.setText(cachePw);
         }
         username_card = getSharedPreferences("WustCardCenter",0).getString("username","");
+    }
+
+    @Override
+    public void setContentView() {
+        setContentView(R.layout.activity_login);
+    }
+
+    @Override
+    public void initViews() {
+        initWindow();
+    }
+
+    @Override
+    public void initListeners() {
+
+    }
+
+    @Override
+    public void initData() {
+
     }
 
     public void initToolbar() {
@@ -154,7 +224,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         final ProgressDialog progressDialog = new ProgressDialog(LoginActivity.this);
         progressDialog.setIndeterminate(true);
         progressDialog.setCancelable(false);
-        progressDialog.setMessage("登陆中");
+        progressDialog.setMessage("登录中");
         progressDialog.show();
 
         final String name = username.getText().toString();
@@ -187,9 +257,10 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                                 Message msgMessage = new Message();
                                 msgMessage.arg1 = 1;
                                 handler.sendMessage(msgMessage);
+                                startActivity(new Intent(LoginActivity.this, MainActivity.class));
                                 progressDialog.dismiss();
                                 //Toast.makeText(LoginActivity.this, "登录成功", Toast.LENGTH_SHORT).show();
-                                finish();
+                                //finish();
                             }
                             else{
                                 //返回202表示账号名已存在
@@ -215,9 +286,10 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                                                 Message msgMessage = new Message();
                                                 msgMessage.arg1 = 1;
                                                 handler.sendMessage(msgMessage);
+                                                startActivity(new Intent(LoginActivity.this, MainActivity.class));
                                                 progressDialog.dismiss();
                                                 //Toast.makeText(LoginActivity.this, "登录成功", Toast.LENGTH_SHORT).show();
-                                                finish();
+                                                //finish();
                                             }else{
                                                 Log.i(TAG, "登录失败:" +e.getMessage() );
                                                 Message msgMessage = new Message();
@@ -229,6 +301,12 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                                             }
                                         }
                                     });
+                                }else{
+                                    Log.i(TAG, "登录失败:" +e.getMessage() );
+                                    Message msgMessage = new Message();
+                                    msgMessage.arg1 = 5;
+                                    handler.sendMessage(msgMessage);
+                                    progressDialog.dismiss();
                                 }
                             }
                         }
@@ -237,6 +315,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     Message msgMessage = new Message();
                     msgMessage.arg1 = 4;
                     handler.sendMessage(msgMessage);
+                    progressDialog.dismiss();
                     //Toast.makeText(LoginActivity.this, "教务处又崩啦", Toast.LENGTH_SHORT).show();
                 } else{
                     Message msgMessage = new Message();
@@ -317,7 +396,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
                 // TODO: Implement successful signup logic here
                 // By default we just finish the Activity and log them in automatically
-                this.finish();
+                //this.finish();
             }
         }
     }
@@ -330,7 +409,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     public void onLoginSuccess() {
         login.setEnabled(true);
-        finish();
+        //finish();
     }
 
     public void onLoginFailed() {

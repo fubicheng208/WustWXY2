@@ -13,6 +13,7 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -33,7 +34,7 @@ import java.util.List;
 /**
  * Created by Administrator on 2016/7/17.
  */
-public class XFZXActivity extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
+public class XFZXActivity extends Fragment implements SwipeRefreshLayout.OnRefreshListener ,AbsListView.OnScrollListener{
     private NewsAdapter adapter;
     private List<News> newsList;
     private ListView lv;
@@ -82,6 +83,7 @@ public class XFZXActivity extends Fragment implements SwipeRefreshLayout.OnRefre
         refreshLayout = (SwipeRefreshLayout) rootView.findViewById(R.id.refresh_news);
         //为组件加入参数
         initRefresh();
+        lv.setOnScrollListener(this);
         refreshLayout.setOnRefreshListener(this);
         if(!isNetworkAvailable(getActivity())){
             showErrorView();
@@ -169,6 +171,7 @@ public class XFZXActivity extends Fragment implements SwipeRefreshLayout.OnRefre
 
     @Override
     public void onRefresh() {
+        newsList.clear();
         if(isNetworkAvailable(getActivity())){
             showTrueView();
             parseHtml(handler);
@@ -209,5 +212,20 @@ public class XFZXActivity extends Fragment implements SwipeRefreshLayout.OnRefre
             }
         }
         return false;
+    }
+
+    //监听滑动事件，如到达第一项才可下滑更新
+    @Override
+    public void onScrollStateChanged(AbsListView absListView, int i) {
+
+    }
+
+    @Override
+    public void onScroll(AbsListView absListView, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+        if(firstVisibleItem == 0){
+            refreshLayout.setEnabled(true);
+        }else{
+            refreshLayout.setEnabled(false);
+        }
     }
 }

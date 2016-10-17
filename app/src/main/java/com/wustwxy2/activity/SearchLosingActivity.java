@@ -11,6 +11,7 @@ import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.LinearLayout;
@@ -41,7 +42,7 @@ import cn.bmob.v3.exception.BmobException;
 import cn.bmob.v3.listener.FindListener;
 
 public class SearchLosingActivity extends BaseActivity implements View.OnClickListener,
-        AdapterView.OnItemClickListener, SwipeRefreshLayout.OnRefreshListener {
+        AdapterView.OnItemClickListener, SwipeRefreshLayout.OnRefreshListener, AbsListView.OnScrollListener {
 
     private static final String TAG = " LOSING";
 
@@ -85,7 +86,7 @@ public class SearchLosingActivity extends BaseActivity implements View.OnClickLi
         layout_all = (LinearLayout) findViewById(R.id.layout_all);
         // Ĭ����ʧ�����
         tv_lost = (TextView) findViewById(R.id.tv_lost);
-        tv_lost.setTag("Lost");
+        tv_lost.setTag(getResources().getText(R.string.lost));
         listview = (ListView) findViewById(R.id.list_lost);
         refreshLayout = (SwipeRefreshLayout) findViewById(R.id.losing_fresh);
         initRefresh();
@@ -94,6 +95,7 @@ public class SearchLosingActivity extends BaseActivity implements View.OnClickLi
     @Override
     public void initListeners() {
         listview.setOnItemClickListener(this);
+        listview.setOnScrollListener(this);
         layout_all.setOnClickListener(this);
         refreshLayout.setOnRefreshListener(this);
     }
@@ -178,11 +180,11 @@ public class SearchLosingActivity extends BaseActivity implements View.OnClickLi
 
     private void changeTextView(View v) {
         if (v == layout_found) {
-            tv_lost.setTag("Found");
-            tv_lost.setText("Found");
+            tv_lost.setTag(getResources().getText(R.string.found));
+            tv_lost.setText(getResources().getText(R.string.found));
         } else {
-            tv_lost.setTag("Lost");
-            tv_lost.setText("Lost");
+            tv_lost.setTag(getResources().getText(R.string.lost));
+            tv_lost.setText(getResources().getText(R.string.lost));
         }
     }
 
@@ -229,7 +231,7 @@ public class SearchLosingActivity extends BaseActivity implements View.OnClickLi
         String time = "";
         String objectId = "";
         String from = tv_lost.getText().toString();
-        if (from.equals("Lost")) {
+        if (from.equals(getResources().getText(R.string.lost))) {
             title = LostAdapter.getItem(position).getTitle();
             describe = LostAdapter.getItem(position).getDescribe();
             phone = LostAdapter.getItem(position).getPhone();
@@ -262,7 +264,7 @@ public class SearchLosingActivity extends BaseActivity implements View.OnClickLi
         switch (requestCode) {
             case Constants.REQUESTCODE_ADD:// ��ӳɹ�֮��Ļص�
                 String tag = tv_lost.getTag().toString();
-                if (tag.equals("Lost")) {
+                if (tag.equals(getResources().getText(R.string.lost))) {
                     queryLosts();
                 } else {
                     queryFounds();
@@ -393,7 +395,7 @@ public class SearchLosingActivity extends BaseActivity implements View.OnClickLi
                     startActivityForResult(intent, Constants.REQUESTCODE_ADD);
                 } else {
                     ShowToast(getResources().getText(R.string.hint_login).toString());
-                    Intent intent = new Intent(this, LoginActivity.class);
+                    Intent intent = new Intent(this, LoginActivityInside.class);
                     startActivity(intent);
                 }
                 break;
@@ -407,7 +409,7 @@ public class SearchLosingActivity extends BaseActivity implements View.OnClickLi
                 } else {
                     //�����û�����Ϊ��ʱ�� �ɴ��û�ע����桭
                     ShowToast(getResources().getText(R.string.hint_login).toString());
-                    Intent intent = new Intent(this, LoginActivity.class);
+                    Intent intent = new Intent(this, LoginActivityInside.class);
                     startActivity(intent);
                 }
                 break;
@@ -422,11 +424,17 @@ public class SearchLosingActivity extends BaseActivity implements View.OnClickLi
 
     @Override
     public void onRefresh() {
-        if (tv_lost.getText().equals("Found")) {
+        if (tv_lost.getText().equals(getResources().getText(R.string.found))) {
             queryFounds();
         } else {
             queryLosts();
         }
+    }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        startRefresh();
     }
 
     //人工使刷新圈开始转动
@@ -440,5 +448,19 @@ public class SearchLosingActivity extends BaseActivity implements View.OnClickLi
         onRefresh();
     }
 
+    //监听滑动事件，如到达第一项才可下滑更新
+    @Override
+    public void onScrollStateChanged(AbsListView absListView, int i) {
+
+    }
+
+    @Override
+    public void onScroll(AbsListView absListView, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+        if(firstVisibleItem == 0){
+            refreshLayout.setEnabled(true);
+        }else{
+            refreshLayout.setEnabled(false);
+        }
+    }
 
 }

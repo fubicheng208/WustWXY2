@@ -17,12 +17,12 @@ import com.wustwxy2.models.BaseViewHolder;
 public class MyGridAdapter extends BaseAdapter {
     private Context mContext;
 
-    public String[] img_text = { "图书馆", "课表", "成绩", "一卡通", "失物寻物", "校车",
-            "地图", "计算机", "四六级", };
-    public int[] imgs = {R.mipmap.lib, R.mipmap.table,
-            R.mipmap.grade, R.mipmap.card,
+    public String[] img_text = { "一卡通", "课表", "成绩", "地图", "失物寻物", "校车",
+            "图书馆", "计算机", "四六级", };
+    public int[] imgs = {R.mipmap.card, R.mipmap.table,
+            R.mipmap.grade, R.mipmap.map,
             R.mipmap.losing, R.mipmap.bus,
-            R.mipmap.map, R.mipmap.computer, R.mipmap.eng };
+            R.mipmap.lib, R.mipmap.computer, R.mipmap.eng };
 
     public MyGridAdapter(Context mContext) {
         super();

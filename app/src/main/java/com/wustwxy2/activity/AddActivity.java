@@ -1,11 +1,13 @@
 package com.wustwxy2.activity;
 
+import android.Manifest;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.ContentResolver;
 import android.content.ContentUris;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
@@ -15,14 +17,18 @@ import android.os.Build;
 import android.os.Environment;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
+import android.provider.Settings;
+import android.support.v7.app.AlertDialog;
 import android.text.TextUtils;
 import android.util.Log;
+import android.util.Patterns;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.readystatesoftware.systembartint.SystemBarTintManager;
 import com.wustwxy2.R;
@@ -40,6 +46,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.text.DecimalFormat;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import cn.bmob.v3.BmobObject;
 import cn.bmob.v3.BmobUser;
@@ -51,7 +59,7 @@ import cn.bmob.v3.listener.UploadFileListener;
 public class AddActivity extends BaseActivity implements View.OnClickListener, IMainView {
 
     private static final int SELECT_PIC_KITKAT = 0x11;
-    private static final int SELECT_PIC= 0x12;
+    private static final int SELECT_PIC = 0x12;
     private SystemBarTintManager tintManager;
     private IMainPresenter mMainPresenter;
 
@@ -76,7 +84,7 @@ public class AddActivity extends BaseActivity implements View.OnClickListener, I
     String old_describe = "";
     String old_phone = "";
 
-    String path="";
+    String path = "";
 
     @Override
     public void setContentView() {
@@ -124,7 +132,7 @@ public class AddActivity extends BaseActivity implements View.OnClickListener, I
         edit_phone.setText(old_phone);
 
 
-        if (from.equals("Lost")) {
+        if (from.equals(getResources().getText(R.string.lost))) {
             tv_add.setText(getResources().getText(R.string.add_losing));
         } else {
             tv_add.setText(getResources().getText(R.string.add_found));
@@ -147,19 +155,51 @@ public class AddActivity extends BaseActivity implements View.OnClickListener, I
         // TODO Auto-generated method stub
         if (v == btn_true) {
             addByType();
-        }else if(v == iv_photo){
+        } else if (v == iv_photo) {
             /*Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
             intent.addCategory(Intent.CATEGORY_OPENABLE);
             intent.setType("image*//*");
             startActivityForResult(Intent.createChooser(intent,"选择图片"),SELECT_PICTURE);*/
-            Intent intent=new Intent(Intent.ACTION_GET_CONTENT);//ACTION_OPEN_DOCUMENT
-            intent.addCategory(Intent.CATEGORY_OPENABLE);
-            intent.setType("image/jpeg");
-            if(android.os.Build.VERSION.SDK_INT>=android.os.Build.VERSION_CODES.KITKAT){
-                startActivityForResult(intent, SELECT_PIC_KITKAT);
-            }else{
-                startActivityForResult(intent, SELECT_PIC);
-            }
+            requestPermission(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE}, new PermissionHandler() {
+                @Override
+                public void onGranted() {
+                    Intent intent = new Intent(Intent.ACTION_GET_CONTENT);//ACTION_OPEN_DOCUMENT
+                    intent.addCategory(Intent.CATEGORY_OPENABLE);
+                    intent.setType("image/jpeg");
+                    if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.KITKAT) {
+                        startActivityForResult(intent, SELECT_PIC_KITKAT);
+                    } else {
+                        startActivityForResult(intent, SELECT_PIC);
+                    }
+                }
+
+                @Override
+                public void onDenied() {
+                    Toast.makeText(AddActivity.this, "由于您拒绝了权限申请，无法正常使用该功能", Toast.LENGTH_LONG).show();
+                }
+
+                @Override
+                public boolean onNeverAsk() {
+                    new AlertDialog.Builder(AddActivity.this)
+                            .setTitle(R.string.permission_ask_title)
+                            .setMessage(R.string.permission_mes)
+                            .setPositiveButton("去开启", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialogInterface, int i) {
+                                    Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+                                    Uri uri = Uri.fromParts("package", getPackageName(), null);
+                                    intent.setData(uri);
+                                    startActivity(intent);
+
+                                    dialogInterface.dismiss();
+                                }
+                            })
+                            .setNegativeButton("取消", null)
+                            .setCancelable(false)
+                            .show();
+                    return true;
+                }
+            });
         } else if (v == btn_back) {
             finish();
         }
@@ -176,33 +216,22 @@ public class AddActivity extends BaseActivity implements View.OnClickListener, I
             Drawable drawable =new BitmapDrawable(bitmapSelected);
             losing_photo.setBackground(drawable);
         }*/
-        if(resultCode == RESULT_OK){
+        if (resultCode == RESULT_OK) {
             Uri uri = data.getData();
             ContentResolver cr = this.getContentResolver();
-            try{
-                if(bitmapSelected!=null)//如果不施放的话，不断读取图片，将会内存不够
+            try {
+                if (bitmapSelected != null)//如果不施放的话，不断读取图片，将会内存不够
                     bitmapSelected.recycle();
                 bitmapSelected = BitmapFactory.decodeStream(cr.openInputStream(uri));
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-                    if(DocumentsContract.isDocumentUri(this, uri))
-                        path = getPath(this,uri);
+                    if (DocumentsContract.isDocumentUri(this, uri))
+                        path = getPath(this, uri);
                     else
                         path = selectImage(this, data);
-                }
-                else{
-                    path = getPath(this,uri);
+                } else {
+                    path = getPath(this, uri);
                 }
 
-                /*String[] proj = {MediaStore.Images.Media.DATA};
-                //好像是android多媒体数据库的封装接口，具体的看Android文档
-                Cursor cursor = getContentResolver().query(uri,proj, null, null, null);
-                //按我个人理解 这个是获得用户选择的图片的索引值
-                int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
-                //将光标移至开头 ，这个很重要，不小心很容易引起越界
-                cursor.moveToFirst();
-                //最后根据索引值获取图片路径
-                path = cursor.getString(column_index);
-                Log.i(TAG,""+path);*/
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
             }
@@ -215,39 +244,45 @@ public class AddActivity extends BaseActivity implements View.OnClickListener, I
 
     String title = "";
     String describe = "";
-    String phone="";
+    String phone = "";
 
-    /**根据类型添加失物/招领
+    /**
+     * 根据类型添加失物/招领
      * addByType
-     * @Title: addByType
+     *
      * @throws
+     * @Title: addByType
      */
-    private void addByType()  {
+    private void addByType() {
         title = edit_title.getText().toString();
         describe = edit_describe.getText().toString();
         phone = edit_phone.getText().toString();
 
-        if(TextUtils.isEmpty(title)){
+        if (TextUtils.isEmpty(title)) {
             ShowToast("请填写标题");
             return;
         }
-        if(TextUtils.isEmpty(describe)){
+        if (TextUtils.isEmpty(describe)) {
             ShowToast("请填写描述");
             return;
         }
-        if(TextUtils.isEmpty(phone)){
-            ShowToast("请填写手机");
+        if (TextUtils.isEmpty(phone)) {
+            ShowToast("请填写手机号");
             return;
         }
-        if(from.equals("Lost")){
+        if (!isMobileNO(phone)) {
+            ShowToast("请输入正确的手机号");
+            return;
+        }
+        if (from.equals(getResources().getText(R.string.lost))) {
             addLost();
-        }else{
+        } else {
             addFound();
         }
     }
 
-    private void addLost()  {
-        if(!path.equals("")){
+    private void addLost() {
+        if (!path.equals("")) {
             //Bitmap bitmap = ImageUtils.getInstant().getCompressedBitmap(path);
             File before_compressed = new File(path);
             File file = Compressor.getDefault(this).compressToFile(before_compressed);
@@ -258,36 +293,33 @@ public class AddActivity extends BaseActivity implements View.OnClickListener, I
             bmobFile.uploadblock(new UploadFileListener() {
                 @Override
                 public void done(BmobException e) {
-                    if(e==null){
-                        Log.i(TAG, "图片上传成功:"+bmobFile.getFileUrl());
+                    if (e == null) {
+                        Log.i(TAG, "图片上传成功:" + bmobFile.getFileUrl());
                         User user = BmobUser.getCurrentUser(User.class);
                         String username = user.getUsername();
                         Log.i(TAG, username);
-                        Lost lost = new Lost(title,phone,describe,bmobFile);
+                        Lost lost = new Lost(title, phone, describe, bmobFile);
                         lost.setPhotoUrl(bmobFile.getFileUrl());
                         lost.setAuthor(user);
                         insertObject(lost);
-                    }
-                    else{
-                        Log.i(TAG,"上传失败"+e.getMessage()+","+e.getErrorCode());
+                    } else {
+                        Log.i(TAG, "上传失败" + e.getMessage() + "," + e.getErrorCode());
                         ShowToast("网络异常，上传失败");
                     }
                 }
             });
-        }
-        else
-        {
+        } else {
             dialog.setTitle("正在提交");
             dialog.show();
-            Lost lost = new Lost(title, phone,  describe);
+            Lost lost = new Lost(title, phone, describe);
             User user = BmobUser.getCurrentUser(User.class);
             lost.setAuthor(user);
             insertObject(lost);
         }
     }
 
-    private void addFound(){
-        if(!path.equals("")){
+    private void addFound() {
+        if (!path.equals("")) {
             File before_compressed = new File(path);
             //文件压缩
             File file = Compressor.getDefault(this).compressToFile(before_compressed);
@@ -298,28 +330,25 @@ public class AddActivity extends BaseActivity implements View.OnClickListener, I
             bmobFile.uploadblock(new UploadFileListener() {
                 @Override
                 public void done(BmobException e) {
-                    if(e==null){
-                        Log.i(TAG, "图片上传成功:"+bmobFile.getFileUrl());
+                    if (e == null) {
+                        Log.i(TAG, "图片上传成功:" + bmobFile.getFileUrl());
                         User user = BmobUser.getCurrentUser(User.class);
                         String username = user.getUsername();
                         Log.i(TAG, username);
-                        Found found = new Found(title,phone,describe,bmobFile);
+                        Found found = new Found(title, phone, describe, bmobFile);
                         found.setPhotoUrl(bmobFile.getFileUrl());
                         found.setAuthor(user);
                         insertObject(found);
-                    }
-                    else{
-                        Log.i(TAG,"上传失败"+e.getMessage()+","+e.getErrorCode());
+                    } else {
+                        Log.i(TAG, "上传失败" + e.getMessage() + "," + e.getErrorCode());
                         ShowToast("网络异常，上传失败");
                     }
                 }
             });
-        }
-        else
-        {
+        } else {
             dialog.setTitle("正在提交");
             dialog.show();
-            Found found = new Found(title,phone,describe);
+            Found found = new Found(title, phone, describe);
             User user = BmobUser.getCurrentUser(User.class);
             found.setAuthor(user);
             insertObject(found);
@@ -327,30 +356,29 @@ public class AddActivity extends BaseActivity implements View.OnClickListener, I
     }
 
 
-    private void insertObject(final BmobObject obj){
+    private void insertObject(final BmobObject obj) {
         obj.save(new SaveListener<String>() {
             @Override
             public void done(String s, BmobException e) {
-                if(e==null){
-                    if(from.equals("Lost")) {
-                        ShowToast("失物信息添加成功!" );
-                        Log.i(TAG, "失物信息添加成功:" + obj.getObjectId());
-                    }else{
-                        ShowToast("寻物信息添加成功!");
-                        Log.i(TAG, "寻物信息添加成功:" + obj.getObjectId());
+                if (e == null) {
+                    if (from.equals(getResources().getText(R.string.lost))) {
+                        ShowToast(getString(R.string.toast_losing));
+                        Log.i(TAG, getString(R.string.toast_losing) + obj.getObjectId());
+                    } else {
+                        ShowToast(getString(R.string.toast_found));
+                        Log.i(TAG, getString(R.string.toast_found) + obj.getObjectId());
                     }
                     dialog.dismiss();
                     setResult(RESULT_OK);
                     finish();
-                }
-                else{
+                } else {
                     dialog.dismiss();
-                    if(from.equals("Lost")){
-                        Log.i(TAG,"失物信息添加失败");
-                        ShowToast("失物信息添加失败");
-                    }else{
-                        Log.i(TAG,"寻物信息添加失败");
-                        ShowToast("寻物信息添加失败");
+                    if (from.equals(getResources().getText(R.string.lost))) {
+                        Log.i(TAG, getString(R.string.toast_losing_fail));
+                        ShowToast(getString(R.string.toast_losing_fail));
+                    } else {
+                        Log.i(TAG, getString(R.string.toast_found_fail));
+                        ShowToast(getString(R.string.toast_found_fail));
                     }
                 }
             }
@@ -358,8 +386,8 @@ public class AddActivity extends BaseActivity implements View.OnClickListener, I
     }
 
     //设置沉浸式状态栏和导航栏
-    private void initWindow(){
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT){
+    private void initWindow() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
             getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
             tintManager = new SystemBarTintManager(this);
@@ -428,7 +456,7 @@ public class AddActivity extends BaseActivity implements View.OnClickListener, I
                 }
 
                 final String selection = "_id=?";
-                final String[] selectionArgs = new String[] {
+                final String[] selectionArgs = new String[]{
                         split[1]
                 };
 
@@ -456,9 +484,9 @@ public class AddActivity extends BaseActivity implements View.OnClickListener, I
      * Get the value of the data column for this Uri. This is useful for
      * MediaStore Uris, and other file-based ContentProviders.
      *
-     * @param context The context.
-     * @param uri The Uri to query.
-     * @param selection (Optional) Filter used in the query.
+     * @param context       The context.
+     * @param uri           The Uri to query.
+     * @param selection     (Optional) Filter used in the query.
      * @param selectionArgs (Optional) Selection arguments used in the query.
      * @return The value of the _data column, which is typically a file path.
      */
@@ -518,19 +546,19 @@ public class AddActivity extends BaseActivity implements View.OnClickListener, I
         return "com.google.android.apps.photos.content".equals(uri.getAuthority());
     }
 
-    public static String selectImage(Context context,Intent data){
+    public static String selectImage(Context context, Intent data) {
         Uri selectedImage = data.getData();
 //      Log.e(TAG, selectedImage.toString());
-        if(selectedImage!=null){
-            String uriStr=selectedImage.toString();
-            String path=uriStr.substring(10,uriStr.length());
-            if(path.startsWith("com.sec.android.gallery3d")){
-                Log.e(TAG, "It's auto backup pic path:"+selectedImage.toString());
+        if (selectedImage != null) {
+            String uriStr = selectedImage.toString();
+            String path = uriStr.substring(10, uriStr.length());
+            if (path.startsWith("com.sec.android.gallery3d")) {
+                Log.e(TAG, "It's auto backup pic path:" + selectedImage.toString());
                 return null;
             }
         }
-        String[] filePathColumn = { MediaStore.Images.Media.DATA };
-        Cursor cursor = context.getContentResolver().query(selectedImage,filePathColumn, null, null, null);
+        String[] filePathColumn = {MediaStore.Images.Media.DATA};
+        Cursor cursor = context.getContentResolver().query(selectedImage, filePathColumn, null, null, null);
         cursor.moveToFirst();
         int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
         String picturePath = cursor.getString(columnIndex);
@@ -551,5 +579,15 @@ public class AddActivity extends BaseActivity implements View.OnClickListener, I
         final String[] units = new String[]{"B", "KB", "MB", "GB", "TB"};
         int digitGroups = (int) (Math.log10(size) / Math.log10(1024));
         return new DecimalFormat("#,##0.#").format(size / Math.pow(1024, digitGroups)) + " " + units[digitGroups];
+    }
+
+    public static boolean isMobileNO(String mobiles) {
+
+        Pattern p = Pattern.compile("^((13[0-9])|(15[^4,\\D])|(18[0,5-9]))\\d{8}$");
+
+        Matcher m = p.matcher(mobiles);
+
+        return m.matches();
+
     }
 }

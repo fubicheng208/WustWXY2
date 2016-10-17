@@ -3,46 +3,48 @@
               xmlns:tools="http://schemas.android.com/tools"
               android:layout_width="match_parent"
               android:layout_height="match_parent"
+              android:fillViewport="true"
               android:orientation="vertical"
               tools:context=".activity.SearchTableActivity"
               tools:showIn="@layout/activity_course" >
-    <RelativeLayout
-        android:id="@+id/title_rl"
-        android:layout_width="match_parent"
-        android:layout_height="55dp"
-        android:background="@color/colorPrimary">
-        <ImageButton
-            android:id="@+id/course_back"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@mipmap/back_white"
-            android:background="@color/unSeeTop"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="15dp"/>
-        <TextView
-            android:id="@+id/title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:text="第一周 ▼"
-            android:textColor="#ffff"
-            android:textSize="20sp" />
+    <android.support.v7.widget.Toolbar xmlns:android="http://schemas.android.com/apk/res/android"
+                                       xmlns:app="http://schemas.android.com/apk/res-auto"
+                                       android:id="@+id/course_toolbar"
+                                       android:layout_width="match_parent"
+                                       android:layout_height="?attr/actionBarSize"
+                                       android:background="@color/colorPrimary"
+                                       android:fitsSystemWindows="true"
+                                       app:layout_collapseMode="pin"
+                                       app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+                                       app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
+
         <RelativeLayout
-            android:id="@+id/rl_menu"
-            android:layout_width="55dp"
+            android:id="@+id/title_rl"
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentRight="true">
-        <Button
-            android:layout_margin="14dp"
-            android:layout_width="27dp"
-            android:layout_height="27dp"
-            android:layout_alignParentRight="true"
-            android:background="@drawable/menu"
-            android:id="@+id/bt_menu"
-            android:layout_alignParentBottom="true"/>
+            android:background="@color/colorPrimary">
+            <ImageButton
+                android:id="@+id/course_back"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@mipmap/back_white"
+                android:background="@color/unSeeTop"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="0dp"/>
+            <TextView
+                android:id="@+id/title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:drawableRight="@mipmap/down"
+                android:drawablePadding="10dp"
+                android:text="第一周"
+                android:textColor="#ffff"
+                android:paddingLeft="24dp"
+                android:textSize="20sp" />
         </RelativeLayout>
-    </RelativeLayout>
+
+    </android.support.v7.widget.Toolbar>
     <LinearLayout
         android:id="@+id/bj_ll"
         android:layout_width="match_parent"

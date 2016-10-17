@@ -21,9 +21,9 @@
                 android:id="@+id/tv_lost"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Lost"
+                android:text="寻物启事"
                 android:textColor="@color/white"
-                android:textSize="22sp" />
+                android:textSize="20sp" />
 
             <ImageView
                 android:layout_width="wrap_content"

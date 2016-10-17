@@ -1,6 +1,9 @@
 package com.wustwxy2.activity;
 
+import android.Manifest;
+import android.app.ActivityManager;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
@@ -11,12 +14,14 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
+import android.provider.Settings;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.util.Xml;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.Window;
@@ -51,6 +56,46 @@ public class MainActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        requestPermission(new String[]{Manifest.permission.READ_PHONE_STATE}, new PermissionHandler() {
+            @Override
+            public void onGranted() {
+            }
+
+            @Override
+            public void onDenied() {
+                Toast.makeText(MainActivity.this, "由于您拒绝了基础权限申请，无法正常打开应用", Toast.LENGTH_LONG).show();
+                ActivityManager am = (ActivityManager)getSystemService (Context.ACTIVITY_SERVICE);
+                am.restartPackage(getPackageName());
+            }
+
+            @Override
+            public boolean onNeverAsk() {
+                new AlertDialog.Builder(MainActivity.this)
+                        .setTitle(R.string.permission_ask_title)
+                        .setMessage(R.string.permission_mes)
+                        .setPositiveButton("去开启", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+                                Uri uri = Uri.fromParts("package", getPackageName(), null);
+                                intent.setData(uri);
+                                startActivity(intent);
+
+                                dialogInterface.dismiss();
+                            }
+                        })
+                        .setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                finish();
+                                dialogInterface.dismiss();
+                            }
+                        })
+                        .setCancelable(false)
+                        .show();
+                return  true;
+            }
+        });
         info = new UpdateInfo();
         CheckVersionTask task = new CheckVersionTask();
         Thread thread = new Thread(task);
@@ -62,13 +107,15 @@ public class MainActivity extends BaseActivity {
             e.printStackTrace();
         }
 
-        //如果得不到则为0,1为登录过，2为游客登录
+
+        /*//如果得不到则为0,1为登录过，2为游客登录
         int from = getIntent().getIntExtra("from",0);
         BmobUser user = BmobUser.getCurrentUser(User.class);
         if(from!=2&&user==null){
             Intent intent = new Intent(this, LoginActivity.class);
             startActivity(intent);
-        }
+        }*/
+
         setContentView();
         initFragment(savedInstanceState);
         initViews();
@@ -132,8 +179,7 @@ public class MainActivity extends BaseActivity {
     private void setTranslucentStatus(boolean on) {
         Window win = getWindow();
         WindowManager.LayoutParams winParams = win.getAttributes();
-        final int bits;
-        bits = WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS;
+        final int bits = WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS;
         if (on) {
             winParams.flags |= bits;
         } else {
@@ -176,6 +222,8 @@ public class MainActivity extends BaseActivity {
                         info.setVersion(parser.nextText()); //获取版本号
                     }else if ("url".equals(parser.getName())){
                         info.setUrl(parser.nextText()); //获取要升级的APK文件
+                    }else if ("description".equals(parser.getName())){
+                        info.setDescription(parser.nextText()); //获取该文件的信息
                     }
                     break;
             }
@@ -286,8 +334,8 @@ public class MainActivity extends BaseActivity {
      */
     protected void showUpdataDialog() {
         AlertDialog.Builder builer = new AlertDialog.Builder(this) ;
-        builer.setTitle("版本升级");
-        builer.setMessage("检测到最新版本,请及时更新!");
+        builer.setTitle(R.string.find_new_version);
+        builer.setMessage(info.getDescription());
         //当点确定按钮时从服务器上下载 新的apk 然后安装
         builer.setPositiveButton("确定", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
@@ -340,6 +388,19 @@ public class MainActivity extends BaseActivity {
         //执行的数据类型
         intent.setDataAndType(Uri.fromFile(file), "application/vnd.android.package-archive");
         startActivity(intent);
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            Intent home = new Intent(Intent.ACTION_MAIN);
+            home.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            home.addCategory(Intent.CATEGORY_HOME);
+            startActivity(home);
+            return true;
+        }
+        return super.onKeyDown(keyCode, event);
     }
 
     /*

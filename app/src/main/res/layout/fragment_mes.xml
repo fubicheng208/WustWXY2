@@ -1,143 +1,134 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              xmlns:app="http://schemas.android.com/apk/res-auto"
-              android:id="@+id/mesFragment"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent"
-              android:orientation="vertical"
-    android:background="#eeeeee">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/mesFragment"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/base_bg"
+    android:orientation="vertical">
 
     <android.support.v7.widget.CardView
+        android:id="@+id/mes_card"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:cardBackgroundColor="@color/colorPrimaryDarkNews"
         app:cardCornerRadius="0dp">
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/mes_name"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/mes_name_default"
-            style="@style/Fbc.TextView._Black"
-            android:textColor="@android:color/white"
-            android:textSize="@dimen/headline"
-            android:paddingLeft="20dp"
-            android:paddingTop="30dp"
-            android:paddingBottom="5dp"
-            />
+            android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/mes_no"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/mes_no_default"
-            android:textSize="14sp"
-            android:textColor="@android:color/white"
-            android:paddingLeft="20dp"
-            android:paddingTop="5dp"
-            android:paddingBottom="30dp"
-            android:drawableLeft="@mipmap/mes_no1"
-            android:drawablePadding="10dp"
-            />
-    </LinearLayout>
+            <TextView
+                android:id="@+id/mes_card_login"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="点击登录"
+                android:paddingLeft="20dp"
+                android:textColor="@android:color/white"
+                android:textSize="20sp"
+                android:paddingTop="45dp"
+                android:paddingBottom="45dp"
+                android:visibility="gone"/>
+
+            <TextView
+                android:id="@+id/mes_name"
+                style="@style/Fbc.TextView._Black"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingBottom="5dp"
+                android:paddingLeft="20dp"
+                android:paddingTop="30dp"
+                android:text="@string/mes_name_default"
+                android:textColor="@android:color/white"
+                android:textSize="@dimen/headline" />
+
+            <TextView
+                android:id="@+id/mes_no"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:drawableLeft="@mipmap/mes_no1"
+                android:drawablePadding="10dp"
+                android:paddingBottom="30dp"
+                android:paddingLeft="20dp"
+                android:paddingTop="5dp"
+                android:text="@string/mes_no_default"
+                android:textColor="@android:color/white"
+                android:textSize="14sp" />
+        </LinearLayout>
     </android.support.v7.widget.CardView>
 
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
         android:divider="@drawable/grey_divider"
         android:orientation="vertical"
-        android:layout_marginTop="20dp"
         android:showDividers="middle">
 
         <Button
             android:id="@+id/mes_bind"
+            style="@style/Fbc.TextView._Black"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/mes_button_selector"
-            android:text="@string/mes_bind"
-            android:gravity="center_vertical"
-            style="@style/Fbc.TextView._Black"
-            android:paddingLeft="20dp"
-            android:paddingTop="5dp"
-            android:paddingBottom="10dp"
             android:drawableLeft="@mipmap/mes_bind"
             android:drawablePadding="10dp"
+            android:gravity="center_vertical"
+            android:paddingBottom="10dp"
+            android:paddingLeft="20dp"
+            android:paddingTop="5dp"
+            android:text="@string/mes_bind"
 
             />
 
 
         <Button
             android:id="@+id/mes_feedback"
+            style="@style/Fbc.TextView._Black"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/mes_button_selector"
-            android:text="@string/mes_feedback"
-            android:gravity="center_vertical"
-            style="@style/Fbc.TextView._Black"
-            android:paddingLeft="20dp"
-            android:paddingTop="5dp"
-            android:paddingBottom="10dp"
             android:drawableLeft="@mipmap/feedback"
             android:drawablePadding="10dp"
-            />
+            android:gravity="center_vertical"
+            android:paddingBottom="10dp"
+            android:paddingLeft="20dp"
+            android:paddingTop="5dp"
+            android:text="@string/mes_feedback" />
 
         <Button
             android:id="@+id/mes_about"
+            style="@style/Fbc.TextView._Black"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/mes_button_selector"
-            android:text="@string/mes_about"
-            android:gravity="center_vertical"
-            style="@style/Fbc.TextView._Black"
-            android:paddingLeft="20dp"
-            android:paddingTop="5dp"
-            android:paddingBottom="10dp"
             android:drawableLeft="@mipmap/about"
             android:drawablePadding="10dp"
-            />
+            android:gravity="center_vertical"
+            android:paddingBottom="10dp"
+            android:paddingLeft="20dp"
+            android:paddingTop="5dp"
+            android:text="@string/mes_about" />
 
         <Button
             android:id="@+id/exit"
+            style="@style/Fbc.TextView._White"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center_vertical"
-            android:text="@string/exit"
-            style="@style/Fbc.TextView._White"
-            android:textColor="@color/black"
-            android:background="@drawable/mes_button_selector"
-            android:paddingLeft="20dp"
             android:layout_marginTop="20dp"
-            android:paddingTop="5dp"
-            android:paddingBottom="10dp"
+            android:background="@drawable/mes_button_selector"
             android:drawableLeft="@mipmap/exit"
-            android:drawablePadding="10dp"/>
+            android:drawablePadding="10dp"
+            android:gravity="center_vertical"
+            android:paddingBottom="10dp"
+            android:paddingLeft="20dp"
+            android:paddingTop="5dp"
+            android:text="@string/exit"
+            android:textColor="@color/black" />
 
 
     </LinearLayout>
-
-    <Button
-        android:id="@+id/mes_login"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/Login"
-        style="@style/Fbc.TextView._White"
-        android:textColor="@color/black"
-        android:background="@drawable/mes_button_selector"
-        android:gravity="center_vertical"
-        android:paddingLeft="20dp"
-        android:paddingTop="5dp"
-        android:paddingBottom="10dp"
-        android:drawableLeft="@mipmap/mes_no"
-        android:drawablePadding="10dp"
-        android:layout_gravity="center"
-        android:visibility="invisible"
-        android:layout_marginTop="200dp"
-        />
 
 </LinearLayout>

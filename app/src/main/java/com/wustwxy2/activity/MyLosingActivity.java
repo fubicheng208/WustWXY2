@@ -8,8 +8,10 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -43,14 +45,15 @@ import static com.wustwxy2.R.id.tv_time;
 import static com.wustwxy2.R.id.tv_title;
 
 public class MyLosingActivity extends BaseActivity implements IPopupItemClick, AdapterView.OnItemLongClickListener,
-        SwipeRefreshLayout.OnRefreshListener{
+        SwipeRefreshLayout.OnRefreshListener, AbsListView.OnScrollListener {
 
+    private static final String TAG = "MYLOSING";
     Toolbar toolbar;
     private SystemBarTintManager tintManager;
     //声明进度条对话框对象
     private ProgressDialog dialog;
     //进度条最大值
-    private static final int PROGRESS_MAX=100;
+    private static final int PROGRESS_MAX = 100;
 
     ListView listview;
 
@@ -93,13 +96,14 @@ public class MyLosingActivity extends BaseActivity implements IPopupItemClick, A
     @Override
     public void initListeners() {
         listview.setOnItemLongClickListener(this);
+        listview.setOnScrollListener(this);
         refreshLayout.setOnRefreshListener(this);
     }
 
     @Override
     public void initData() {
         from = getIntent().getStringExtra("from");
-        if (from.equals("Lost")) {
+        if (from.equals(getResources().getText(R.string.lost))) {
             toolbar.setTitle(getResources().getText(R.string.my_lost));
         } else {
             toolbar.setTitle(getResources().getText(R.string.my_found));
@@ -128,7 +132,7 @@ public class MyLosingActivity extends BaseActivity implements IPopupItemClick, A
             };
         }
 
-        if (from.equals("Lost")) {
+        if (from.equals(getResources().getText(R.string.lost))) {
             Log.i(TAG, from);
             listview.setAdapter(LostAdapter);
             startRefresh();
@@ -147,9 +151,10 @@ public class MyLosingActivity extends BaseActivity implements IPopupItemClick, A
     }
 
     public void initToolbar() {
-        toolbar = (Toolbar)findViewById(R.id.toolbar);
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.setTitle("");
         this.setSupportActionBar(toolbar);
+        this.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
     private void initRefresh() {
@@ -179,7 +184,7 @@ public class MyLosingActivity extends BaseActivity implements IPopupItemClick, A
         query.findObjects(new FindListener<Lost>() {
             @Override
             public void done(List<Lost> losts, BmobException e) {
-                if(e==null){
+                if (e == null) {
                     LostAdapter.clear();
                     FoundAdapter.clear();
                     if (losts == null || losts.size() == 0) {
@@ -193,12 +198,11 @@ public class MyLosingActivity extends BaseActivity implements IPopupItemClick, A
                     //progress.setVisibility(View.GONE);
                     LostAdapter.addAll(losts);
                     listview.setAdapter(LostAdapter);
-                    Log.i(TAG, losts.size()+"");
+                    Log.i(TAG, losts.size() + "");
                     if (refreshLayout != null)
                         //刷新的spinner停止旋转
                         refreshLayout.setRefreshing(false);
-                }
-                else{
+                } else {
                     if (refreshLayout != null)
                         //刷新的spinner停止旋转
                         refreshLayout.setRefreshing(false);
@@ -219,7 +223,7 @@ public class MyLosingActivity extends BaseActivity implements IPopupItemClick, A
 
             @Override
             public void done(List<Found> founds, BmobException e) {
-                if(e==null){
+                if (e == null) {
                     LostAdapter.clear();
                     FoundAdapter.clear();
                     if (founds == null || founds.size() == 0) {
@@ -233,12 +237,11 @@ public class MyLosingActivity extends BaseActivity implements IPopupItemClick, A
                     FoundAdapter.addAll(founds);
                     listview.setAdapter(FoundAdapter);
                     //progress.setVisibility(View.GONE);
-                    Log.i(TAG, founds.size()+"");
+                    Log.i(TAG, founds.size() + "");
                     if (refreshLayout != null)
                         //刷新的spinner停止旋转
                         refreshLayout.setRefreshing(false);
-                }
-                else{
+                } else {
                     if (refreshLayout != null)
                         //刷新的spinner停止旋转
                         refreshLayout.setRefreshing(false);
@@ -260,9 +263,9 @@ public class MyLosingActivity extends BaseActivity implements IPopupItemClick, A
         layout_no.setVisibility(View.VISIBLE);
         if (tag == 0) {
             tv_no.setText(getResources().getText(R.string.list_no_data_lost));
-        } else if(tag == 1){
+        } else if (tag == 1) {
             tv_no.setText(getResources().getText(R.string.list_no_data_found));
-        }else {
+        } else {
             tv_no.setText(getResources().getText(R.string.losing_error));
         }
     }
@@ -280,7 +283,7 @@ public class MyLosingActivity extends BaseActivity implements IPopupItemClick, A
         String describe = "";
         String phone = "";
         String objectId = "";
-        if (from.equals("Lost")) {
+        if (from.equals(getResources().getText(R.string.lost))) {
             title = LostAdapter.getItem(position).getTitle();
             describe = LostAdapter.getItem(position).getDescribe();
             phone = LostAdapter.getItem(position).getPhone();
@@ -296,14 +299,14 @@ public class MyLosingActivity extends BaseActivity implements IPopupItemClick, A
         intent.putExtra("phone", phone);
         intent.putExtra("title", title);
         intent.putExtra("from", from);
-        intent.putExtra("objectId",objectId);
+        intent.putExtra("objectId", objectId);
         startActivityForResult(intent, Constants.REQUESTCODE_ADD);
     }
 
     @Override
     public void onDelete(View v) {
         // TODO Auto-generated method stub
-        if (from.equals("Lost")) {
+        if (from.equals(getResources().getText(R.string.lost))) {
             deleteLost();
         } else {
             deleteFound();
@@ -320,40 +323,64 @@ public class MyLosingActivity extends BaseActivity implements IPopupItemClick, A
 
             @Override
             public void done(Lost object, BmobException e) {
-                if(e==null){
+                if (e == null) {
                     BmobFile file = new BmobFile();
-                    Log.i(TAG, object.getTitle() + ":"+ object.getPhotoUrl());
-                    file.setUrl(object.getPhotoUrl());
-                    //根据url删除文件
-                    file.delete(new UpdateListener() {
-                        @Override
-                        public void done(BmobException e) {
-                            if(e==null){
-                                Lost lost = new Lost();
-                                lost.setObjectId(LostAdapter.getItem(position).getObjectId());
-                                //删除相应的记录
-                                lost.delete(new UpdateListener() {
-                                    @Override
-                                    public void done(BmobException e) {
-                                        if(e == null){
-                                            LostAdapter.remove(position);
-                                            ShowToast("删除成功");
-                                            dialog.dismiss();
-                                        }
-                                        else
-                                            ShowToast("删除失败");
-                                    }
-                                });
+                    String url = object.getPhotoUrl();
+                    //如果url为空，即说明未上传图片，故不需删除图片
+                    if(url == null){
+                        Log.d(TAG, "url null");
+                        Lost lost = new Lost();
+                        lost.setObjectId(LostAdapter.getItem(position).getObjectId());
+                        //删除相应的记录
+                        lost.delete(new UpdateListener() {
+                            @Override
+                            public void done(BmobException e) {
+                                if (e == null) {
+                                    LostAdapter.remove(position);
+                                    ShowToast("删除成功");
+                                    dialog.dismiss();
+                                } else {
+                                    ShowToast("删除失败");
+                                    dialog.dismiss();
+                                }
                             }
-                            else
-                                ShowToast("删除失败");
-                        }
-                    });
-                }else{
+                        });
+                    }else{
+                        Log.i("DELETELOSING", object.getTitle() + ":" + url);
+                        file.setUrl(url);
+                        //根据url删除文件
+                        file.delete(new UpdateListener() {
+                            @Override
+                            public void done(BmobException e) {
+                                if (e == null) {
+                                    Lost lost = new Lost();
+                                    lost.setObjectId(LostAdapter.getItem(position).getObjectId());
+                                    //删除相应的记录
+                                    lost.delete(new UpdateListener() {
+                                        @Override
+                                        public void done(BmobException e) {
+                                            if (e == null) {
+                                                LostAdapter.remove(position);
+                                                ShowToast("删除成功");
+                                                dialog.dismiss();
+                                            } else {
+                                                ShowToast("删除失败");
+                                                dialog.dismiss();
+                                            }
+                                        }
+                                    });
+                                } else {
+                                    ShowToast("删除失败");
+                                    dialog.dismiss();
+                                }
+                            }
+                        });
+                    }
+                } else {
                     ShowToast("删除失败");
+                    dialog.dismiss();
                 }
             }
-
         });
     }
 
@@ -367,40 +394,64 @@ public class MyLosingActivity extends BaseActivity implements IPopupItemClick, A
 
             @Override
             public void done(Found object, BmobException e) {
-                if(e==null){
+                if (e == null) {
                     BmobFile file = new BmobFile();
-                    Log.i(TAG, object.getTitle() + ":"+ object.getPhotoUrl());
-                    file.setUrl(object.getPhotoUrl());
-                    //根据url删除文件
-                    file.delete(new UpdateListener() {
-                        @Override
-                        public void done(BmobException e) {
-                            if(e==null){
-                                Found found = new Found();
-                                found.setObjectId(FoundAdapter.getItem(position).getObjectId());
-                                //删除相应的记录
-                                found.delete(new UpdateListener() {
-                                    @Override
-                                    public void done(BmobException e) {
-                                        if(e == null){
-                                            FoundAdapter.remove(position);
-                                            ShowToast("删除成功");
-                                            dialog.dismiss();
-                                        }
-                                        else
-                                            ShowToast("删除失败");
-                                    }
-                                });
+                    String url = object.getPhotoUrl();
+                    //如果url为空，即说明未上传图片，故不需删除图片
+                    if(url == null){
+                        Log.d(TAG, "url null");
+                        Found found = new Found();
+                        found.setObjectId(FoundAdapter.getItem(position).getObjectId());
+                        //删除相应的记录
+                        found.delete(new UpdateListener() {
+                            @Override
+                            public void done(BmobException e) {
+                                if (e == null) {
+                                    FoundAdapter.remove(position);
+                                    ShowToast("删除成功");
+                                    dialog.dismiss();
+                                } else {
+                                    ShowToast("删除失败");
+                                    dialog.dismiss();
+                                }
                             }
-                            else
-                                ShowToast("删除失败");
-                        }
-                    });
-                }else{
+                        });
+                    }else{
+                        Log.i("DELETELOSING", object.getTitle() + ":" + url);
+                        file.setUrl(url);
+                        //根据url删除文件
+                        file.delete(new UpdateListener() {
+                            @Override
+                            public void done(BmobException e) {
+                                if (e == null) {
+                                    Found found = new Found();
+                                    found.setObjectId(FoundAdapter.getItem(position).getObjectId());
+                                    //删除相应的记录
+                                    found.delete(new UpdateListener() {
+                                        @Override
+                                        public void done(BmobException e) {
+                                            if (e == null) {
+                                                FoundAdapter.remove(position);
+                                                ShowToast("删除成功");
+                                                dialog.dismiss();
+                                            } else {
+                                                ShowToast("删除失败");
+                                                dialog.dismiss();
+                                            }
+                                        }
+                                    });
+                                } else {
+                                    ShowToast("删除失败");
+                                    dialog.dismiss();
+                                }
+                            }
+                        });
+                    }
+                } else {
                     ShowToast("删除失败");
+                    dialog.dismiss();
                 }
             }
-
         });
     }
 
@@ -435,7 +486,7 @@ public class MyLosingActivity extends BaseActivity implements IPopupItemClick, A
         switch (requestCode) {
             case Constants.REQUESTCODE_ADD:// 添加成功之后的回调
                 String tag = from;
-                if (tag.equals("Lost")) {
+                if (tag.equals(getResources().getText(R.string.lost))) {
                     queryLosts();
                 } else {
                     queryFounds();
@@ -445,8 +496,8 @@ public class MyLosingActivity extends BaseActivity implements IPopupItemClick, A
     }
 
     //设置沉浸式状态栏和导航栏
-    private void initWindow(){
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT){
+    private void initWindow() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
             getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
             tintManager = new SystemBarTintManager(this);
@@ -457,20 +508,48 @@ public class MyLosingActivity extends BaseActivity implements IPopupItemClick, A
 
     @Override
     public void onRefresh() {
-        if (from.equals("Lost")) {
+        if (from.equals(getResources().getText(R.string.lost))) {
             queryLosts();
         } else {
             queryFounds();
         }
     }
+
     //人工使刷新圈开始转动
-    private void startRefresh(){
-        refreshLayout.post(new Runnable(){
+    private void startRefresh() {
+        refreshLayout.post(new Runnable() {
             @Override
             public void run() {
                 refreshLayout.setRefreshing(true);
             }
         });
         onRefresh();
+    }
+
+    //监听滑动事件，如到达第一项才可下滑更新
+    @Override
+    public void onScrollStateChanged(AbsListView absListView, int i) {
+
+    }
+
+    @Override
+    public void onScroll(AbsListView absListView, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+        if (firstVisibleItem == 0) {
+            refreshLayout.setEnabled(true);
+        } else {
+            refreshLayout.setEnabled(false);
+        }
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home://增加点击事件
+                finish();
+                break;
+            default:
+                break;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

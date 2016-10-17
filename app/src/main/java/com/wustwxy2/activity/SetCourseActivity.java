@@ -1,7 +1,6 @@
 package com.wustwxy2.activity;
 
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -12,6 +11,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.design.widget.AppBarLayout;
+import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -65,6 +65,8 @@ public class SetCourseActivity extends Activity implements View.OnClickListener,
                 SearchTableActivity.CourseActivity.finish();
                 btSetXq.setText("当前学期  "+selectXq);
                 Toast.makeText(SetCourseActivity.this,"已修改学期", Toast.LENGTH_SHORT).show();
+                startActivity(new Intent(SetCourseActivity.this, SearchTableActivity.class));
+                finish();
             }else {
                 Toast.makeText(SetCourseActivity.this, R.string.no_course_data_toast , Toast.LENGTH_SHORT).show();
             }
@@ -157,6 +159,8 @@ public class SetCourseActivity extends Activity implements View.OnClickListener,
                 btSave.setVisibility(View.GONE);
                 btSetZc.setText("当前周次  第"+zc+"周");
                 Toast.makeText(SetCourseActivity.this,"已修改周次", Toast.LENGTH_SHORT).show();
+                startActivity(new Intent(SetCourseActivity.this, SearchTableActivity.class));
+                finish();
                 break;
 
         }
