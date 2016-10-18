@@ -1,10 +1,15 @@
 package com.wustwxy2.activity;
 
 import android.Manifest;
+<<<<<<< HEAD
 
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 
+=======
+import android.animation.AnimatorSet;
+import android.animation.ObjectAnimator;
+>>>>>>> cbe063e6c3c2065f7f270cf2cd1ed6e8aa7cb60b
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.NotificationManager;
@@ -33,7 +38,10 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.animation.Animation;
+<<<<<<< HEAD
 
+=======
+>>>>>>> cbe063e6c3c2065f7f270cf2cd1ed6e8aa7cb60b
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -89,7 +97,10 @@ public class SearchTableActivity extends BaseActivity implements AdapterView.OnI
     private TextView textView;
     private int week=Utility.getWeekOfDate(),which=Utility.getCurrentClass();
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> cbe063e6c3c2065f7f270cf2cd1ed6e8aa7cb60b
 
 
     @Override
@@ -100,7 +111,10 @@ public class SearchTableActivity extends BaseActivity implements AdapterView.OnI
         initWindow();
         NotificationManager manager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
         manager.cancel(1);
+<<<<<<< HEAD
 
+=======
+>>>>>>> cbe063e6c3c2065f7f270cf2cd1ed6e8aa7cb60b
         back = (ImageButton) findViewById(R.id.course_back);
         back.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -180,6 +194,7 @@ public class SearchTableActivity extends BaseActivity implements AdapterView.OnI
         mEditor.commit();
         tvTitle.setText("第"+currentZc+"周");
     }
+<<<<<<< HEAD
 
     @Override
     public void setContentView() {
@@ -201,6 +216,29 @@ public class SearchTableActivity extends BaseActivity implements AdapterView.OnI
 
     }
 
+=======
+
+    @Override
+    public void setContentView() {
+
+    }
+
+    @Override
+    public void initViews() {
+
+    }
+
+    @Override
+    public void initListeners() {
+
+    }
+
+    @Override
+    public void initData() {
+
+    }
+
+>>>>>>> cbe063e6c3c2065f7f270cf2cd1ed6e8aa7cb60b
     public void updateCourse(int zc){
         for (int i = 0; i < weekPanels.length; i++) {
             weekPanels[i].removeAllViews();
@@ -208,6 +246,7 @@ public class SearchTableActivity extends BaseActivity implements AdapterView.OnI
         }
     }
 
+<<<<<<< HEAD
 
     @Override
     public void setContentView() {
@@ -231,6 +270,9 @@ public class SearchTableActivity extends BaseActivity implements AdapterView.OnI
 
     private void initWeekPanel(LinearLayout ll, List<Course> data) {
 
+=======
+    private void initWeekPanel(LinearLayout ll, List<Course> data) {
+>>>>>>> cbe063e6c3c2065f7f270cf2cd1ed6e8aa7cb60b
         if (ll == null || data == null || data.size() < 1) return;
         Course pre = data.get(0);
         for (int i = 0; i < data.size(); i++) {
@@ -324,6 +366,7 @@ public class SearchTableActivity extends BaseActivity implements AdapterView.OnI
         updateCourse(position+1);
     }
 
+<<<<<<< HEAD
     @Override
     public void onClick(View v) {
         mPopupWindowMenu.dismiss();
@@ -378,6 +421,8 @@ public class SearchTableActivity extends BaseActivity implements AdapterView.OnI
                 break;
         }
 }
+=======
+>>>>>>> cbe063e6c3c2065f7f270cf2cd1ed6e8aa7cb60b
 
     //设置背景图片相关
     @Override
@@ -500,7 +545,10 @@ public class SearchTableActivity extends BaseActivity implements AdapterView.OnI
             tintManager = new SystemBarTintManager(this);
             tintManager.setStatusBarTintColor(getResources().getColor(R.color.colorPrimary));
             tintManager.setStatusBarTintEnabled(true);
+<<<<<<< HEAD
 
+=======
+>>>>>>> cbe063e6c3c2065f7f270cf2cd1ed6e8aa7cb60b
         }
     }
 
@@ -510,6 +558,7 @@ public class SearchTableActivity extends BaseActivity implements AdapterView.OnI
             case android.R.id.home://增加点击事件
                 finish();
                 break;
+<<<<<<< HEAD
             default:
                 break;
 
@@ -523,6 +572,8 @@ public class SearchTableActivity extends BaseActivity implements AdapterView.OnI
             case android.R.id.home://增加点击事件
                 finish();
                 break;
+=======
+>>>>>>> cbe063e6c3c2065f7f270cf2cd1ed6e8aa7cb60b
             case R.id.menu_current_week:
                 Intent intent=new Intent(SearchTableActivity.this,SetCourseActivity.class);
                 intent.putExtra("XqOrZc",1);

@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
 <<<<<<< HEAD
+<<<<<<< HEAD
     xmlns:tools="http://schemas.android.com/tools"
     package="com.wustwxy2">
 
@@ -14,6 +15,14 @@
     <uses-permission
         android:name="android.permission.INSTALL_PACKAGES"
 >>>>>>> ad833721383f7a08b49e9afbbe0d7e845e0e5551
+=======
+          xmlns:tools="http://schemas.android.com/tools"
+          package="com.wustwxy2">
+
+    <!-- 安装apk权限 -->
+    <uses-permission
+        android:name="android.permission.INSTALL_PACKAGES"
+>>>>>>> cbe063e6c3c2065f7f270cf2cd1ed6e8aa7cb60b
         tools:ignore="ProtectedPermissions"/>
     <!-- 拨打电话权限 -->
     <uses-permission android:name="android.permission.CALL_PHONE"/>
@@ -31,6 +40,7 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
     <!-- 允许读取手机状态 用于创建BmobInstallation -->
 <<<<<<< HEAD
+<<<<<<< HEAD
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS" />
 
@@ -46,6 +56,8 @@
     <uses-permission android:name="android.permission.GET_TASKS" />
     <uses-permission android:name="android.permission.WRITE_SETTINGS" />
 =======
+=======
+>>>>>>> cbe063e6c3c2065f7f270cf2cd1ed6e8aa7cb60b
     <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
     <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS"/>
 
@@ -62,7 +74,10 @@
     <uses-permission android:name="android.permission.WRITE_SETTINGS"/>
     <uses-permission android:name="android.permission.DISABLE_KEYGUARD"/>
     <uses-permission android:name="android.permission.WAKE_LOCK"/>
+<<<<<<< HEAD
 >>>>>>> ad833721383f7a08b49e9afbbe0d7e845e0e5551
+=======
+>>>>>>> cbe063e6c3c2065f7f270cf2cd1ed6e8aa7cb60b
 
     <application
         android:name=".Application"
@@ -73,12 +88,18 @@
         android:theme="@style/AppBaseTheme"
         tools:ignore="AllowBackup">
 <<<<<<< HEAD
+<<<<<<< HEAD
         <activity android:name=".activity.LoginActivity" android:screenOrientation="portrait">
 =======
         <activity
             android:name=".activity.LoginActivity"
             android:screenOrientation="portrait">
 >>>>>>> ad833721383f7a08b49e9afbbe0d7e845e0e5551
+=======
+        <activity
+            android:name=".activity.LoginActivity"
+            android:screenOrientation="portrait">
+>>>>>>> cbe063e6c3c2065f7f270cf2cd1ed6e8aa7cb60b
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 
@@ -89,14 +110,19 @@
         <meta-data
             android:name="com.baidu.lbsapi.API_KEY"
 <<<<<<< HEAD
+<<<<<<< HEAD
             android:value="uy7FffxtIAnGTC0a9BGG87BfShC6TqDy" />
 =======
             android:value="uy7FffxtIAnGTC0a9BGG87BfShC6TqDy"/>
 >>>>>>> ad833721383f7a08b49e9afbbe0d7e845e0e5551
+=======
+            android:value="uy7FffxtIAnGTC0a9BGG87BfShC6TqDy"/>
+>>>>>>> cbe063e6c3c2065f7f270cf2cd1ed6e8aa7cb60b
 
         <service
             android:name="com.baidu.location.f"
             android:enabled="true"
+<<<<<<< HEAD
 <<<<<<< HEAD
             android:process=":remote" />
 
@@ -125,6 +151,8 @@
         <activity android:name=".activity.LoginActivityInside" android:screenOrientation="portrait"
             android:launchMode="singleInstance"/>
 =======
+=======
+>>>>>>> cbe063e6c3c2065f7f270cf2cd1ed6e8aa7cb60b
             android:process=":remote"/>
 
         <activity
@@ -207,7 +235,10 @@
                   android:taskAffinity=""
                   android:theme="@android:style/Theme.Wallpaper.NoTitleBar">
         </activity>
+<<<<<<< HEAD
 >>>>>>> ad833721383f7a08b49e9afbbe0d7e845e0e5551
+=======
+>>>>>>> cbe063e6c3c2065f7f270cf2cd1ed6e8aa7cb60b
     </application>
 
 </manifest>

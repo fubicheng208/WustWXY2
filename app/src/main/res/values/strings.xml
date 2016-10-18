@@ -96,7 +96,10 @@
     <string name="permission_ask_title">权限申请</string>
     <string name="permission_mes">在设置-应用-权限中开启各项权限，以保证功能的正常使用</string>
     <string name="find_new_version">检测到有新版本</string>
+<<<<<<< HEAD
 
+=======
+>>>>>>> cbe063e6c3c2065f7f270cf2cd1ed6e8aa7cb60b
     <string name="course_info">课程信息</string>
     <string name="course_name">名称</string>
     <string name="course_room">教室</string>

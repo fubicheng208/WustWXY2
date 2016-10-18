@@ -6,10 +6,14 @@
         <option name="distributionType" value="LOCAL" />
         <option name="externalProjectPath" value="$PROJECT_DIR$" />
 <<<<<<< HEAD
+<<<<<<< HEAD
         <option name="gradleHome" value="C:\Users\Public\android studio\AS\gradle\gradle-2.10" />
 =======
         <option name="gradleHome" value="C:\Program Files\Android\Android Studio2\gradle\gradle-2.14.1" />
 >>>>>>> ad833721383f7a08b49e9afbbe0d7e845e0e5551
+=======
+        <option name="gradleHome" value="C:\Program Files\Android\Android Studio2\gradle\gradle-2.14.1" />
+>>>>>>> cbe063e6c3c2065f7f270cf2cd1ed6e8aa7cb60b
         <option name="modules">
           <set>
             <option value="$PROJECT_DIR$" />

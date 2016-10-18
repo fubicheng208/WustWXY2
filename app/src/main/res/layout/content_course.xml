@@ -42,7 +42,10 @@
                 android:textColor="#ffff"
                 android:paddingLeft="24dp"
                 android:textSize="20sp" />
+<<<<<<< HEAD
 
+=======
+>>>>>>> cbe063e6c3c2065f7f270cf2cd1ed6e8aa7cb60b
         </RelativeLayout>
 
     </android.support.v7.widget.Toolbar>
