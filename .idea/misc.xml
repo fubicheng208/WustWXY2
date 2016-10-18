@@ -2,6 +2,16 @@
 <project version="4">
   <component name="EntryPointsManager">
     <entry_points version="2.0" />
+<<<<<<< HEAD
+=======
+  </component>
+  <component name="MavenImportPreferences">
+    <option name="generalSettings">
+      <MavenGeneralSettings>
+        <option name="mavenHome" value="Bundled (Maven 3)" />
+      </MavenGeneralSettings>
+    </option>
+>>>>>>> ad833721383f7a08b49e9afbbe0d7e845e0e5551
   </component>
   <component name="NullableNotNullManager">
     <option name="myDefaultNullable" value="android.support.annotation.Nullable" />
@@ -26,6 +36,34 @@
         </list>
       </value>
     </option>
+<<<<<<< HEAD
+=======
+  </component>
+  <component name="ProjectInspectionProfilesVisibleTreeState">
+    <entry key="Project Default">
+      <profile-state>
+        <expanded-state>
+          <State>
+            <id />
+          </State>
+          <State>
+            <id>Android Lint</id>
+          </State>
+          <State>
+            <id>General</id>
+          </State>
+          <State>
+            <id>Maven</id>
+          </State>
+        </expanded-state>
+        <selected-state>
+          <State>
+            <id>AndroidLintUseCompoundDrawables</id>
+          </State>
+        </selected-state>
+      </profile-state>
+    </entry>
+>>>>>>> ad833721383f7a08b49e9afbbe0d7e845e0e5551
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="false">
     <OptionsSetting value="true" id="Add" />

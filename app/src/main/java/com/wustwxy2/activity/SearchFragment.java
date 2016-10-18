@@ -1,6 +1,6 @@
 package com.wustwxy2.activity;
 
-import android.Manifest;
+
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -53,7 +53,9 @@ import java.util.concurrent.TimeUnit;
 
 import cn.bmob.v3.BmobUser;
 import cn.bmob.v3.exception.BmobException;
+
 import cn.bmob.v3.listener.SaveListener;
+
 import cn.bmob.v3.listener.UpdateListener;
 
 /**
@@ -141,6 +143,9 @@ public class SearchFragment extends Fragment implements WustCardCenterLogin.Logi
                             mEditor.putInt("startWeek", Utility.getWeekOfDate());
                             mEditor.putString("xq", xq);
                             mEditor.putString("kbData", kb);
+
+                            mEditor.putInt("classCode",Utility.classCode);
+
                             mEditor.commit();
                         }
                         progressDialog.dismiss();

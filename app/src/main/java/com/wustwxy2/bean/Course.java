@@ -1,12 +1,14 @@
 package com.wustwxy2.bean;
 
+import java.io.Serializable;
+
 /**
  * Created by wsasus on 2016/7/18.
  */
 
-public class Course {
+public class Course implements Serializable {
     private String name,room,teach;//课程名称、上课教室，教师
-    int start,step,startZc,endZc,week,classCode;	//开始上课节次， 一共几节课
+    int id,start,step,startZc,endZc,week,classCode;	//开始上课节次， 一共几节课
 
     public String getName() {
         return name;
@@ -72,6 +74,14 @@ public class Course {
         this.week = week;
     }
 
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
     public int getClassCode() {
         return classCode;
     }
@@ -79,4 +89,6 @@ public class Course {
     public void setClassCode(int classCode) {
         this.classCode = classCode;
     }
+
+
 }

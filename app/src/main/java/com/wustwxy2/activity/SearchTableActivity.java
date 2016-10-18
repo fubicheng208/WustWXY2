@@ -1,8 +1,13 @@
 package com.wustwxy2.activity;
 
 import android.Manifest;
+
+import android.animation.AnimatorSet;
+import android.animation.ObjectAnimator;
+
 import android.annotation.TargetApi;
 import android.app.Activity;
+import android.app.NotificationManager;
 import android.content.ContentUris;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -19,14 +24,16 @@ import android.provider.MediaStore;
 import android.provider.Settings;
 import android.support.design.widget.AppBarLayout;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
+import android.view.animation.Animation;
+
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -42,13 +49,16 @@ import com.readystatesoftware.systembartint.SystemBarTintManager;
 import com.wustwxy2.R;
 import com.wustwxy2.bean.Course;
 import com.wustwxy2.models.JwInfoDB;
+import com.wustwxy2.service.RemindService;
 import com.wustwxy2.util.Utility;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SearchTableActivity extends BaseActivity implements AdapterView.OnItemClickListener, View.OnClickListener {
+import static com.wustwxy2.R.id.tv;
+
+public class SearchTableActivity extends BaseActivity implements AdapterView.OnItemClickListener ,AddCourseFragment.UpdateCourseListener{
 
     private RelativeLayout titleRl;
     private LinearLayout weekPanels[] = new LinearLayout[7];
@@ -72,6 +82,13 @@ public class SearchTableActivity extends BaseActivity implements AdapterView.OnI
     private File tempFile;
     Toolbar toolbar;
     private SystemBarTintManager tintManager;
+    private static final String TAG = "SearchTableActivity";
+    private static final String DIALOG_COURSE = "DIALOG_COURSE";
+    private static final String DIALOG_ADD_COURSE = "DIALOG_ADD_COURSE";
+    private static final String DIALOG_HELP_COURSE = "DIALOG_HELP_COURSE";
+    private TextView textView;
+    private int week=Utility.getWeekOfDate(),which=Utility.getCurrentClass();
+
 
 
 
@@ -79,8 +96,11 @@ public class SearchTableActivity extends BaseActivity implements AdapterView.OnI
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_course);
+        initToolbar();
         initWindow();
-        //initToolbar();
+        NotificationManager manager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+        manager.cancel(1);
+
         back = (ImageButton) findViewById(R.id.course_back);
         back.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -106,38 +126,59 @@ public class SearchTableActivity extends BaseActivity implements AdapterView.OnI
             }
         });
 
-
-        rlMenu=(RelativeLayout) findViewById(R.id.rl_menu);
-        btMenu=(Button)findViewById(R.id.bt_menu);
-        rlMenu.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showPopupMenuWindow();
-            }
-        });
-        btMenu.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showPopupMenuWindow();
-            }
-        });
-
-
-        int days = Utility.getDays(mPreferences.getString("startDate", ""), Utility.getDate())
-                + mPreferences.getInt("startWeek", 0) - 1;
-        currentZc = mPreferences.getInt("currentZc", 1);
-        if (days >= currentZc * 7) {
-            currentZc += days / 7 - currentZc + 1;
-        }
-        mEditor.putInt("currentZc", currentZc);
-        Log.d("currentZc", currentZc + "");
-        mEditor.commit();
-        tvTitle.setText("第"+currentZc+"周 ▼");
+        updateZc();
 
         for (int i = 0; i < weekPanels.length; i++) {
             weekPanels[i] = (LinearLayout) findViewById(R.id.weekPanel_1 + i);
             initWeekPanel(weekPanels[i], mJwInfoDB.loadCourses(currentZc, i + 1));
         }
+
+        if (textView != null) {
+            ObjectAnimator a1 = ObjectAnimator.ofFloat(textView, "scaleY", 0.95f, 1.02f ,0.95f);
+            ObjectAnimator a2 = ObjectAnimator.ofFloat(textView, "scaleX", 0.9f, 1.02f,0.9f);
+            ObjectAnimator a3 = ObjectAnimator.ofFloat(textView, "alpha", 1f, 0.5f, 1f);
+            a1.setRepeatCount(Animation.INFINITE);
+            a2.setRepeatCount(Animation.INFINITE);
+            a3.setRepeatCount(Animation.INFINITE);
+            AnimatorSet animSet = new AnimatorSet();
+            animSet.play(a1).with(a2).with(a3);
+            animSet.setDuration(2000);
+            animSet.start();
+
+//            AlphaAnimation alphaAnimation1 = new AlphaAnimation(0.4f, 1.0f);
+//            alphaAnimation1.setDuration(1000);
+//            alphaAnimation1.setRepeatCount(Animation.INFINITE);
+//            alphaAnimation1.setRepeatMode(Animation.REVERSE);
+//            textView.setAnimation(alphaAnimation1);
+//            alphaAnimation1.start();
+        }else {
+            Toast.makeText(this, "你今天没有课要上了，可以去happy啦~", Toast.LENGTH_SHORT).show();
+        }
+
+        Intent i=new Intent(this, RemindService.class);
+        startService(i);
+    }
+
+    public void initToolbar() {
+        toolbar = (Toolbar) findViewById(R.id.course_toolbar);
+        this.setSupportActionBar(toolbar);
+    }
+
+
+    private void updateZc(){
+        int days = Utility.getDays(mPreferences.getString("startDate", ""), Utility.getDate())
+                + mPreferences.getInt("startWeek", 0);
+        Log.d(TAG, "updateZc:"+"\nstartDate:"+mPreferences.getString("startDate", "")
+        +"\nstartWeek:"+mPreferences.getInt("startWeek", 0)
+        +"\ndays:"+days);
+        currentZc = mPreferences.getInt("currentZc", 1);
+        currentZc+=(days-1)/7;
+        mEditor.putInt("currentZc", currentZc);
+        mEditor.putInt("startWeek",Utility.getWeekOfDate());
+        mEditor.putString("startDate",Utility.getDate());
+        Log.d(TAG, "updateZc: "+"\ncurrentZc:"+currentZc+"\nstartWeek:"+Utility.getWeekOfDate());
+        mEditor.commit();
+        tvTitle.setText("第"+currentZc+"周");
     }
 
     @Override
@@ -160,7 +201,36 @@ public class SearchTableActivity extends BaseActivity implements AdapterView.OnI
 
     }
 
-    public void initWeekPanel(LinearLayout ll, List<Course> data) {
+    public void updateCourse(int zc){
+        for (int i = 0; i < weekPanels.length; i++) {
+            weekPanels[i].removeAllViews();
+            initWeekPanel(weekPanels[i], mJwInfoDB.loadCourses(zc, i + 1));
+        }
+    }
+
+
+    @Override
+    public void setContentView() {
+
+    }
+
+    @Override
+    public void initViews() {
+
+    }
+
+    @Override
+    public void initListeners() {
+
+    }
+
+    @Override
+    public void initData() {
+
+    }
+
+    private void initWeekPanel(LinearLayout ll, List<Course> data) {
+
         if (ll == null || data == null || data.size() < 1) return;
         Course pre = data.get(0);
         for (int i = 0; i < data.size(); i++) {
@@ -174,17 +244,31 @@ public class SearchTableActivity extends BaseActivity implements AdapterView.OnI
             } else {
                 lp.setMargins(marLeft, (c.getStart() - 1) * (itemHeight + marTop) + marTop, 0, 0);
             }
+            if(c.getWeek()==week&&c.getStart()>=which&&textView==null){
+                textView=tv;
+            }
             tv.setLayoutParams(lp);
             tv.setGravity(Gravity.TOP);
             tv.setGravity(Gravity.CENTER_HORIZONTAL);
             tv.setTextSize(12);
             tv.setTextColor(getResources().getColor(R.color.courseTextColor));
-            tv.setText(c.getName() + "\n" + c.getRoom() + "\n" + c.getTeach());
-            //tv.setBackgroundColor(getResources().getColor(R.color.classIndex));
-            tv.setBackground(getResources().getDrawable(R.drawable.bk1 + c.getClassCode() % 10));
+            tv.setText(c.getName() + "@" + c.getRoom());
+            tv.setBackground(getResources()
+                    .getDrawable(R.drawable.course_bg01 + (c.getClassCode()) % 20));
+            setCourseOnClickListener(tv,c);
             ll.addView(tv);
             pre = c;
         }
+    }
+
+    private void setCourseOnClickListener(TextView textView, final Course course){
+        textView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                CourseInfoFragment dialog=CourseInfoFragment.newInstance(course);
+                dialog.show(getSupportFragmentManager(),DIALOG_COURSE);
+            }
+        });
     }
 
     private List<String> getData() {
@@ -204,7 +288,7 @@ public class SearchTableActivity extends BaseActivity implements AdapterView.OnI
         mPopupWindow = new PopupWindow(contentView);
         mPopupWindow.setWidth(AppBarLayout.LayoutParams.WRAP_CONTENT);
         mPopupWindow.setHeight(AppBarLayout.LayoutParams.WRAP_CONTENT);
-        mAdapter=new ArrayAdapter(SearchTableActivity.this,R.layout.pw_item_layout,R.id.tv,getData());
+        mAdapter=new ArrayAdapter(SearchTableActivity.this,R.layout.pw_item_layout, tv,getData());
         ListView lv=(ListView)contentView.findViewById(R.id.lv_zc);
         TextView tv=(TextView)contentView.findViewById(R.id.tv);
         tv.setVisibility(View.GONE);
@@ -218,42 +302,26 @@ public class SearchTableActivity extends BaseActivity implements AdapterView.OnI
         mPopupWindow.showAtLocation(titleRl, Gravity.TOP| Gravity.CENTER, 0, 120);
     }
 
-    private void showPopupMenuWindow() {
-        View contentView = LayoutInflater.from(SearchTableActivity.this).inflate(R.layout.pw_menu_layout, null);
-        mPopupWindowMenu = new PopupWindow(contentView);
-        mPopupWindowMenu.setWidth(AppBarLayout.LayoutParams.WRAP_CONTENT);
-        mPopupWindowMenu.setHeight(AppBarLayout.LayoutParams.WRAP_CONTENT);
-        TextView btXq=(TextView) contentView.findViewById(R.id.bt_xq);
-        TextView btZc=(TextView)contentView.findViewById(R.id.bt_zc);
-        TextView setBjBtn= (TextView) contentView.findViewById(R.id.set_bj_btn);
-        btXq.setOnClickListener(this);
-        btZc.setOnClickListener(this);
-        setBjBtn.setOnClickListener(this);
-        mPopupWindowMenu.setFocusable(true);
-        mPopupWindowMenu.setTouchable(true);
-        mPopupWindowMenu.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        mPopupWindowMenu.setOutsideTouchable(true);
-        mPopupWindowMenu.update();
-        mPopupWindowMenu.showAtLocation(titleRl, Gravity.TOP| Gravity.END, 10, 120);
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.set_couse_menu, menu);
+        return true;
     }
+
+
+
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         mPopupWindow.dismiss();
         if(position!=currentZc-1) {
-            tvTitle.setText("第" + (position + 1) + "周(非本周) ▼");
-            for (int i = 0; i < weekPanels.length; i++) {
-                weekPanels[i].removeAllViews();
-                initWeekPanel(weekPanels[i], mJwInfoDB.loadCourses(position+1, i + 1));
-            }
+            tvTitle.setText("第" + (position + 1) + "周(非本周)");
 
         }else {
-            tvTitle.setText("第" + (position + 1) + "周 ▼");
-            for (int i = 0; i < weekPanels.length; i++) {
-                weekPanels[i].removeAllViews();
-                initWeekPanel(weekPanels[i], mJwInfoDB.loadCourses(position+1, i + 1));
-            }
+            tvTitle.setText("第" + (position + 1) + "周");
         }
+        updateCourse(position+1);
     }
 
     @Override
@@ -310,6 +378,7 @@ public class SearchTableActivity extends BaseActivity implements AdapterView.OnI
                 break;
         }
 }
+
     //设置背景图片相关
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -431,6 +500,7 @@ public class SearchTableActivity extends BaseActivity implements AdapterView.OnI
             tintManager = new SystemBarTintManager(this);
             tintManager.setStatusBarTintColor(getResources().getColor(R.color.colorPrimary));
             tintManager.setStatusBarTintEnabled(true);
+
         }
     }
 
@@ -442,7 +512,81 @@ public class SearchTableActivity extends BaseActivity implements AdapterView.OnI
                 break;
             default:
                 break;
+
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home://增加点击事件
+                finish();
+                break;
+            case R.id.menu_current_week:
+                Intent intent=new Intent(SearchTableActivity.this,SetCourseActivity.class);
+                intent.putExtra("XqOrZc",1);
+                startActivity(intent);
+                break;
+            case R.id.menu_current_term:
+                Intent intent1=new Intent(SearchTableActivity.this,SetCourseActivity.class);
+                intent1.putExtra("XqOrZc",0);
+                startActivity(intent1);
+                break;
+            case R.id.menu_set_bg:
+                requestPermission(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE}, new BaseActivity.PermissionHandler() {
+                    @Override
+                    public void onGranted() {
+                        Intent intent2=new Intent("android.intent.action.GET_CONTENT");
+                        intent2.setType("image/*");
+                        startActivityForResult(intent2,CHOOSE_PHOTO);
+                    }
+
+                    @Override
+                    public void onDenied() {
+                        Toast.makeText(SearchTableActivity.this, "由于您拒绝了权限申请，无法正常使用该功能", Toast.LENGTH_LONG).show();
+                    }
+
+                    @Override
+                    public boolean onNeverAsk() {
+                        new AlertDialog.Builder(SearchTableActivity.this)
+                                .setTitle(R.string.permission_ask_title)
+                                .setMessage(R.string.permission_mes)
+                                .setPositiveButton("去开启", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialogInterface, int i) {
+                                        Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+                                        Uri uri = Uri.fromParts("package", getPackageName(), null);
+                                        intent.setData(uri);
+                                        startActivity(intent);
+
+                                        dialogInterface.dismiss();
+                                    }
+                                })
+                                .setNegativeButton("取消", null)
+                                .setCancelable(false)
+                                .show();
+                        return  true;
+                    }
+                });
+                break;
+            case R.id.menu_add_course:
+                AddCourseFragment dialog=AddCourseFragment.newInstance();
+                dialog.show(getSupportFragmentManager(),DIALOG_ADD_COURSE);
+                break;
+            case R.id.menu_help:
+                CourseHelpFragment dialog1=CourseHelpFragment.newInstance();
+                dialog1.show(getSupportFragmentManager(),DIALOG_HELP_COURSE);
+                break;
+            default:
+                break;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onUpdateCourse() {
+        tvTitle.setText("第" + (currentZc) + "周");
+        updateCourse(currentZc);
     }
 }
