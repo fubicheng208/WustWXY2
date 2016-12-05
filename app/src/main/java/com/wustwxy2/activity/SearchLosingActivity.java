@@ -1,18 +1,17 @@
 package com.wustwxy2.activity;
 
 import android.content.Intent;
-import android.graphics.drawable.BitmapDrawable;
 import android.os.Build;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.widget.ListPopupWindow;
 import android.support.v7.widget.Toolbar;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -34,6 +33,7 @@ import static com.wustwxy2.R.id.tv_photo;
 import static com.wustwxy2.R.id.tv_time;
 import static com.wustwxy2.R.id.tv_title;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import cn.bmob.v3.BmobQuery;
@@ -45,6 +45,7 @@ public class SearchLosingActivity extends BaseActivity implements View.OnClickLi
         AdapterView.OnItemClickListener, SwipeRefreshLayout.OnRefreshListener, AbsListView.OnScrollListener {
 
     private static final String TAG = " LOSING";
+    private static final String DIALOG_HELP_LOSING = "DIALOG_HELP_LOSING" ;
 
     Toolbar toolbar;
     private SystemBarTintManager tintManager;
@@ -61,6 +62,7 @@ public class SearchLosingActivity extends BaseActivity implements View.OnClickLi
     private Button layout_found;
     private Button layout_lost;
     PopupWindow morePop;
+    private ListPopupWindow popup;
 
     //RelativeLayout progress;
     LinearLayout layout_no;
@@ -68,6 +70,8 @@ public class SearchLosingActivity extends BaseActivity implements View.OnClickLi
 
     //下拉刷新布局
     SwipeRefreshLayout refreshLayout;
+
+    private List<String> lists = new ArrayList<String>();
 
 
     @Override
@@ -82,7 +86,6 @@ public class SearchLosingActivity extends BaseActivity implements View.OnClickLi
         //progress = (RelativeLayout) findViewById(R.id.progress);
         layout_no = (LinearLayout) findViewById(R.id.layout_no);
         tv_no = (TextView) findViewById(R.id.tv_no);
-
         layout_all = (LinearLayout) findViewById(R.id.layout_all);
         // Ĭ����ʧ�����
         tv_lost = (TextView) findViewById(R.id.tv_lost);
@@ -90,6 +93,8 @@ public class SearchLosingActivity extends BaseActivity implements View.OnClickLi
         listview = (ListView) findViewById(R.id.list_lost);
         refreshLayout = (SwipeRefreshLayout) findViewById(R.id.losing_fresh);
         initRefresh();
+        initPopup();
+
     }
 
     @Override
@@ -134,17 +139,7 @@ public class SearchLosingActivity extends BaseActivity implements View.OnClickLi
     @Override
     public void onClick(View v) {
         if (v == layout_all) {
-            showListPop();
-        } else if (v == layout_found) {
-            morePop.dismiss();
-            changeTextView(v);
-            startRefresh();
-            queryFounds();
-        } else if (v == layout_lost) {
-            changeTextView(v);
-            morePop.dismiss();
-            startRefresh();
-            queryLosts();
+            popup.show();
         }
     }
 
@@ -178,17 +173,47 @@ public class SearchLosingActivity extends BaseActivity implements View.OnClickLi
         startRefresh();
     }
 
-    private void changeTextView(View v) {
-        if (v == layout_found) {
+    //0表示寻物启事，1表示招领启事
+    private void changeTextView(int i) {
+        if (i == 1) {
             tv_lost.setTag(getResources().getText(R.string.found));
             tv_lost.setText(getResources().getText(R.string.found));
-        } else {
+        } else if(i == 0){
             tv_lost.setTag(getResources().getText(R.string.lost));
             tv_lost.setText(getResources().getText(R.string.lost));
         }
     }
 
-    private void showListPop() {
+    private void initPopup() {
+        popup = new ListPopupWindow(this);
+        lists.add(getResources().getText(R.string.lost).toString());
+        lists.add(getResources().getText(R.string.found).toString());
+        popup.setAdapter(new ArrayAdapter<String>(this, R.layout.item_popup_losing, lists));
+        popup.setWidth(400);
+        popup.setHeight(WindowManager.LayoutParams.WRAP_CONTENT);
+        popup.setHorizontalOffset(-20);
+        popup.setAnchorView(layout_all);
+        popup.setModal(true);
+        popup.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                //0表示寻物启事，1表示招领启事
+                if (i == 0) {
+                    popup.dismiss();
+                    changeTextView(i);
+                    startRefresh();
+                    queryLosts();
+                } else if (i == 1) {
+                    popup.dismiss();
+                    changeTextView(i);
+                    startRefresh();
+                    queryFounds();
+                }
+            }
+        });
+    }
+
+    /*private void showListPop() {
         View view = LayoutInflater.from(this).inflate(R.layout.pop_lost, null);
         // ע��
         layout_found = (Button) view.findViewById(R.id.layout_found);
@@ -208,17 +233,17 @@ public class SearchLosingActivity extends BaseActivity implements View.OnClickLi
             }
         });
 
-        morePop.setWidth(WindowManager.LayoutParams.MATCH_PARENT);
-        morePop.setHeight(WindowManager.LayoutParams.WRAP_CONTENT);
+        morePop.setWidth(AppBarLayout.LayoutParams.WRAP_CONTENT);
+        morePop.setHeight(AppBarLayout.LayoutParams.WRAP_CONTENT);
         morePop.setTouchable(true);
         morePop.setFocusable(true);
         morePop.setOutsideTouchable(true);
-        morePop.setBackgroundDrawable(new BitmapDrawable());
+        morePop.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         // ����Ч�� �Ӷ�������
         morePop.setAnimationStyle(R.style.MenuPop);
         morePop.showAsDropDown(layout_all, 0, -dip2px(this, 2.0F));
     }
-
+*/
     int position;
 
     @Override
@@ -415,6 +440,10 @@ public class SearchLosingActivity extends BaseActivity implements View.OnClickLi
                 break;
             case android.R.id.home:
                 finish();
+                break;
+            case R.id.menu_losing_help:
+                LosingHelpFragment dialog = LosingHelpFragment.newInstance();
+                dialog.show(getSupportFragmentManager(), DIALOG_HELP_LOSING);
                 break;
             default:
                 break;

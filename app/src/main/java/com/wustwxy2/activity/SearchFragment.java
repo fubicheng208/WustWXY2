@@ -1,9 +1,5 @@
 package com.wustwxy2.activity;
 
-<<<<<<< HEAD
-
-=======
->>>>>>> cbe063e6c3c2065f7f270cf2cd1ed6e8aa7cb60b
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -56,12 +52,7 @@ import java.util.concurrent.TimeUnit;
 
 import cn.bmob.v3.BmobUser;
 import cn.bmob.v3.exception.BmobException;
-<<<<<<< HEAD
 
-import cn.bmob.v3.listener.SaveListener;
-
-=======
->>>>>>> cbe063e6c3c2065f7f270cf2cd1ed6e8aa7cb60b
 import cn.bmob.v3.listener.UpdateListener;
 
 /**
@@ -149,13 +140,7 @@ public class SearchFragment extends Fragment implements WustCardCenterLogin.Logi
                             mEditor.putInt("startWeek", Utility.getWeekOfDate());
                             mEditor.putString("xq", xq);
                             mEditor.putString("kbData", kb);
-<<<<<<< HEAD
-
                             mEditor.putInt("classCode",Utility.classCode);
-
-=======
-                            mEditor.putInt("classCode",Utility.classCode);
->>>>>>> cbe063e6c3c2065f7f270cf2cd1ed6e8aa7cb60b
                             mEditor.commit();
                         }
                         progressDialog.dismiss();
@@ -337,7 +322,6 @@ public class SearchFragment extends Fragment implements WustCardCenterLogin.Logi
                             }
                         }else{
                             Toast.makeText(getActivity(), "请检查您的网络", Toast.LENGTH_SHORT).show();
-<<<<<<< HEAD
                         }
                     }
                     break;
@@ -365,35 +349,6 @@ public class SearchFragment extends Fragment implements WustCardCenterLogin.Logi
                         }
                     }
                     break;
-=======
-                        }
-                    }
-                    break;
-                    case 0: {
-                        //一卡通
-                        BmobUser user = BmobUser.getCurrentUser(User.class);
-                        if(user==null ){
-                            Log.i(TAG, "USER NULL");
-                            Toast.makeText(getActivity(), "需要先登录的哦", Toast.LENGTH_SHORT).show();
-                            startActivity(new Intent(getActivity(), LoginActivityInside.class));
-                        }else {
-                            Log.i(TAG,"USER NOT NULL");
-                            username = getActivity().getSharedPreferences("WustCardCenter", 0).getString("username", null);
-                            password = getActivity().getSharedPreferences("WustCardCenter", 0).getString("password", null);
-                            if (username == null || password == null) {
-                                Toast.makeText(getActivity(), "请先绑定一卡通密码", Toast.LENGTH_SHORT).show();
-                                Intent intent = new Intent(getActivity(), BindActivity.class);
-                                startActivity(intent);
-                            } else {
-                                progressDialog.show();
-                                //调用WustCardCenterLogin类进行登录
-                                login.login(username, password);
-                                Log.i(TAG, username + "||" + password);
-                            }
-                        }
-                    }
-                    break;
->>>>>>> cbe063e6c3c2065f7f270cf2cd1ed6e8aa7cb60b
                     case 4: {
                         startActivity(new Intent(getActivity(), SearchLosingActivity.class));
                     }

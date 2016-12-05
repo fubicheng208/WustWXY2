@@ -5,17 +5,21 @@ package com.wustwxy2.activity;
  */
 
 
+import android.Manifest;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.provider.Settings;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -34,7 +38,7 @@ import com.wustwxy2.util.WustCardCenterLogin;
 import java.lang.reflect.Field;
 
 
-public class AccInfoActivity extends AppCompatActivity {
+public class AccInfoActivity extends BaseActivity {
 
     Toolbar toolbar;
     private SystemBarTintManager tintManager;
@@ -193,13 +197,68 @@ public class AccInfoActivity extends AppCompatActivity {
         });
 
         btnlossreport.setOnClickListener(new OnClickListener() {
-
             @Override
             public void onClick(View v) {
-                // TODO Auto-generated method stub
-                Toast.makeText(AccInfoActivity.this, "请到相关工作地点或者拨打电话挂失^_^", Toast.LENGTH_LONG).show();
+                //根据号码拨打电话
+                requestPermission(new String[]{Manifest.permission.CALL_PHONE}, new BaseActivity.PermissionHandler() {
+                    @Override
+                    public void onGranted() {
+                        Intent intent = new Intent();
+                        intent.setAction(Intent.ACTION_DIAL);
+                        intent.setData(Uri.parse("tel:"+ "027-68862091"));
+                        Log.i(TAG, "tel:" + "027-68862091");
+                        startActivity(intent);
+                    }
+
+                    @Override
+                    public void onDenied() {
+                        Toast.makeText(AccInfoActivity.this, "由于您拒绝了权限申请，无法正常使用该功能", Toast.LENGTH_LONG).show();
+                    }
+
+                    @Override
+                    public boolean onNeverAsk() {
+                        new AlertDialog.Builder(AccInfoActivity.this)
+                                .setTitle(R.string.permission_ask_title)
+                                .setMessage(R.string.permission_mes)
+                                .setPositiveButton("去开启", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialogInterface, int i) {
+                                        Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+                                        Uri uri = Uri.fromParts("package", getPackageName(), null);
+                                        intent.setData(uri);
+                                        startActivity(intent);
+
+                                        dialogInterface.dismiss();
+                                    }
+                                })
+                                .setNegativeButton("取消", null)
+                                .setCancelable(false)
+                                .show();
+                        return  true;
+                    }
+                });
             }
         });
+    }
+
+    @Override
+    public void setContentView() {
+
+    }
+
+    @Override
+    public void initViews() {
+
+    }
+
+    @Override
+    public void initListeners() {
+
+    }
+
+    @Override
+    public void initData() {
+
     }
 
     public void initToolbar() {

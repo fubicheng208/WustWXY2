@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <color name="tealLight">#80cbc4</color>
     <color name="colorPrimary">#009688</color>
     <color name="colorPrimaryDark">#00796B</color>
     <color name="loginText">#276a73</color>
@@ -45,8 +46,5 @@
     <color name="course_info_title_remind">#fafafa</color>
     <color name="course_info_text_remind">#f4f4f4</color>
     <color name="text_remind">#47a3d1</color>
-<<<<<<< HEAD
-
-=======
->>>>>>> cbe063e6c3c2065f7f270cf2cd1ed6e8aa7cb60b
+    <color name="blue_test">#1568e6</color>
 </resources>

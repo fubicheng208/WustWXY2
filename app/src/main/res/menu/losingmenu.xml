@@ -11,4 +11,9 @@
         android:title="@string/menu_losing_mine"
         app:showAsAction="never" />
 
+    <item
+        android:id="@+id/menu_losing_help"
+        android:title="@string/help"
+        app:showAsAction="never"/>
+
 </menu>

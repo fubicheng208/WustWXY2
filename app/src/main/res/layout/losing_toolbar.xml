@@ -23,13 +23,10 @@
                 android:layout_height="wrap_content"
                 android:text="寻物启事"
                 android:textColor="@color/white"
+                android:drawablePadding="10dp"
+                android:drawableRight="@mipmap/down"
                 android:textSize="20sp" />
 
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="bottom"
-                android:src="@drawable/btn_arrow_selector" />
         </LinearLayout>
 
         <!-- <Button

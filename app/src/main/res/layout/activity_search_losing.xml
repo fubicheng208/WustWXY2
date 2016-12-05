@@ -28,6 +28,8 @@
             <include layout="@layout/include_no_data" />
 
         </RelativeLayout>
+
     </android.support.v4.widget.SwipeRefreshLayout>
+
 
 </LinearLayout>

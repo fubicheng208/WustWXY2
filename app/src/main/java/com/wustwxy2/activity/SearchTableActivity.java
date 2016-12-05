@@ -1,15 +1,8 @@
 package com.wustwxy2.activity;
 
 import android.Manifest;
-<<<<<<< HEAD
-
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
-
-=======
-import android.animation.AnimatorSet;
-import android.animation.ObjectAnimator;
->>>>>>> cbe063e6c3c2065f7f270cf2cd1ed6e8aa7cb60b
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.NotificationManager;
@@ -38,10 +31,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.animation.Animation;
-<<<<<<< HEAD
 
-=======
->>>>>>> cbe063e6c3c2065f7f270cf2cd1ed6e8aa7cb60b
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -72,6 +62,7 @@ public class SearchTableActivity extends BaseActivity implements AdapterView.OnI
     private LinearLayout weekPanels[] = new LinearLayout[7];
     private int itemHeight;
     private int marTop, marLeft;
+    private int state;
     private JwInfoDB mJwInfoDB;
     private SharedPreferences mPreferences;
     private SharedPreferences.Editor mEditor;
@@ -79,10 +70,7 @@ public class SearchTableActivity extends BaseActivity implements AdapterView.OnI
     private TextView tvTitle;
     private ArrayAdapter mAdapter;
     private PopupWindow mPopupWindow;
-    private PopupWindow mPopupWindowMenu;
-    private RelativeLayout rlMenu;
-    private Button btMenu;
-    private ImageButton back;
+    private Button back;
     public static Activity CourseActivity;
     public static final int CROP_PHOTO=0;
     public static final int CHOOSE_PHOTO=1;
@@ -97,10 +85,6 @@ public class SearchTableActivity extends BaseActivity implements AdapterView.OnI
     private TextView textView;
     private int week=Utility.getWeekOfDate(),which=Utility.getCurrentClass();
 
-<<<<<<< HEAD
-
-=======
->>>>>>> cbe063e6c3c2065f7f270cf2cd1ed6e8aa7cb60b
 
 
     @Override
@@ -111,11 +95,7 @@ public class SearchTableActivity extends BaseActivity implements AdapterView.OnI
         initWindow();
         NotificationManager manager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
         manager.cancel(1);
-<<<<<<< HEAD
-
-=======
->>>>>>> cbe063e6c3c2065f7f270cf2cd1ed6e8aa7cb60b
-        back = (ImageButton) findViewById(R.id.course_back);
+        back = (Button) findViewById(R.id.course_back);
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -169,8 +149,15 @@ public class SearchTableActivity extends BaseActivity implements AdapterView.OnI
             Toast.makeText(this, "你今天没有课要上了，可以去happy啦~", Toast.LENGTH_SHORT).show();
         }
 
-        Intent i=new Intent(this, RemindService.class);
-        startService(i);
+        Log.i(TAG,"onCreate");
+
+        //remindState 打开为1，关闭为0,如果之前没有设置过，则为2
+        state = mPreferences.getInt("remindState",2);
+        if(state == 1 || state == 2){
+            Intent i=new Intent(this, RemindService.class);
+            startService(i);
+        }
+
     }
 
     public void initToolbar() {
@@ -194,7 +181,7 @@ public class SearchTableActivity extends BaseActivity implements AdapterView.OnI
         mEditor.commit();
         tvTitle.setText("第"+currentZc+"周");
     }
-<<<<<<< HEAD
+
 
     @Override
     public void setContentView() {
@@ -216,29 +203,6 @@ public class SearchTableActivity extends BaseActivity implements AdapterView.OnI
 
     }
 
-=======
-
-    @Override
-    public void setContentView() {
-
-    }
-
-    @Override
-    public void initViews() {
-
-    }
-
-    @Override
-    public void initListeners() {
-
-    }
-
-    @Override
-    public void initData() {
-
-    }
-
->>>>>>> cbe063e6c3c2065f7f270cf2cd1ed6e8aa7cb60b
     public void updateCourse(int zc){
         for (int i = 0; i < weekPanels.length; i++) {
             weekPanels[i].removeAllViews();
@@ -246,33 +210,7 @@ public class SearchTableActivity extends BaseActivity implements AdapterView.OnI
         }
     }
 
-<<<<<<< HEAD
-
-    @Override
-    public void setContentView() {
-
-    }
-
-    @Override
-    public void initViews() {
-
-    }
-
-    @Override
-    public void initListeners() {
-
-    }
-
-    @Override
-    public void initData() {
-
-    }
-
     private void initWeekPanel(LinearLayout ll, List<Course> data) {
-
-=======
-    private void initWeekPanel(LinearLayout ll, List<Course> data) {
->>>>>>> cbe063e6c3c2065f7f270cf2cd1ed6e8aa7cb60b
         if (ll == null || data == null || data.size() < 1) return;
         Course pre = data.get(0);
         for (int i = 0; i < data.size(); i++) {
@@ -347,7 +285,21 @@ public class SearchTableActivity extends BaseActivity implements AdapterView.OnI
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
+        Log.i(TAG,"MenuCreated");
         getMenuInflater().inflate(R.menu.set_couse_menu, menu);
+        MenuItem item = menu.getItem(0);
+        //int state = mPreferences.getInt("remindState",2);
+        //原来为关闭，点击后则变为打开了，所以要显示的要为关闭的图标则设置图标为关闭
+        if(state == 0){
+            item.setIcon(R.mipmap.remind_opened);
+        } else if(state == 1){
+            item.setIcon(R.mipmap.remind_closed);
+        } else if(state == 2){
+            item.setIcon(R.mipmap.remind_opened);
+            mEditor.putInt("remindState", 1);
+            mEditor.commit();
+        }
+        onPrepareOptionsMenu(menu);
         return true;
     }
 
@@ -359,70 +311,12 @@ public class SearchTableActivity extends BaseActivity implements AdapterView.OnI
         mPopupWindow.dismiss();
         if(position!=currentZc-1) {
             tvTitle.setText("第" + (position + 1) + "周(非本周)");
-
         }else {
             tvTitle.setText("第" + (position + 1) + "周");
         }
         updateCourse(position+1);
     }
 
-<<<<<<< HEAD
-    @Override
-    public void onClick(View v) {
-        mPopupWindowMenu.dismiss();
-        Intent intent=new Intent(SearchTableActivity.this,SetCourseActivity.class);
-        switch (v.getId()){
-            case R.id.bt_xq:
-                intent.putExtra("XqOrZc",0);
-                startActivity(intent);
-                break;
-            case R.id.bt_zc:
-                intent.putExtra("XqOrZc",1);
-                startActivity(intent);
-                break;
-            case R.id.set_bj_btn:
-                requestPermission(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE}, new BaseActivity.PermissionHandler() {
-                    @Override
-                    public void onGranted() {
-                        Intent intent2=new Intent("android.intent.action.GET_CONTENT");
-                        intent2.setType("image/*");
-                        startActivityForResult(intent2,CHOOSE_PHOTO);
-                    }
-
-                    @Override
-                    public void onDenied() {
-                        Toast.makeText(SearchTableActivity.this, "由于您拒绝了权限申请，无法正常使用该功能", Toast.LENGTH_LONG).show();
-                    }
-
-                    @Override
-                    public boolean onNeverAsk() {
-                        new AlertDialog.Builder(SearchTableActivity.this)
-                                .setTitle(R.string.permission_ask_title)
-                                .setMessage(R.string.permission_mes)
-                                .setPositiveButton("去开启", new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialogInterface, int i) {
-                                        Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
-                                        Uri uri = Uri.fromParts("package", getPackageName(), null);
-                                        intent.setData(uri);
-                                        startActivity(intent);
-
-                                        dialogInterface.dismiss();
-                                    }
-                                })
-                                .setNegativeButton("取消", null)
-                                .setCancelable(false)
-                                .show();
-                        return  true;
-                    }
-                });
-                break;
-            default:
-                break;
-        }
-}
-=======
->>>>>>> cbe063e6c3c2065f7f270cf2cd1ed6e8aa7cb60b
 
     //设置背景图片相关
     @Override
@@ -509,7 +403,6 @@ public class SearchTableActivity extends BaseActivity implements AdapterView.OnI
             //getNavigationBarHeight(this)  //获取底部虚拟按钮的高度
             // dm.heightPixels   //获取除底部虚拟按钮的高度
 
-
             imageUri = Uri.fromFile(new File(imagePath));
             Intent intent = new Intent("com.android.camera.action.CROP");
             intent.setDataAndType(imageUri, "image/*");
@@ -545,12 +438,10 @@ public class SearchTableActivity extends BaseActivity implements AdapterView.OnI
             tintManager = new SystemBarTintManager(this);
             tintManager.setStatusBarTintColor(getResources().getColor(R.color.colorPrimary));
             tintManager.setStatusBarTintEnabled(true);
-<<<<<<< HEAD
-
-=======
->>>>>>> cbe063e6c3c2065f7f270cf2cd1ed6e8aa7cb60b
         }
     }
+
+
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -558,22 +449,6 @@ public class SearchTableActivity extends BaseActivity implements AdapterView.OnI
             case android.R.id.home://增加点击事件
                 finish();
                 break;
-<<<<<<< HEAD
-            default:
-                break;
-
-        }
-        return super.onOptionsItemSelected(item);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home://增加点击事件
-                finish();
-                break;
-=======
->>>>>>> cbe063e6c3c2065f7f270cf2cd1ed6e8aa7cb60b
             case R.id.menu_current_week:
                 Intent intent=new Intent(SearchTableActivity.this,SetCourseActivity.class);
                 intent.putExtra("XqOrZc",1);
@@ -625,6 +500,28 @@ public class SearchTableActivity extends BaseActivity implements AdapterView.OnI
                 AddCourseFragment dialog=AddCourseFragment.newInstance();
                 dialog.show(getSupportFragmentManager(),DIALOG_ADD_COURSE);
                 break;
+            case R.id.menu_open_service:
+                //remindState 打开为1，关闭为0,如果之前没有设置过，则为2
+                int state = mPreferences.getInt("remindState",2);
+                //原来为关闭，点击后则变为打开了，所以要显示的要为关闭的图标则设置图标为关闭
+                if(state == 0 || state == 2){
+                    mEditor.putInt("remindState", 1);
+                    mEditor.apply();
+                    item.setIcon(R.mipmap.remind_closed);
+                    //设置为打开
+                    startService(new Intent(this,RemindService.class));
+                    ShowToast(getResources().getText(R.string.open_service_toast).toString());
+                }
+                else if(state == 1){
+                    mEditor.putInt("remindState", 0);
+                    mEditor.apply();
+                    item.setIcon(R.mipmap.remind_opened);
+                    Intent i = new Intent(this,RemindService.class);
+                    i.putExtra("state",0);
+                    stopService(i);
+                    ShowToast(getResources().getText(R.string.close_service_toast).toString());
+                }
+                break;
             case R.id.menu_help:
                 CourseHelpFragment dialog1=CourseHelpFragment.newInstance();
                 dialog1.show(getSupportFragmentManager(),DIALOG_HELP_COURSE);
@@ -633,6 +530,12 @@ public class SearchTableActivity extends BaseActivity implements AdapterView.OnI
                 break;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        Log.i(TAG, "prepareMenu");
+        return super.onPrepareOptionsMenu(menu);
     }
 
     @Override

@@ -1,6 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
       xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/menu_open_service"
+        android:title="@string/menu_open_service"
+        android:icon="@mipmap/remind_opened"
+        app:showAsAction="always"/>
     <item
         android:id="@+id/menu_current_term"
         android:title="@string/current_term"
@@ -17,6 +23,8 @@
         android:id="@+id/menu_add_course"
         android:title="@string/add_course"
         app:showAsAction="never"/>
+
+
     <item
         android:id="@+id/menu_help"
         android:title="@string/help"

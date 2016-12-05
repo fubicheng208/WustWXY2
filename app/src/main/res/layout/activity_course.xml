@@ -12,10 +12,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:theme="@style/AppTheme.AppBarOverlay">
-<<<<<<< HEAD
-	
-=======
->>>>>>> cbe063e6c3c2065f7f270cf2cd1ed6e8aa7cb60b
         <android.support.design.widget.CollapsingToolbarLayout
             android:id="@+id/toolbar_layout"
             android:layout_width="match_parent"

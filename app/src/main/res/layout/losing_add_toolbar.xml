@@ -8,12 +8,12 @@
 
     <Button
         android:id="@+id/btn_back"
-        android:layout_width="28dp"
-        android:layout_height="28dp"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
         android:layout_alignParentLeft="true"
         android:layout_centerVertical="true"
         android:layout_marginLeft="10dp"
-        android:background="@drawable/btn_back_selector" />
+        android:background= "@mipmap/back_white" />
 
     <TextView
         android:id="@+id/tv_add"
@@ -25,11 +25,11 @@
 
     <Button
         android:id="@+id/btn_true"
-        android:layout_width="28dp"
-        android:layout_height="28dp"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
         android:layout_marginRight="10dp"
-        android:background="@drawable/btn_true_selector" />
+        android:background="@mipmap/white_true" />
 
 </RelativeLayout>

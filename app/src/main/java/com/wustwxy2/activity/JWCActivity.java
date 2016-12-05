@@ -20,7 +20,9 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.wustwxy2.R;
+import com.wustwxy2.adapter.BaseAdapterHelper;
 import com.wustwxy2.adapter.NewsAdapter;
+import com.wustwxy2.adapter.QuickAdapter;
 import com.wustwxy2.bean.News;
 
 import org.jsoup.Jsoup;
@@ -31,12 +33,18 @@ import org.jsoup.select.Elements;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.wustwxy2.R.id.listview;
+import static com.wustwxy2.R.id.news_date;
+import static com.wustwxy2.R.id.news_pager;
+import static com.wustwxy2.R.id.news_title;
+
 /**
  * Created by Administrator on 2016/7/17.
  */
-public class JWCActivity extends Fragment implements SwipeRefreshLayout.OnRefreshListener, AbsListView.OnScrollListener{
-    private NewsAdapter adapter;
-    private List<News> newsList;
+public class JWCActivity extends Fragment implements SwipeRefreshLayout.OnRefreshListener, AbsListView.OnScrollListener,AdapterView.OnItemClickListener{
+    //private NewsAdapter adapter;
+    protected QuickAdapter<News> newsAdapter;
+    //private List<News> newsList;
     private ListView lv;
     private SwipeRefreshLayout refreshLayout;
     //无网络显示界面
@@ -49,19 +57,24 @@ public class JWCActivity extends Fragment implements SwipeRefreshLayout.OnRefres
             String news = (String) msg.obj;
             //如果字符串长度小，即传递过来的是空字符串，则显示网站关闭信息
             if (news.length() < 10) {
-                newsList.add(new News("教务处网站已关闭", null));
+                newsAdapter.add(new News("教务处网站已关闭", null));
                 if (refreshLayout != null) {
                     refreshLayout.setRefreshing(false);
                 }
             } else {
                 String getnews[] = news.split(",");
-                for (int i = 0; i < 48; i += 2) {
-                    newsList.add(new News(getnews[i], getnews[i + 1]));
+                for (int i = 0; i < 32; i += 2) {
+                    String temp = getnews[i];
+                    String text = temp.substring(0,temp.length()-10);
+                    String date = temp.substring(temp.length()-10,temp.length());
+                    //Log.i(TAG, "TEXT: " + text);
+                    //Log.i(TAG,"DATE: " + date);
+                    newsAdapter.add(new News(text,date, getnews[i + 1]));
                 }
             }
             if (refreshLayout != null)
                 refreshLayout.setRefreshing(false);
-            adapter.notifyDataSetChanged();
+            newsAdapter.notifyDataSetChanged();
         }
     };
 
@@ -75,13 +88,14 @@ public class JWCActivity extends Fragment implements SwipeRefreshLayout.OnRefres
         View rootView = inflater.inflate(R.layout.activity_get_news, container, false);//关联布局文件
         lv = (ListView) rootView.findViewById(R.id.lvNews);
 
-        newsList = new ArrayList<News>();
-        adapter = new NewsAdapter(getActivity(), newsList);
+        //newsList = new ArrayList<News>();
+        //adapter = new NewsAdapter(getActivity(), newsList);
         layout_no = (LinearLayout) rootView.findViewById(R.id.layout_no);
         tv_no = (TextView) rootView.findViewById(R.id.tv_no);
         //下拉刷新组件
         refreshLayout = (SwipeRefreshLayout) rootView.findViewById(R.id.refresh_news);
-        //为组件加入参数
+        //初始化列表
+        initData();
         initRefresh();
         lv.setOnScrollListener(this);
         refreshLayout.setOnRefreshListener(this);
@@ -97,21 +111,23 @@ public class JWCActivity extends Fragment implements SwipeRefreshLayout.OnRefres
             onRefresh();
             parseHtml(handler);
         }
-        lv.setAdapter(adapter);
-        lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {//listview点击响应事件
-                News news = newsList.get(position);
-                Intent intent = new Intent(getActivity(), BrowseNewsAvtivity.class);
-                intent.putExtra("href", news.getHref());
-                if (news.getHref() != null)
-                    startActivity(intent);
-            }
-        });
-
-
         return rootView;
     }
+
+    private void initData(){
+        if(newsAdapter == null){
+            newsAdapter = new QuickAdapter<News>(getContext(), R.layout.news_item) {
+                @Override
+                protected void convert(BaseAdapterHelper helper, News item) {
+                    helper.setText(news_title, item.getTitle())
+                            .setText(news_date, item.getDateOrCollege());
+                }
+            };
+        }
+        lv.setAdapter(newsAdapter);
+        lv.setOnItemClickListener(this);
+    }
+
 
     private void initRefresh() {
         refreshLayout.setColorSchemeResources(R.color.colorAccent, R.color.yellow,
@@ -170,7 +186,7 @@ public class JWCActivity extends Fragment implements SwipeRefreshLayout.OnRefres
     @Override
     public void onRefresh() {
         //在刷新之前先清空原来的
-        newsList.clear();
+        newsAdapter.clear();
         if(isNetworkAvailable(getActivity())){
             showTrueView();
             parseHtml(handler);
@@ -226,5 +242,14 @@ public class JWCActivity extends Fragment implements SwipeRefreshLayout.OnRefres
         }else{
             refreshLayout.setEnabled(false);
         }
+    }
+
+    @Override
+    public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+        News news = newsAdapter.getItem(i);
+        Intent intent = new Intent(getActivity(), BrowseNewsAvtivity.class);
+        intent.putExtra("href", news.getHref());
+        if (news.getHref() != null)
+            startActivity(intent);
     }
 }

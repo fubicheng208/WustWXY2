@@ -216,7 +216,7 @@ public class Utility {
         }else if(totalMinutes<15*60+45){
             num= 15*60+45-totalMinutes;
         }else if(totalMinutes<18*60+45){
-            num= 16*60+45-totalMinutes;
+            num= 18*60+45-totalMinutes;
         }else {
             num= 24*60-totalMinutes+8*60+5;
         }

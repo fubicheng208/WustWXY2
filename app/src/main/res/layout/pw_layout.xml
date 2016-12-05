@@ -14,7 +14,7 @@
         android:id="@+id/tv"
         android:text="选择当前周"
         android:layout_alignTop="@+id/lv_zc"
-        android:layout_alignStart="@+id/lv_zc"
+        android:layout_alignLeft="@+id/lv_zc"
         android:gravity="center"
         android:textSize="20sp"/>
     <ListView

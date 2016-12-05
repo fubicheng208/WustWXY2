@@ -96,10 +96,6 @@
     <string name="permission_ask_title">权限申请</string>
     <string name="permission_mes">在设置-应用-权限中开启各项权限，以保证功能的正常使用</string>
     <string name="find_new_version">检测到有新版本</string>
-<<<<<<< HEAD
-
-=======
->>>>>>> cbe063e6c3c2065f7f270cf2cd1ed6e8aa7cb60b
     <string name="course_info">课程信息</string>
     <string name="course_name">名称</string>
     <string name="course_room">教室</string>
@@ -114,8 +110,11 @@
     <string name="add_course">添加课程</string>
     <string name="course_function">功能</string>
     <string name="help">帮助</string>
-    <string name="course_help">·教务处课表数据导入\n·修改当前学期，周数\n·设置界面背景\n·自动根据时间换周\n·自己添加课程\n·点击课程查看详细信息(慎用删除)\n·在界面通过持续闪动提醒接下来要上课程\n·每节课前15分钟通过发送锁屏通知提醒上课信息\n\n(若不慎误删课程或想更新课表，只需重新选择当前学期即可。若使用过程中发现问题或建议请反馈给我们(๑•̀ㅂ•́)و✧)</string>
-    <string name="course_remind">15分钟后有节课要上~</string>
+    <string name="course_remind">童鞋，有节课要上~</string>
+    <string name="control_service">关闭提醒</string>
+    <string name="menu_open_service">打开上课提醒</string>
+    <string name="open_service_toast">上课提醒功能已打开，妈妈再也不担心我找不到教室了~</string>
+    <string name="close_service_toast">您已关闭上课提醒功能</string>
 
     <style name="AnimationActivity" parent="@android:style/Animation.Activity">
         <item name="android:activityOpenEnterAnimation">@anim/push_left_in</item>
@@ -123,4 +122,11 @@
         <item name="android:activityCloseEnterAnimation">@anim/zoom_enter</item>
         <item name="android:activityCloseExitAnimation">@anim/zoom_exit</item>
     </style>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="course_help">·教务处课表数据导入\n·修改当前学期，周数\n·设置界面背景\n·自动根据时间换周\n·自己添加课程\n·点击课程查看详细信息(慎用删除)\n·在界面通过持续闪动提醒接下来要上课程\n·每节课前15分钟通过发送锁屏通知提醒上课信息，可点击屏幕右上角的通知图标选择打开或关闭\n\n(若不慎误删课程或想更新课表，只需重新选择当前学期即可。若使用过程中发现问题或建议请反馈给我们(๑•̀ㅂ•́)و✧)</string>
+    <string name="losing_help">·添加寻物启事招领启事\n·点击可查看寻物启事招领启事具体内容\n·点击“我的”可以看到自己发布的寻物启事和招领启事并可选择修改或删除\n\n若使用过程中发现问题或建议请反馈给我们(๑•̀ㅂ•́)و✧)</string>
+    <string name="lib_search_title">请输入书名</string>
+    <string name="hint_search_title">请输入书名</string>
 </resources>
