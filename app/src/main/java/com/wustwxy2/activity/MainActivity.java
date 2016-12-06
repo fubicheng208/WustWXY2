@@ -51,9 +51,12 @@ public class MainActivity extends BaseActivity {
     private MainFragment mf;
     String versionname;
     UpdateInfo info;
+    SharedPreferences sp;
+    SharedPreferences.Editor editor;
     private static final int UPDATE_CLIENT = 0;
     private static final int GET_UNDATEINFO_ERROR = 1;
     private static final int DOWN_ERROR = 2;
+    private static final int SHOW_NOTIFICATION = 3;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -219,8 +222,10 @@ public class MainActivity extends BaseActivity {
         while(type != XmlPullParser.END_DOCUMENT ){
             switch (type) {
                 case XmlPullParser.START_TAG:
-                    if("version".equals(parser.getName())){
+                    if("version".equals(parser.getName())) {
                         info.setVersion(parser.nextText()); //获取版本号
+                    }else if("notification".equals(parser.getName())){
+                        info.setNotification(parser.nextText());//获取通知
                     }else if ("url".equals(parser.getName())){
                         info.setUrl(parser.nextText()); //获取要升级的APK文件
                     }else if ("description".equals(parser.getName())){
@@ -240,7 +245,7 @@ public class MainActivity extends BaseActivity {
             HttpURLConnection conn =  (HttpURLConnection) url.openConnection();
             conn.setConnectTimeout(5000);
             //获取到文件的大小
-            pd.setMax(conn.getContentLength());
+            pd.setMax(conn.getContentLength()/1024);
             InputStream is = conn.getInputStream();
             File file = new File(Environment.getExternalStorageDirectory(), "WxyUpdate.apk");
             FileOutputStream fos = new FileOutputStream(file);
@@ -252,7 +257,7 @@ public class MainActivity extends BaseActivity {
                 fos.write(buffer, 0, len);
                 total+= len;
                 //获取当前下载量
-                pd.setProgress(total);
+                pd.setProgress(total/1024);
             }
             fos.close();
             bis.close();
@@ -271,6 +276,9 @@ public class MainActivity extends BaseActivity {
 
         public void run() {
             try {
+                //flag标志用来记录是否版本号相同，如果不相同且有通知则只显示更新
+                //只有相同且有通知才显示通知（为了避免两个对话框重叠）
+                int flag = 0;
                 //从资源文件获取服务器 地址
                 String path = getResources().getString(R.string.serverurl);
                 //包装成url的对象
@@ -283,9 +291,28 @@ public class MainActivity extends BaseActivity {
                 if(info.getVersion().equals(versionname)){
                     Log.i(TAG,"版本号相同无需升级");
                 }else{
+                    flag = 1;
                     Log.i(TAG,"版本号不同 ,提示用户升级 ");
                     Message msg = new Message();
                     msg.what = UPDATE_CLIENT;
+                    handler.sendMessage(msg);
+                }
+                //SP中保存上次的通知信息通过比较是否与服务器端相同来确定是否显示通知
+                sp = getSharedPreferences("data", Context.MODE_PRIVATE);
+                editor = sp.edit();
+                String notification = sp.getString("notification","");
+                Log.i(TAG, "原来的notification:" + notification );
+                Log.i(TAG, "现在的notification:" + info.getNotification());
+                boolean different = false;
+                if (!notification.equals(info.getNotification())) {
+                    different = true;
+                    editor.putString("notification", info.getNotification());
+                    editor.commit();
+                }
+                if(different ==  true && flag == 0){
+                    Log.i(TAG, info.getNotification());
+                    Message msg = new Message();
+                    msg.what = SHOW_NOTIFICATION;
                     handler.sendMessage(msg);
                 }
             } catch (Exception e) {
@@ -318,6 +345,10 @@ public class MainActivity extends BaseActivity {
                     //下载apk失败
                     Toast.makeText(getApplicationContext(), "下载新版本失败", Toast.LENGTH_SHORT).show();
                     //LoginMain();
+                    break;
+                case SHOW_NOTIFICATION:
+                    //对话框显示新通知
+                    showNotificationDialog();
                     break;
             }
         }
@@ -355,6 +386,23 @@ public class MainActivity extends BaseActivity {
         dialog.show();
     }
 
+    //弹出对话框通知用户重要提醒
+    protected void showNotificationDialog() {
+        AlertDialog.Builder builer = new AlertDialog.Builder(this) ;
+        builer.setTitle(R.string.find_notification);
+        builer.setMessage(info.getNotification());
+        Log.i(TAG, info.getNotification());
+
+        builer.setNegativeButton("确定", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                // TODO Auto-generated method stub
+                dialog.dismiss();
+            }
+        });
+        AlertDialog dialog = builer.create();
+        dialog.show();
+    }
+
     /*
      * 从服务器中下载APK
      */
@@ -363,6 +411,7 @@ public class MainActivity extends BaseActivity {
         pd = new  ProgressDialog(this);
         pd.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
         pd.setMessage("正在下载更新");
+        pd.setProgressNumberFormat("%1d KB/%2d KB");
         pd.show();
         new Thread(){
             @Override

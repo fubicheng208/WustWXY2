@@ -10,9 +10,12 @@ public class UpdateInfo {
     private String version;
     private String url;
     private String description;
+    private String notification;
+
     public String getVersion() {
         return version;
     }
+
     public void setVersion(String version) {
         this.version = version;
     }
@@ -27,5 +30,11 @@ public class UpdateInfo {
     }
     public void setDescription(String description) {
         this.description = description;
+    }
+    public String getNotification() {
+        return notification;
+    }
+    public void setNotification(String notification) {
+        this.notification = notification;
     }
 }

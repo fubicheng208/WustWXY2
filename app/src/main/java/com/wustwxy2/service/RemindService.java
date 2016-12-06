@@ -54,7 +54,7 @@ public class RemindService extends Service {
 
         notification = builder
                 .setContentTitle("武科大微校园")
-                .setContentText("课表君正在后台等着提醒您上课呢~")
+                .setContentText("可点击进入课表界面，点击右上角的灰色按钮关闭上课提醒功能")
                 .setContentIntent(pi)
                 .setColor(Color.parseColor("#06c1ae"))
                 .setWhen(System.currentTimeMillis())

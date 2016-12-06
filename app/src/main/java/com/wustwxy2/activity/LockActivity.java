@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.PowerManager;
 import android.view.View;
 import android.view.Window;
@@ -19,7 +20,7 @@ public class LockActivity extends Activity {
     private static final String EXTRA_COURSE = "EXTRA_COURSE";
     private TextView mNameTextTviw,mRoomTextTviw,mTeacherTextTviw,mTitleTextView;
     private LinearLayout mLinearLayout;
-
+    private Handler mTimeHandler;
     public static Intent newIntent(Context context, Course course){
         Intent intent=new Intent(context,LockActivity.class);
         intent.putExtra(EXTRA_COURSE,course);
@@ -38,10 +39,14 @@ public class LockActivity extends Activity {
 
         PowerManager pm = (PowerManager) this.getSystemService(Context.POWER_SERVICE);
         if (!pm.isScreenOn()) {
-            PowerManager.WakeLock wl = pm.newWakeLock(PowerManager.ACQUIRE_CAUSES_WAKEUP |
+            final PowerManager.WakeLock wl = pm.newWakeLock(PowerManager.ACQUIRE_CAUSES_WAKEUP |
                     PowerManager.SCREEN_BRIGHT_WAKE_LOCK, "bright");
             wl.acquire();
-            wl.release();
+            mTimeHandler.postDelayed(new Runnable(){
+                public void run(){
+                    wl.release();
+                }
+            }, 10*1000);
         }
 
         Course course= (Course) getIntent().getSerializableExtra(EXTRA_COURSE);

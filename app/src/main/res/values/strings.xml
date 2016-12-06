@@ -129,4 +129,6 @@
     <string name="losing_help">·添加寻物启事招领启事\n·点击可查看寻物启事招领启事具体内容\n·点击“我的”可以看到自己发布的寻物启事和招领启事并可选择修改或删除\n\n若使用过程中发现问题或建议请反馈给我们(๑•̀ㅂ•́)و✧)</string>
     <string name="lib_search_title">请输入书名</string>
     <string name="hint_search_title">请输入书名</string>
+    <string name="find_notification">有新通知</string>
+    <string name="mes_update">检查更新</string>
 </resources>
