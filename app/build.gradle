@@ -34,7 +34,6 @@ dependencies {
     compile files('libs/BaiduLBS_Android.jar')
     compile files('libs/ksoap2-android-assembly-3.0.0-jar-with-dependencies.jar')
     compile files('libs/jsoup-1.8.1.jar')
-    compile project(':LibMarsdaemon')
     compile 'cn.bmob.android:bmob-sdk:3.5.0'
     compile 'com.android.support:support-v4:24.2.1'
     compile 'com.android.support:appcompat-v7:24.2.1'

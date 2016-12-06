@@ -295,7 +295,7 @@ public class SearchTableActivity extends BaseActivity implements AdapterView.OnI
         } else if(state == 1){
             item.setIcon(R.mipmap.remind_closed);
         } else if(state == 2){
-            item.setIcon(R.mipmap.remind_opened);
+            item.setIcon(R.mipmap.remind_closed);
             mEditor.putInt("remindState", 1);
             mEditor.commit();
         }

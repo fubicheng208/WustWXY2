@@ -98,7 +98,7 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".activity.SearchLibActivity"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".activity.AddActivity"
             android:screenOrientation="portrait" />
@@ -138,19 +138,11 @@
             android:screenOrientation="portrait" />
 
         <service
-            android:name=".service.RemindService"
-            android:process=":process1" />
+            android:name=".service.RemindService" />
 
         <receiver
-            android:name=".broadcast.RemindReceiver"
-            android:process=":process1" />
-        <receiver
-            android:name=".broadcast.DaemonReceiver"
-            android:process=":process2" />
+            android:name=".broadcast.RemindReceiver" />
 
-        <service
-            android:name=".service.DaemonService"
-            android:process=":process2" />
 
         <activity
             android:name=".activity.LockActivity"
@@ -159,6 +151,10 @@
             android:taskAffinity=""
             android:theme="@android:style/Theme.Wallpaper.NoTitleBar" />
 
+        <receiver
+            android:name=".broadcast.DaemonReceiver2"
+            android:enabled="true"
+            android:exported="true"></receiver>
     </application>
 
 </manifest>
